@@ -1,6 +1,1888 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Redis笔记</title>
+    <url>/undefined/36858/</url>
+    <content><![CDATA[基础篇初识RedisRedis是一种键值型的NoSQL数据库，这里有两个关键字
+
+键值型
+NoSQL
+
+其中键值型是指Redis中存储的数据都是以Key-Value键值对的形式存储，而Value的形式多种多样，可以使字符串、数值甚至Json
+而NoSQL则是相对于传统关系型数据库而言，有很大差异的一种数据库
+认识NoSQLNoSql可以翻译做Not Only Sql（不仅仅是SQL），或者是No Sql（非Sql的）数据库。是相对于传统关系型数据库而言，有很大差异的一种特殊的数据库，因此也称之为非关系型数据库。
+结构化与非结构化传统关系型数据库是结构化数据，每张表在创建的时候都有严格的约束信息，如字段名、字段数据类型、字段约束等，插入的数据必须遵循这些约束
+而NoSQL则对数据库格式没有约束，可以是键值型（Redis），也可以是文档型（MongoDB），列类型（HBase）甚至是图格式（Neo4j）
+关联与非关联传统数据库的表与表之间往往存在关联，例如外键约束而非关系型数据库不存在关联关系，要维护关系要么靠代码中的业务逻辑，要么靠数据之间的耦合
+&#123;  id: 1,  name: &quot;张三&quot;,  orders: [    &#123;       id: 1,       item: &#123;   id: 10, title: &quot;荣耀6&quot;, price: 4999       &#125;    &#125;,    &#123;       id: 2,       item: &#123;   id: 20, title: &quot;小米11&quot;, price: 3999       &#125;    &#125;  ]&#125;
+
+例如此处要维护张三与两个手机订单的关系，不得不冗余的将这两个商品保存在张三的订单文档中，不够优雅，所以建议使用业务逻辑来维护关联关系。
+查询方式传统关系型数据库会基于Sql语句做查询，语法有统一的标准
+SELECT id, age FROM tb_user WHERE id = 1
+
+而不同的非关系型数据库查询语法差异极大
+Redis:  get user:1MongoDB: db.user.find(&#123;_id: 1&#125;)elasticsearch:  GET http://localhost:9200/users/1
+
+事务传统关系型数据库能满足事务的ACID原则(原子性、一致性、独立性及持久性)而非关系型数据库汪汪不支持事务，或者不能要个保证ACID的特性，只能实现计本的一致性
+总结
+
+
+
+SQL
+NoSQL
+
+
+
+数据结构
+结构化(Structured)
+非结构化
+
+
+数据关联
+关联的(Relational)
+无关联的
+
+
+查询方式
+SQL查询
+非SQL
+
+
+事务特性
+ACID
+BASE
+
+
+存储方式
+磁盘
+内存
+
+
+扩展性
+垂直
+水平
+
+
+使用场景
+1）数据结构固定 2)相关业务对数据安全性、一致性要求较高
+1)数据结构不固定 2)对一致性、安全性要求不高 3）对性能要求
+
+
+
+存储方式
+
+关系型数据库基于磁盘进行存储，会有大量的磁盘IO，对性能有一定影响
+非关系型数据库，他们的操作更多的是依赖于内存来操作，内存的读写速度会非常快，性能自然会好一些
+
+
+扩展性
+
+关系型数据库集群模式一般是主从，主从数据一致，起到数据备份的作用，称为垂直扩展。
+非关系型数据库可以将数据拆分，存储在不同机器上，可以保存海量数据，解决内存大小有限的问题。称为水平扩展。
+关系型数据库因为表之间存在关联关系，如果做水平扩展会给数据查询带来很多麻烦
+
+
+
+认识RedisRedis诞生于2009年，全称是Remote Dictionary Server远程词典服务器，是一个基于内存的键值型NoSQL数据库。
+特征：
+
+键值(Key-Value)型，Value支持多种不同的数据结构，功能丰富
+&#x3D;&#x3D;单线程，每个命令具有原子性&#x3D;&#x3D;
+低延迟，速度快(基于内存&#x3D;&#x3D;主要&#x3D;&#x3D;、IO多路复用、良好的编码（基于C语言）)
+支持数据持久化
+支持主从集群、分片集群
+支持多语言客户端
+
+作者：Antirez
+Redis官网：https://redis.io/
+安装Rediswindows 安装参考
+https://cyborg2077.github.io/2022/10/17/ReggieRedis/
+Redis 官网有关于 macos 系统安装的教程
+https://redis.io/docs/latest/operate/oss_and_stack/install/archive/install-redis/install-redis-on-mac-os/
+redis.conf 配置文件在 /opt/homebrew/etc/redis.conf
+
+
+
+
+
+
+我们修改完 redis.conf 保存
+！！！实际开发需要设置开机自启，需要一个脚本
+
+同时我们在 IDEA 里面配置我们 homebrew 安装的 maven
+Redis桌面客户端安装完成Redis，我们就可以操作Redis，实现数据的CRUD了。这需要用到Redis客户端，包括：
+
+命令行客户端
+图形化桌面客户端
+编程客户端
+
+Redis命令行客户端Redis安装完成后就自带了命令行客户端：redis-cli，使用方式如下：
+redis-cli [options] [commonds]
+
+其中常见的options有：
+
+-h 127.0.0.1：指定要连接的redis节点的IP地址，默认是127.0.0.1
+-p 6379：指定要连接的redis节点的端口，默认是6379
+-a 123321：指定redis的访问密码
+
+其中的commonds就是Redis的操作命令，例如：
+
+ping：与redis服务端做心跳测试，服务端正常会返回&#96;pong
+
+图形化桌面客户端安装包：https://github.com/lework/RedisDesktopManager-Windows/releases
+Redis默认有16个仓库，编号从0至15. 通过配置文件可以设置仓库数量，但是不超过16，并且不能自定义仓库名称。
+如果是基于redis-cli连接Redis服务，可以通过select命令来选择数据库：
+## 选择0号数据库select 0
+
+Redis 常用命令Redis是典型的key-value数据库，key一般是字符串，而value包含很多不同的数据类型
+Redis 通用命令常用的通用命令有以下几个
+
+
+
+命令
+描述
+
+
+
+KEYS pattern
+查找所有符合给定模式(pattern)的key
+
+
+EXISTS key
+检查给定key是否存在
+
+
+TYPE key
+返回key所储存的值的类型
+
+
+TTL key
+返回给定key的剩余生存时间(TTL, time to live)，以秒为单位
+
+
+DEL key
+该命令用于在key存在是删除key
+
+
+
+KEYS：查看符合模板的所有key
+
+不建议在生产环境设备上使用，因为Redis是单线程的，执行查询的时候会阻塞其他命令，当数据量很大的时候，使用KEYS进行模糊查询，效率很差
+在查询的时候，* 代表任意数量字符，? 代表单个字符
+
+
+DEL：删除一个指定的key
+
+也可以删除多个key，DEL name age，会将name和age都删掉
+返回值代表删除的key数量
+
+
+EXISTS：判断key是否存在
+
+EXISTS name，如果存在返回1，不存在返回0
+也可以判断多个key是否存在，比如 EXISTS age name，返回2代表都存在，返回1代表只有一个存在
+
+
+EXPIRE：给一个key设置有效期，有效期到期时该key会被自动删除
+
+EXPIRE name 20，给name设置20秒有效期，到期自动删除
+
+PERSIST age，设置永久有效
+
+
+
+TTL：查看一个key的剩余有效期(Time-To-Live)
+
+TTL name，查看name的剩余有效期，如果未设置有效期，则返回-1，代表永久有效期
+-2 代表这个键不存在
+
+
+
+String 类型String类型，也就是字符串类型，是Redis中最简单的存储类型其value是字符串，不过根据字符串的格式不同，又可以分为3类
+
+string：普通字符串
+int：整数类型，可以做自增、自减操作
+float：浮点类型，可以做自增、自减操作不管是哪种格式，底层都是字节数组形式存储，只不过是编码方式不同，字符串类型的最大空间不能超过512M
+
+String 的常用命令String的常用命令有
+
+
+
+命令
+描述
+
+
+
+SET key value
+添加或者修改一个已经存在的String类型的键值对
+
+
+GET key
+根据key获取String类型的value
+
+
+MSET
+批量添加多个String类型的键值对
+
+
+MGET
+根据多个key获取多个String类型的value，返回的是一个数组
+
+
+INCR key
+让一个整型的key自增1
+
+
+INCRBY key value
+让一个整型的key自增并指定步长值，例如：incrby num 2，让num值自增2
+
+
+INCRBYFLOAT key value
+让一个浮点类型的数字自增并指定步长值
+
+
+SETNX
+添加一个String类型的键值对，前提是这个key不存在，否则不执行，可以理解为真正的新增，添加成功返回1，失败返回0
+
+
+SETEX
+添加一个String类型的键值对，并指定有效期
+
+
+规范做法是 SET name 18，其实和 SET name &quot;18&quot; 效果一样，都会当成数字，都能 INCR，但是规范一点，数字通常不加引号，字符串加引号
+
+SETNX 和 SETEX 效果可以等价的用 SET 后面的可选参数 NX、EX 来做。
+Key 结构
+Redis没有类似MySQL中Table的概念，那么我们该如何区分不同类型的Key呢？
+
+例如：需要存储用户、商品信息到Redis，有一个用户的id是1，有一个商品的id恰好也是1，如果此时使用id作为key，那么就回冲突，该怎么办？
+
+我们可以通过给key添加前缀加以区分，不过这个前缀不是随便加的，有一定的规范
+
+Redis的key允许有多个单词形成层级结构，多个单词之间用:隔开，格式如下
+项目名:业务名:类型:id
+
+这个格式也并非是固定的，可以根据自己的需求来删除&#x2F;添加词条，这样我们就可以把不同数据类型的数据区分开了，从而避免了key的冲突问题
+
+例如我们的项目名叫reggie，有user和dish两种不同类型的数据，我们可以这样定义key
+
+user相关的key：reggie:user:1
+dish相关的key：reggie:dish:1
+
+
+
+
+如果value是一个Java对象，例如一个User对象，则可以将对象序列化为JSON字符串后存储
+
+
+
+
+
+KEY
+VALUE
+
+
+
+reggie:user:1
+{“id”:1, “name”: “Jack”, “age”: 21}
+
+
+reggie:dish:1
+{“id”:1, “name”: “鲟鱼火锅”, “price”: 4999}
+
+
+
+并且在Redis的桌面客户端中，也会以相同前缀作为层次结构，让数据看起来层次分明，关系清晰
+
+
+Hash 类型
+Hash类型，也叫散列，其中value是一个无序字典，类似于Java中的HashMap结构
+String结构是将对象序列化为JSON字符串后存储，当我们要修改对象的某个属性值的时候很不方便，并且呢，因为它本身携带着 &#123;&#125; &quot;&quot; , 这些东西也都是占用内存的。
+
+
+
+
+KEY
+VALUE
+
+
+
+reggie:user:1
+{“id”:1, “name”: “Jack”, “age”: 21}
+
+
+reggie:dish:1
+{“id”:1, “name”: “鲟鱼火锅”, “price”: 4999}
+
+
+
+Hash结构可以将对象中的每个字段独立存储，可以针对单个字段做CRUD
+
+
+Hash的常用命令有
+
+
+
+
+
+命令
+描述
+
+
+
+HSET key field value
+添加或者修改hash类型key的field的值
+
+
+HGET key field
+获取一个hash类型key的field的值
+
+
+HMSET key field1 value1 [field2 value2]
+批量添加多个hash类型key的field的值
+
+
+HMGET key field1 [field2]
+批量获取多个hash类型key的field的值
+
+
+HGETALL key
+获取一个hash类型的key中的所有的field和value
+
+
+HKEYS key
+获取一个hash类型的key中的所有的field
+
+
+HVALS key
+获取一个hash类型的key中的所有的value
+
+
+HINCRBY key field number
+让一个hash类型key的字段值自增并指定步长
+
+
+HSETNX key field value
+添加一个hash类型的key的field值，前提是这个field不存在，否则不执行
+
+
+
+
+List 类型
+Redis中的List类型与Java中的LinkedList类似，可以看做是一个双向链表结构。既可以支持正向检索和也可以支持反向检索。
+特征也与LinkedList类似：
+有序
+元素可以重复
+插入和删除快
+查询速度一般
+
+
+常用来存储一个有序数据，例如：朋友圈点赞列表，评论列表等。
+List的常见命令有：
+
+
+
+
+命令
+描述
+
+
+
+LPUSH key element …
+向列表左侧插入一个或多个元素
+
+
+LPOP key [count]
+移除并返回列表左侧的第一个元素，没有则返回nil，也可以指定数量
+
+
+RPUSH key element …
+向列表右侧插入一个或多个元素
+
+
+RPOP key
+移除并返回列表右侧的第一个元素
+
+
+LRANGE key star end
+返回一段角标范围内的所有元素，下标从 0 开始
+
+
+BLPOP&#x2F;BRPOP key time
+与LPOP和RPOP类似，只不过在key为空的时候等待指定时间time，而不是直接返回nil
+
+
+如果你执行命令
+LPUSH user 1 2 3; 那么链表是 [3, 2, 1]RPUSH user 1 2 3; 那么链表是 [1, 2, 3]
+
+
+
+
+
+Set 类型
+Redis的Set结构与Java中的HashSet类似，可以看做是一个value为null的HashMap。因为也是一个hash表，因此具备与HashSet类似的特征：
+无序
+元素不可重复
+查找快
+支持交集、并集、差集等功能
+
+
+Set的常见命令有：
+
+
+
+
+命令
+描述
+
+
+
+SADD key member …
+向set中添加一个或多个元素
+
+
+SREM key member …
+移除set中的指定元素
+
+
+SCARD key
+返回set中元素的个数
+
+
+SISMEMBER key member
+判断一个元素是否存在于set中
+
+
+SMEMBERS
+获取set中的所有元素
+
+
+SINTER key1 key2 …
+求key1与key2的交集
+
+
+SUNION key1 key2 …
+求key1与key2的并集
+
+
+SDIFF key1 key2 …
+求key1与key2的差集
+
+
+练习题：
+
+将下列数据用Redis的Set集合来存储：
+
+张三的好友有：李四、王五、赵六
+127.0.0.1:6379&gt; sadd zhangsan lisi wangwu zhaoliu(integer) 3
+
+李四的好友有：王五、麻子、二狗
+127.0.0.1:6379&gt; sadd lisi wangwu mazi ergou(integer) 3
+
+
+利用Set的命令实现下列功能：
+
+计算张三的好友有几人
+127.0.0.1:6379&gt; scard zhangsan(integer) 3
+
+计算张三和李四有哪些共同好友
+127.0.0.1:6379&gt; sinter zhangsan lisi1) &quot;wangwu&quot;
+
+查询哪些人是张三的好友却不是李四的好友
+127.0.0.1:6379&gt; sdiff zhangsan lisi1) &quot;zhaoliu&quot;2) &quot;lisi&quot;
+
+查询张三和李四的好友总共有哪些人
+127.0.0.1:6379&gt; sunion zhangsan lisi1) &quot;wangwu&quot;2) &quot;zhaoliu&quot;3) &quot;ergou&quot;4) &quot;lisi&quot;5) &quot;mazi&quot;
+
+判断李四是否是张三的好友
+127.0.0.1:6379&gt; sismember zhangsan lisi(integer) 1
+
+判断张三是否是李四的好友
+127.0.0.1:6379&gt; sismember lisi zhangsan(integer) 0
+
+将李四从张三的好友列表中移除
+127.0.0.1:6379&gt; srem zhangsan lisi(integer) 1
+
+
+
+SortedSet 类型
+Redis的SortedSet是一个可排序的set集合，与Java中的TreeSet有些类似，但底层数据结构却差别很大。SortedSet中的每一个元素都带有一个score属性，可以基于score属性对元素排序，底层的实现是一个跳表（SkipList）加 hash表。
+SortedSet具备下列特性：
+可排序
+元素不重复
+查询速度快
+
+
+因为SortedSet的可排序特性，经常被用来实现排行榜这样的功能。
+SortedSet的常见命令有：
+
+
+
+
+命令
+描述
+
+
+
+ZADD key score member
+添加一个或多个元素到sorted set ，如果已经存在则更新其score值
+
+
+ZREM key member
+删除sorted set中的一个指定元素
+
+
+ZSCORE key member
+获取sorted set中的指定元素的score值
+
+
+ZRANK key member
+获取sorted set 中的指定元素的排名
+
+
+ZCARD key
+获取sorted set中的元素个数
+
+
+ZCOUNT key min max
+统计score值在给定范围内的所有元素的个数，这个最大最小是分数
+
+
+ZINCRBY key increment member
+让sorted set中的指定元素自增，步长为指定的increment值
+
+
+ZRANGE key min max
+按照score排序后，获取指定排名范围内的元素，这个最大最小是排名0 代表第一个 -1 代表最后一个
+
+
+ZRANGEBYSCORE key min max
+按照score排序后，获取指定score范围内的元素，这个最大最小是分数
+
+
+ZDIFF、ZINTER、ZUNION
+求差集、交集、并集
+
+
+注意：所有的排名默认都是升序，如果要降序则在命令的Z后面添加REV即可，例如：
+
+升序获取sorted set 中的指定元素的排名：ZRANK key member
+
+降序获取sorted set 中的指定元素的排名：ZREVRANK key memeber
+
+练习题：
+
+将班级的下列学生得分存入Redis的SortedSet中：Jack 85, Lucy 89, Rose 82, Tom 95, Jerry 78, Amy 92, Miles 76
+127.0.0.1:6379&gt; zadd stu 85 Jack 89 Lucy 82 Rose 95 Tom 78 Jerry 92 Amy 76 Miles(integer) 7
+
+并实现下列功能：
+
+删除Tom同学
+127.0.0.1:6379&gt; zrem stu Tom(integer) 1
+
+获取Amy同学的分数
+127.0.0.1:6379&gt; zscore stu Amy&quot;92&quot;
+
+获取Rose同学的排名
+127.0.0.1:6379&gt; zrank stu Rose(integer) 2
+
+查询80分以下有几个学生
+127.0.0.1:6379&gt; zcount stu 0 80(integer) 2
+
+给Amy同学加2分
+127.0.0.1:6379&gt; zincrby stu 2 Amy&quot;94&quot;
+
+查出成绩前3名的同学
+127.0.0.1:6379&gt; zrange stu 0 21) &quot;Miles&quot;2) &quot;Jerry&quot;3) &quot;Rose&quot;
+
+查出成绩80分以下的所有同学
+127.0.0.1:6379&gt; zrangebyscore stu 0 801) &quot;Miles&quot;2) &quot;Jerry&quot;
+
+
+
+
+
+Redis 的 Java 客户端
+目前主流的Redis的Java客户端有三种
+Jedis和Lettuce：这两个主要是提供了Redis命令对应的API，方便我们操作Redis，而SpringDataRedis又对这两种做了抽象和封装，因此我们后期会直接以SpringDataRedis来学习。
+Redisson：是在Redis基础上实现了&#x3D;&#x3D;分布式&#x3D;&#x3D;的可伸缩的java数据结构，例如Map、Queue等，而且支持跨进程的同步机制：Lock、Semaphore等待，比较适合用来实现特殊的功能需求。
+
+
+
+Jedis 客户端快速入门
+使用Jedis的步骤
+
+导入Jedis的maven坐标
+&lt;!--jedis--&gt;&lt;dependency&gt;    &lt;groupId&gt;redis.clients&lt;/groupId&gt;    &lt;artifactId&gt;jedis&lt;/artifactId&gt;    &lt;version&gt;7.1.0&lt;/version&gt;&lt;/dependency&gt;&lt;!--单元测试--&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;    &lt;scope&gt;test&lt;/scope&gt;&lt;/dependency&gt;
+
+新建一个单元测试类
+@SpringBootTestclass JedisDemoApplicationTests &#123;    private Jedis jedis;    @BeforeEach    void setUp() &#123;        // 1.建立连接        jedis = new Jedis(&quot;127.0.0.1&quot;, 6379);        // 2.设置密码        jedis.auth(&quot;123456&quot;);        // 3.选择库        jedis.select(0);    &#125;    @Test    void testString() &#123;        String result = jedis.set(&quot;name&quot;, &quot;ergou&quot;);        System.out.println(result);        String name = jedis.get(&quot;name&quot;);        System.out.println(&quot;name = &quot; + name);    &#125;       // 关闭连接    @AfterEach    void tearDown() &#123;        if(jedis != null) &#123;            jedis.close();        &#125;    &#125;&#125;
+
+
+
+方法名称就是命令的名称，所以用起来没啥说的
+&#x3D;&#x3D;上述方式中，每一次调用都会连接一次redis，用完之后就释放&#x3D;&#x3D;
+连接池Jedis本身是线程不安全的，并且频繁的创建和销毁连接会有性能损耗，因此推荐使用Jedis连接池代替Jedis的直连方式。
+// jedispool 工具类public class JedisConnectionFactory &#123;    private static final JedisPool jedisPool;    static &#123;        // 配置连接池        JedisPoolConfig poolConfig = new JedisPoolConfig();        // 连接池最多能同时存在的连接数，同时可以有8个人连接，第9个人来得等        poolConfig.setMaxTotal(8);        // 连接池最多可以保留多少空闲连接        poolConfig.setMaxIdle(8);        // 长时间没人用时，最少缩短到几个连接        poolConfig.setMinIdle(0);        // 排队时限，如果连接全被占，新来的请求最多等多久(ms)，超时就报错        poolConfig.setMaxWaitMillis(1000); // 1s        // 创建连接池对象        jedisPool = new JedisPool(poolConfig,                &quot;127.0.0.1&quot;, 6379, 1000, &quot;123456&quot;);    &#125;    public static Jedis getJedis() &#123;        return jedisPool.getResource();    &#125;&#125;// 连接@BeforeEachvoid setUp() &#123;    // 1.建立连接    jedis = JedisConnectionFactory.getJedis();    // 2.设置密码    jedis.auth(&quot;123456&quot;);    // 3.选择库    jedis.select(0);&#125;// 关闭@AfterEachvoid tearDown() &#123;    if(jedis != null) &#123;        jedis.close();    &#125;&#125;
+
+这里可以看一下 jedis.close() 方法源码，其实并不是真正的关闭，而是返回连接池
+public void close() &#123;    if (this.dataSource != null) &#123;        Pool&lt;Jedis&gt; pool = this.dataSource;        this.dataSource = null;        if (this.isBroken()) &#123;            pool.returnBrokenResource(this);        &#125; else &#123;            pool.returnResource(this);        &#125;    &#125; else &#123;        this.connection.close();    &#125;&#125;
+
+
+
+这里可以看一下 jedis.close() 方法源码，其实并不是真正的关闭，而是返回连接池
+public void close() &#123;    if (this.dataSource != null) &#123;        Pool&lt;Jedis&gt; pool = this.dataSource;        this.dataSource = null;        if (this.isBroken()) &#123;            pool.returnBrokenResource(this);        &#125; else &#123;            pool.returnResource(this);        &#125;    &#125; else &#123;        this.connection.close();    &#125;&#125;
+
+
+[!CAUTION]
+为什么说jedis是线程不安全的？！
+
+多线程的使用在数据库中如果多个线程复用一个连接会存在数据库事务问题，那么在Redis中我们先来看下在多线程环境下使用一个连接会产生什么问题？
+首先启动两个线程，共同操作同一个 Jedis 实例，每一个线程循环 500 次，分别读取  Key 为 a 和 b 的值
+Jedis jedis = new Jedis(&quot;127.0.0.1&quot;, 6379);new Thread(() -&gt; &#123;   for (int i = 0; i &lt; 500; i++) &#123;       String result = jedis.get(&quot;a&quot;);       System.out.println(result);   &#125;&#125;).start();new Thread(() -&gt; &#123;   for (int i = 0; i &lt; 500; i++) &#123;       String result = jedis.get(&quot;b&quot;);       System.out.println(result);   &#125;&#125;).start();
+
+执行程序多次，可以看到日志中出现了各种奇怪的异常信息，有的未知答复错误，还有的是连接关闭异常等
+错误1：redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 1错误2：java.io.IOException: Socket Closed
+
+  那我们先来看下 Jedis常用的（3.x）版本的源码
+public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommands,    AdvancedJedisCommands, ScriptingCommands, BasicCommands, ClusterCommands, SentinelCommands,    ModuleCommands&#123;&#125;     public class BinaryJedis implements BasicCommands, BinaryJedisCommands, MultiKeyBinaryCommands,    AdvancedBinaryJedisCommands, BinaryScriptingCommands, Closeable &#123;      protected final Client client;    &#125;  public class Client extends BinaryClient implements Commands &#123;&#125;  public class BinaryClient extends Connection &#123;&#125;    public class Connection implements Closeable &#123;      private Socket socket;      private RedisOutputStream outputStream;      private RedisInputStream inputStream;  &#125;    
+
+  首先Jedis 继承了 BinaryJedis，BinaryJedis 中保存了单个 Client 的实例，Client最终继承了 Connection，Connection 中保存了单个 Socket 的实例以及对应的两个读写流一个 RedisOutputStream 一个是 RedisInputStream。
+
+  BinaryClient 封装了各种 Redis 命令，其最终会调用的是 sendCommand 方法，发现其发送命令时是直接操作 RedisOutputStream 写入字节。
+private static void sendCommand(final RedisOutputStream os, final byte[] command,      final byte[]... args) &#123;    try &#123;      os.write(ASTERISK_BYTE);      os.writeIntCrLf(args.length + 1);      os.write(DOLLAR_BYTE);      os.writeIntCrLf(command.length);      os.write(command);      os.writeCrLf();      for (final byte[] arg : args) &#123;        os.write(DOLLAR_BYTE);        os.writeIntCrLf(arg.length);        os.write(arg);        os.writeCrLf();      &#125;    &#125; catch (IOException e) &#123;      throw new JedisConnectionException(e);    &#125;  &#125;
+
+  所以在多线程环境下使用 Jedis ，其实就是在复用RedisOutputStream。如果多个线程在执行操作，那么无法保证整条命令是原子写入 Socket。比如，写操作互相干扰，多条命令相互穿插的话，必然不是合法的 Redis 命令也就导致等等各种问题。
+  这也说明了Jedis是非线程安全。但是可以通过JedisPool连接池去管理实例，在多线程情况下让每个线程有自己独立的Jedis实例，可变为线程安全。
+
+新建一个com.blog.util，用于存放我们编写的工具类
+
+但后面我们使用SpringDataRedis的时候，可以直接在yml配置文件里配置这些内容
+public class JedisConnectionFactory &#123;    private static JedisPool jedisPool;    static &#123;        // 配置连接池        JedisPoolConfig poolConfig = new JedisPoolConfig();        poolConfig.setMaxTotal(8);  // 表示最多创建8个连接        poolConfig.setMaxIdle(8);   // 表示最多存在8个空闲连接        poolConfig.setMinIdle(0);   // 表示最少存在0个空闲连接        poolConfig.setMaxWaitMillis(1000);  // 没有空闲连接时进行等待，最多等待1000单位时间，若还没有，就报错        // 创建连接池对象，参数：连接池配置、服务端ip、服务端端口、超时时间、密码        jedisPool = new JedisPool(poolConfig, &quot;101.42.225.160&quot;, 6379, 1000, &quot;root&quot;);    &#125;  // 获取jedis对象    public static Jedis getJedis()&#123;        return jedisPool.getResource();    &#125;&#125;
+
+之后我们的测试类就可以修改为如下
+&#x3D;&#x3D;这里的代码和课程中展示的有出入！！！&#x3D;&#x3D;
+@SpringBootTestclass RedisTestApplicationTests &#123;    private Jedis jedis = JedisConnectionFactory.getJedis();    @Test    void testString()&#123;        jedis.set(&quot;name&quot;,&quot;Kyle&quot;);        String name = jedis.get(&quot;name&quot;);        System.out.println(&quot;name = &quot; + name);    &#125;    @Test    void testHash()&#123;        jedis.hset(&quot;reggie:user:1&quot;,&quot;name&quot;,&quot;Jack&quot;);        jedis.hset(&quot;reggie:user:2&quot;,&quot;name&quot;,&quot;Rose&quot;);        jedis.hset(&quot;reggie:user:3&quot;,&quot;name&quot;,&quot;Kyle&quot;);        jedis.hset(&quot;reggie:user:1&quot;,&quot;age&quot;,&quot;21&quot;);        jedis.hset(&quot;reggie:user:2&quot;,&quot;age&quot;,&quot;18&quot;);        jedis.hset(&quot;reggie:user:3&quot;,&quot;age&quot;,&quot;18&quot;);        Map&lt;String, String&gt; map = jedis.hgetAll(&quot;reggie:user:1&quot;);        System.out.println(map);    &#125;    @AfterEach    void tearDown()&#123;        if (jedis != null)&#123;            jedis.close();  // 由于根据连接池创建，所以这个时候不是销毁，还是归还连接池，可看源码        &#125;    &#125;&#125;
+
+SpringDataRedis客户端
+SpringData是Spring中数据操作的模块，包含对各种数据库的集成，其中对Redis的集成模块就叫做SpringDataRedis
+官网地址：https://spring.io/projects/spring-data-redis
+提供了对不同Redis客户端的整合（Lettuce和Jedis）&#x3D;&#x3D;默认整合Lettuce&#x3D;&#x3D;
+提供了RedisTemplate统一API来操作Redis
+支持Redis的发布订阅模型
+支持Redis哨兵和Redis集群
+支持基于Lettuce的响应式编程
+支持基于JDK、JSON、字符串、Spring对象的数据序列化及反序列化
+支持基于Redis的JDKCollection实现
+
+
+SpringDataRedis中提供了RedisTemplate工具类，其中封装了各种对Redis的操作。并且将不同数据类型的操作API封装到了不同的类型中：
+
+
+
+
+API
+返回值类型
+说明
+
+
+
+redisTemplate.opsForValue()
+ValueOperations
+操作String类型数据
+
+
+redisTemplate.opsForHash()
+HashOperations
+操作Hash类型数据
+
+
+redisTemplate.opsForList()
+ListOperations
+操作List类型数据
+
+
+redisTemplate.opsForSet()
+SetOperations
+操作Set类型数据
+
+
+redisTemplate.opsForzSet()
+ZSetOperations
+操作SortedSet类型数据
+
+
+redisTemplate
+
+通用的命令
+
+
+快速入门SpringBoot已经提供了对SpringDataRedis的支持，使用起来非常简单
+
+导入依赖，
+&lt;!--redis依赖--&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;!--连接池依赖 common-pool--&gt;&lt;dependency&gt;    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;&lt;/dependency&gt;&lt;!--Jackson依赖 springmvc里面会有，如果加了这个依赖，jackson就不用加了--&gt;&lt;dependency&gt;    &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;    &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;&lt;/dependency&gt;
+
+配置Redis
+spring:  data: # 需要有 data    redis:      host: 127.0.0.1      port: 6379      password: 123456      lettuce:        pool:          max-active: 8          min-idle: 0          max-idle: 8          max-wait: 100ms
+
+注入RedisTemplate因为有了SpringBoot的自动装配，我们可以拿来就用
+@Autowiredprivate RedisTemplate redisTemplate;
+
+编写测试方法
+@Testvoid stringTest()&#123;    redisTemplate.opsForValue().set(&quot;name&quot;,&quot;二狗&quot;);    String username = (String) redisTemplate.opsForValue().get(&quot;name&quot;);    System.out.println(username);&#125;
+
+输出结果如下
+二狗
+
+但是从 Redis 客户端来看存入的是乱码
+
+自定义序列化
+RedisTemplate 可以接收任意 Object 作为值写入 Redis (&#x3D;&#x3D;无论是key还是value都是Object对象，所以在存储时会序列化&#x3D;&#x3D;)，只不过写入前会把 Object 序列化为字节形式，默认是采用JDK序列化，得到的结果如上面那个图，一堆码。
+
+缺点：
+
+可读性差
+内存占用较大（&#x3D;&#x3D;实际存的很短，想要存的其实没那么长，因为多存了一些和实际内容没关的东西&#x3D;&#x3D;）
+
+
+
+我们尝试从客户端这里取值看看
+
+第一次 get name 并没有取到，发现里面存入的 name 并不是我们从 Java 里面存入的 name，Java 里面存入的 name 变成了很长的一个东西，最后有个 name。
+
+[!Caution]
+:question: 为什么出现这种现象？
+因为没有手动配置序列化器的时候，RedisTemplate 默认使用 JdkSerializationRedisSerializer，这种序列化器在转对象的时候，不仅会包含数据，还会包含Java类的元数据、版本号、签名等信息。所以图片 key 前面那个长串就是 JDK 序列化后的对象头标识。
+// RedisTemplate 类中@Overridepublic void afterPropertiesSet() &#123;super.afterPropertiesSet();if (defaultSerializer == null) &#123; // 默认的序列化器 defaultSerializer = new JdkSerializationRedisSerializer(     classLoader != null ? classLoader : this.getClass().getClassLoader());&#125;&#125;
+
+我们通过调试的方式看看，进入 set 方法
+
+
+它会对 key 和 value 值进行封装，进入看看
+
+这里有序列化的方法，进去看看，这里我们就进入了 Jdk 序列化工具
+
+一路走进去
+
+最后可以看到底层是用的 ObjectOutputStream 来写对象，把对象转为字节，在这个里面执行完就出现了乱码。那JDK序列化为什么这么做呢？序列化和反序列化就是为了Java对象传出去，还有接收的时候能知道这是哪个Java对象。所以不是说它不好，而是不适合在这里用。
+比如上面那个序列化后的字符串 name，Java序列化协议写入了一系列控制字符。
+魔数 (Magic Number): \xAC\xED。这是 Java 序列化流的固定开头，告诉 JVM，后面跟着的是一个 Java 对象。
+版本号: \x00\x05。
+类型标记: t (在十六进制中对应 \x74)，代表后面跟着的是一个 String 类型。
+长度描述: 紧跟着的字节会记录这个字符串有多长。
+内容: 最后才是真正的 name。
+但是 redis 读取到这个的时候就当成字节数组了，get 不到这个信息。
+下面这个就是 value 的。
+
+
+RedisTemplate 源码里面，对于 key、value、hashKey、hashValue 里面序列化器定义变量如下
+@SuppressWarnings(&quot;rawtypes&quot;) private @Nullable RedisSerializer keySerializer = null;@SuppressWarnings(&quot;rawtypes&quot;) private @Nullable RedisSerializer valueSerializer = null;@SuppressWarnings(&quot;rawtypes&quot;) private @Nullable RedisSerializer hashKeySerializer = null;@SuppressWarnings(&quot;rawtypes&quot;) private @Nullable RedisSerializer hashValueSerializer = null;
+
+不指定默认就是 jdk 序列化，所以我们需要指定。
+
+我们可以自定义RedisTemplate的序列化方式，代码如下在com.lh.config包下编写对应的配置类
+@Configurationpublic class RedisConfig &#123;    @Bean // 对默认 RedisTemplate 的覆盖    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;        // 创建RedisTemplate对象        RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();        // 设置连接工厂        template.setConnectionFactory(redisConnectionFactory);        // 创建JSON序列化工具        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();        // 设置Key的序列化        template.setKeySerializer(RedisSerializer.string());    // 其实就是StringRedisSerializer.UTF_8        template.setHashKeySerializer(RedisSerializer.string());        // 设置value的序列化        template.setValueSerializer(genericJackson2JsonRedisSerializer);        template.setHashValueSerializer(genericJackson2JsonRedisSerializer);        // 返回        return template;    &#125;&#125;
+
+我们编写一个User类，并尝试将其创建的对象存入Redis，看看是什么效果
+@Data@AllArgsConstructor@NoArgsConstructorpublic class User &#123;    private String name;    private Integer age;&#125;
+
+测试方法
+@Testvoid stringTest()&#123;    redisTemplate.opsForValue().set(&quot;user&quot;, new User(&quot;二狗&quot;, 18));    User user = (User) redisTemplate.opsForValue().get(&quot;user&quot;); // User(name=二狗, age=18)    System.out.println(user);&#125;
+
+这里采用了JSON序列化来代替默认的JDK序列化方式。最终结果如下：
+
+
+
+
+整体可读性有了很大提升，并且&#x3D;&#x3D;能将Java对象自动的序列化为JSON字符串，并且查询时能自动把 JSON 反序列化为Java对象&#x3D;&#x3D;。不过，其中记录了序列化时对应的class名称，目的是为了查询时实现自动反序列化。这会带来&#x3D;&#x3D;额外的内存开销&#x3D;&#x3D;。所以肯定会有更好的方法
+
+
+StringRedisTemplate
+为了节省内存空间，我们并不不使用 JSON 序列化器来处理value，而是统一使用String序列化器，要求只能存储String类型的key和value。当需要存储Java对象时，手动完成对象的序列化和反序列化。
+
+因为存入和读取时的序列化及反序列化都是我们自己实现的，SpringDataRedis就不会将class信息写入Redis了
+
+这种用法比较普遍，因此SpringDataRedis就提供了RedisTemplate的子类：StringRedisTemplate，它的key和value的序列化方式默认就是String方式。源码如下
+public class StringRedisTemplate extends RedisTemplate&lt;String, String&gt; &#123;    public StringRedisTemplate() &#123;        this.setKeySerializer(RedisSerializer.string());        this.setValueSerializer(RedisSerializer.string());        this.setHashKeySerializer(RedisSerializer.string());        this.setHashValueSerializer(RedisSerializer.string());    &#125;
+
+省去了我们自定义RedisTemplate的序列化方式的步骤（可以将之前配置的RedisConfig删除掉），而是直接使用：
+@Autowiredprivate StringRedisTemplate stringRedisTemplate;// JOSN工具(用别的也可以，比如fastJson)private static final ObjectMapper mapper = new ObjectMapper(); // 这个是 springmvc 默认的工具@Testvoid stringTest() throws JsonProcessingException &#123;    //创建对象    User user = new User(&quot;张三&quot;, 18);    //手动序列化    String json = mapper.writeValueAsString(user);    //写入数据    stringRedisTemplate.opsForValue().set(&quot;userdata&quot;, json);    //获取数据    String userdata = stringRedisTemplate.opsForValue().get(&quot;userdata&quot;);    //手动反序列化    User readValue = mapper.readValue(userdata, User.class); // 需要手动指定类型！相当于原来自动转为对象，现在需要你指定对象类型了。    System.out.println(readValue);&#125;
+
+存入Redis中是这样的
+&#123;  &quot;name&quot;: &quot;张三&quot;,  &quot;age&quot;: 18&#125;
+
+
+对于 Hash 类型也类似
+void testHash() &#123;    stringRedisTemplate.opsForHash().put(&quot;user:100&quot;, &quot;name&quot;, &quot;二狗&quot;);    stringRedisTemplate.opsForHash().put(&quot;user:100&quot;, &quot;age&quot;, &quot;18&quot;);    Map&lt;Object, Object&gt; entries = stringRedisTemplate.opsForHash().entries(&quot;user:100&quot;);    System.out.println(&quot;entries = &quot; + entries); // entries = &#123;name=二狗, age=18&#125;&#125;
+
+
+实战篇项目导入项目架构如下
+
+项目是和 Java8 配对的，下面是 Java17+MySQL8的配置
+&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;com.mysql&lt;/groupId&gt;    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;    &lt;artifactId&gt;lombok&lt;/artifactId&gt;    &lt;optional&gt;true&lt;/optional&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;    &lt;scope&gt;test&lt;/scope&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;com.baomidou&lt;/groupId&gt;    &lt;artifactId&gt;mybatis-plus-spring-boot3-starter&lt;/artifactId&gt;    &lt;version&gt;3.5.16&lt;/version&gt;&lt;/dependency&gt;&lt;!-- 分页插件被单独弄出来了 --&gt;&lt;dependency&gt;    &lt;groupId&gt;com.baomidou&lt;/groupId&gt;    &lt;artifactId&gt;mybatis-plus-jsqlparser&lt;/artifactId&gt;    &lt;version&gt;3.5.16&lt;/version&gt;&lt;/dependency&gt;&lt;!--hutool--&gt;&lt;dependency&gt;    &lt;groupId&gt;cn.hutool&lt;/groupId&gt;    &lt;artifactId&gt;hutool-all&lt;/artifactId&gt;    &lt;version&gt;5.8.44&lt;/version&gt;&lt;/dependency&gt;
+
+需要注意的点
+
+新版本的 mybatis-plus 把分页插件单独拿出来了
+SpringBoot3 版本的 springmvc 的 javax 包改成了 jakarta
+mybatis-plus-boot-starter 要改为 mybatis-plus-spring-boot3-starter
+
+短信登录基于 Session 实现流程
+
+发送验证码用户在提交手机号后，会校验手机号是否合法，如果不合法，则要求用户重新输入手机号如果手机号合法，后台此时生成对应的验证码，同时将验证码进行保存，然后再通过短信的方式将验证码发送给用户
+短信验证码登录、注册用户将验证码和手机号进行输入，后台从session中拿到当前验证码，然后和用户输入的验证码进行校验，如果不一致，则无法通过校验，如果一致，则后台根据手机号查询用户，如果用户不存在，则为用户创建账号信息，保存到数据库，无论是否存在，都会将用户信息保存到session中，方便后续获得当前登录信息
+校验登录状态用户在请求的时候，会从cookie中携带JsessionId到后台，后台通过JsessionId从session中拿到用户信息，如果没有session信息，则进行拦截，如果有session信息，则将用户信息保存到threadLocal中，并放行
+
+
+[!Caution]
+当用户登录之后进行一系列操作产生数据的时候，一般都需要用户的信息，比如用户ID，用户手机号等来代表谁在操作数据，比如下单、评论什么的，都需要这个数据信息。
+:question: 那么之前都怎么做过呢？
+之前做过的项目里面尝试过下面这种方法
+
+在JSP里面，是把这个信息存到会话里面，HttpSession（从用户第一次访问网站开始，到用户退出登录、浏览器长时间不访问、或者 Session 失效为止，这一段期间内的交互过程）。为什么有这个东西呢？因为同一个人发起的两次请求，比如 /login，/user/me，服务器是根本不知道两次请求是同一个人发过来的，所以Web开发里就需要会话跟踪，当用户第一次请求网站时，就会新建一个 HttpSession，并且为这个会话分配一个 JsessionId，这个ID也会返回给浏览器，浏览器把这个存起来，往后每次请求都发一个。用户的数据都是保存在服务端的，占据内存
+小程序还有前端可以存到本地，比如 localStorage、sessionStorage、Cookie，这种方法简单。
+
+但是这些都有缺点
+
+HttpSession，如果项目采用集群方式，有多个服务器，但是 Session 只存在一台服务器，用户换台服务器就得重新登录，所以分布式场景下需要 Spring Session+Redis 来共享会话。并且 Session 数据保存在服务器，会占用内存，用户越多，会话越多，服务器压力也会更大。
+前端本地存储安全性差，容易被窃取和受到XSS等攻击影响。并且后端时间无法主动控制，比如管理员封禁了用户，但前端数据不会因此变化，用户浏览器里面原来的信息还在，就依然能发起带身份的请求。这个时候后端就必须每次请求都做额外检验，检查用户状态、token 是否过期等。
+
+
+
+实现发送短信验证码功能
+发送验证码
+
+controller 层方法定义如下
+/** * 发送手机验证码 */@PostMapping(&quot;code&quot;)public Result sendCode(@RequestParam(&quot;phone&quot;) String phone, HttpSession session) &#123;    return userService.sendCode(phone, session);&#125;
+
+service 层实现
+@Slf4j@Servicepublic class UserServiceImpl extends ServiceImpl&lt;UserMapper, User&gt; implements IUserService &#123;    @Override    public Result sendCode(String phone, HttpSession session) &#123;        // 1 校验手机号        if (RegexUtils.isPhoneInvalid(phone)) &#123;            // 返回校验信息            return Result.fail(&quot;手机号格式错误&quot;);        &#125;        // 2 生成验证码        String code = RandomUtil.randomNumbers(6);        // 3 保存到 session        session.setAttribute(&quot;code&quot;, code);        // 4 发送验证码        log.debug(&quot;发送验证码成功，验证码: &#123;&#125;&quot;, code);        return Result.ok();    &#125;&#125;
+
+
+校验手机号规则如下
+// 手机号正则public static final String PHONE_REGEX = &quot;^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\\d&#123;8&#125;$&quot;;
+
+校验工具类
+/** * 是否是无效手机格式 * @param phone 要校验的手机号 * @return true:符合，false：不符合 */public static boolean isPhoneInvalid(String phone)&#123;    return mismatch(phone, RegexPatterns.PHONE_REGEX);&#125;
+
+hutool 工具包
+RandomUtil.randomNumbers(6); // 生成一个包含 6 位数字的字符串
+
+
+登录如下
+
+@Overridepublic Result login(LoginFormDTO loginForm, HttpSession session) &#123;    // 1. 校验手机号 (防止发送验证码和登录的时候手机号不是同一个)    String phone = loginForm.getPhone();    if (RegexUtils.isPhoneInvalid(phone)) &#123;        // 返回校验信息        return Result.fail(&quot;手机号格式错误&quot;);    &#125;    // 2 校验验证码    String cacheCode = (String) session.getAttribute(&quot;code&quot;);    String code = loginForm.getCode();    if (cacheCode == null || !cacheCode.equals(code)) &#123; // 可能为空，直接点击的登录        return Result.fail(&quot;验证码错误&quot;);    &#125;    // 3 查询用户    User user = query().eq(&quot;phone&quot;, phone).one();    // 4 判断用户是否存在    if (user == null) &#123;        // 5 创建用户        user = createUserWithPhone(phone);    &#125;    // 6 保存用户到 session    session.setAttribute(&quot;user&quot;, user);    return Result.ok();&#125;private User createUserWithPhone(String phone) &#123;    User user = new User();    user.setPhone(phone);    // 随机10位字符，包括大写、小写字符和数字    user.setNickName(USER_NICK_NAME_PREFIX + RandomUtil.randomString(10));    // 保存用户    save(user);    return user;&#125;
+
+
+
+实现登录拦截功能定义登录拦截器
+public class LoginInterceptor implements HandlerInterceptor &#123;    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;        // 获取 session        HttpSession session = request.getSession();        // 获取 session 中的用户        Object user = session.getAttribute(&quot;user&quot;);        // 判断用户是否存在        if (user == null) &#123;            // 不存在，拦截，返回状态吗            response.setStatus(401);            return false;        &#125;        // 存在，保存用户信息到 ThreadLocal        UserHolder.saveUser((User) user);        // 放行        return true;    &#125;    @Override    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception &#123;        // 移除用户        UserHolder.removeUser();    &#125;&#125;
+
+配置 MvcConfig
+@Configurationpublic class MvcConfig implements WebMvcConfigurer &#123;    @Override    public void addInterceptors(InterceptorRegistry registry) &#123; // 添加拦截器        registry.addInterceptor(new LoginInterceptor())                .excludePathPatterns(                        &quot;/user/login&quot;,                        &quot;/user/code&quot;,                        &quot;/shop/**&quot;,                        &quot;/blog/hot&quot;,                        &quot;/shop-type/**&quot;,                        &quot;/voucher/**&quot;,                        &quot;/upload/**&quot;);    &#125;&#125;
+
+UserHolder 定义如下
+public class UserHolder &#123;    private static final ThreadLocal&lt;User&gt; tl = new ThreadLocal&lt;&gt;();    public static void saveUser(User user)&#123;        tl.set(user);    &#125;    public static User getUser()&#123;        return tl.get();    &#125;    public static void removeUser()&#123;        tl.remove();    &#125;&#125;
+
+实现 /user/me 功能，用来前端查看我的时候，返回个人信息
+@GetMapping(&quot;/me&quot;)public Result me()&#123;    User user = UserHolder.getUser();    return Result.ok(user);&#125;
+
+
+[!Caution]
+:question: ThreadLocal 怎么用的？为什么能保证线程安全？
+:question: 拦截器里面为什么用完要移除？说是防止内存泄漏，啥意思。
+:question: Tomcat 到底怎么用的？程序怎么部署到上面的？别人访问又是如何呢？
+
+隐藏用户敏感信息
+可以通过浏览器看到此时用户的全部信息都在，这很不靠谱，容易泄漏隐私、敏感信息。并且还有不必要的数据传输，比如这里面 createTime、updateTime、password 没必要传输，传输也需要时间，同时这个数据也是存到服务器的 Session 的，所以也会占用服务器内存。所以综上，怎么都应该只保留必要信息。
+从哪里开始改？从保存这个用户信息的地方开始下手，也就是 login，我们定义一个 UserDTO 类，用来表示必要的用户信息
+@Datapublic class UserDTO &#123;    private Long id;    private String nickName;    private String icon;&#125;
+
+login
+session.setAttribute(&quot;user&quot;, BeanUtil.copyProperties(user, UserDTO.class)); // 存 UserDTO 就够了
+
+之后 LoginInterceptor，UserHolder 类以及 /user/me 控制器内容都要调整，之后再登录，敏感信息就没有了
+
+session 共享问题分析每个 tomcat 中都有一份属于自己的 session,假设用户第一次访问第一台 tomcat，并且把自己的信息存放到第一台服务器的 session中，但是第二次这个用户访问到了第二台 tomcat，那么在第二台服务器上，肯定没有第一台服务器存放的 session，所以此时 整个登录拦截功能就会出现问题，我们能如何解决这个问题呢？早期的方案是 session 拷贝，就是说虽然每个 tomcat 上都有不同的 session，但是每当任意一台服务器的 session 修改时，都会同步给其他的 Tomcat 服务器的 session，这样的话，就可以实现 session 的共享了
+
+但是这种方案具有两个大问题
+每台服务器中都有完整的一份 session 数据，服务器压力过大。
+session拷贝数据时，可能会出现延迟
+
+
+所以我们后面都是基于 Redis 来完成，我们把 session 换成 Redis，Redis 数据本身就是共享的，就可以避免 session 共享的问题了
+
+
+基于 Redis 实现共享 session 登录
+
+
+用户发送短信验证码，服务端将生成的验证码保存到 Redis，这个 Key 要有标识性，因为是用手机号发起请求，可以根据这个特性来作为 key 值
+之后在进行登录的时候，以手机号为 key 来取验证码进行结果校验，之后把用户的信息保存到 Redis，并且用一个随机到 token 作为 key，并且把这个 token 返回给前端。
+前端是存储在本地的，所以不用手机号作为 key，而是随机 token 来保证用户隐私
+前端把 token 保存在本地 sessionStorage，每次发起请求的时候也用拦截器把 token 加到 header 请求头里面一般用 Authorization
+
+
+
+我们一步步来修改，第一步是保存验证码，在 sendCode 方法里面。
+@Overridepublic Result sendCode(String phone, HttpSession session) &#123;      if (RegexUtils.isPhoneInvalid(phone)) &#123;        return Result.fail(&quot;手机号格式错误&quot;);    &#125;    String code = RandomUtil.randomNumbers(6);      // 保存到 redis    // session.setAttribute(&quot;code&quot;, code);    stringRedisTemplate.opsForValue().set(&quot;login:code:&quot; + phone, code, 2, TimeUnit.MINUTES); // 过期时间两分钟    log.debug(&quot;发送验证码成功，验证码: &#123;&#125;&quot;, code);    return Result.ok();&#125;
+
+这里呢，应该更优雅一点，因为里面有常量  login:code, 2，一般这种都要拿出来单独放在一个常量类里面，因为引用比写更不容易出错，并且方便统一管理
+// 定义 Redis 常量类public class RedisConstants &#123;    public static final String LOGIN_CODE_KEY = &quot;login:code:&quot;;    public static final Long LOGIN_CODE_TTL = 2L;&#125;
+
+那上面那个也可以改成下面这种
+stringRedisTemplate.opsForValue().set(LOGIN_CODE_KEY + phone, code, LOGIN_CODE_TTL, TimeUnit.MINUTES);
+
+然后是登录
+@Overridepublic Result login(LoginFormDTO loginForm, HttpSession session) &#123;    String phone = loginForm.getPhone();    if (RegexUtils.isPhoneInvalid(phone)) &#123;        return Result.fail(&quot;手机号格式错误&quot;);    &#125;    // String cacheCode = (String) session.getAttribute(&quot;code&quot;);    // 校验验证码 --&gt; 从 redis 里面取出来    String cacheCode = stringRedisTemplate.opsForValue().get(LOGIN_CODE_KEY + phone);      String code = loginForm.getCode();    if (cacheCode == null || !cacheCode.equals(code)) &#123;         return Result.fail(&quot;验证码错误&quot;);    &#125;    User user = query().eq(&quot;phone&quot;, phone).one();    if (user == null) &#123;        user = createUserWithPhone(phone);    &#125;    // 6 保存用户到 redis    // 生成 token    String token = UUID.randomUUID().toString(true);// true 代表不带-,    UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);    // putAll 需要 map 对象    Map&lt;String, Object&gt; userMap = BeanUtil.beanToMap(userDTO);      stringRedisTemplate.opsForHash().putAll(LOGIN_USER_KEY + token, userMap);    // 设置有效期, 同 session 设置有效期为 30 分钟    stringRedisTemplate.expire(LOGIN_USER_KEY + token, LOGIN_USER_TTL, TimeUnit.MINUTES);    return Result.ok(token);&#125;
+
+
+验证码取出来是从 redis 里面取
+生成 token 我们用 hutool 包里面的 UUID，toString(true) 代表生成的 UUID 里面不带 -
+BeanUtil.beanToMap 把对象转为 map
+为该键设置有效期，我们同 session 有效期一样，设置为 30 分钟，这样也可以定期清除防止无限占用内存
+
+然后重写拦截器
+public class LoginInterceptor implements HandlerInterceptor &#123;    // 这里没有使用 @Autowired！    private StringRedisTemplate redisTemplate;        // 加了个构造器    public LoginInterceptor(StringRedisTemplate redisTemplate) &#123;        this.redisTemplate = redisTemplate;    &#125;    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;        // 获取 请求头中的 token        String token = request.getHeader(&quot;Authorization&quot;);        // 判断是否为空        if (StrUtil.isBlank(token)) &#123;             response.setStatus(401);            return false;        &#125;        String key = LOGIN_USER_KEY + token;        // 获取 redis 中的用户信息        Map&lt;Object, Object&gt; userMap = redisTemplate.opsForHash().entries(key);        if (userMap.isEmpty()) &#123;            // 说明过期了或者 token 不对            response.setStatus(401);            return false;        &#125;        // 从 Map 转为对象        UserDTO userDTO = BeanUtil.fillBeanWithMap(userMap, new UserDTO(), false);        // 设置有效期        redisTemplate.expire(key, LOGIN_USER_TTL, TimeUnit.MINUTES);        // 存在，保存用户信息到 ThreadLocal        UserHolder.saveUser(userDTO);        // 放行        return true;    &#125;    @Override    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception &#123;        // 移除用户        UserHolder.removeUser();    &#125;&#125;
+
+修改 MvcConfig
+@Configurationpublic class MvcConfig implements WebMvcConfigurer &#123;    @Resource    private StringRedisTemplate redisTemplate;    @Override    public void addInterceptors(InterceptorRegistry registry) &#123;        registry.addInterceptor(new LoginInterceptor(redisTemplate)) // 将 redisTemplate 作为参数传入                .excludePathPatterns(                        &quot;/user/login&quot;,                        &quot;/user/code&quot;,                        &quot;/shop/**&quot;,                        &quot;/blog/hot&quot;,                        &quot;/shop-type/**&quot;,                        &quot;/voucher/**&quot;,                        &quot;/upload/**&quot;);    &#125;&#125;
+
+
+这里 LoginInterceptor 没有对 redisTemplate 自动注入的原因是因为 LoginInterceptor 并没有被 Spring 接管（它上面没有加任何 @Component、@Service 等这种注解）所以这里的解决方法是通过构造器，然后传进来，所以在 WebMvcConfigurer 里面，因为这个配置类是在容器里面的，所以在这个里面自动注入，然后通过构造器传的方式放进去让登录拦截器去使用
+同时这里有重置有效期的操作，因为 Session 会话是 30 分钟无操作即自动断开连接，所以这里可以模仿他，那么就是每次请求时重置一下有效期。
+
+运行～发送验证码～没问题～登录～报错～
+
+报错提示到下面这一行
+Map&lt;String, Object&gt; userMap = BeanUtil.beanToMap(userDTO);stringRedisTemplate.opsForHash().putAll(LOGIN_USER_KEY + token, userMap); // 报错
+
+说 Long 类型无法转为 String 类型，原因是因为 UserDTO 里面的 id 是 Long 类型，但是咱们的 StringRedisTemplate 定义的泛型是 &lt;String, String&gt;，也就是键、值都是 String 类型。
+
+[!Caution]
+:question: Integer 里面不是有 toString() 方法吗？为什么不能强转
+这是混淆了强制类型转换（Casting）和类型转换。强制类型转换里面，被转换的对象必须本身就是那个类型或者它的子类。而 Long 和 String 在类继承树上属于平级。
+手动调用的 id.toString() 那是方法调用，是我要根据 Long 里的数字来创建一个 String 对象。
+所以同理，即使是 Integer 类也不能强转为 Long 类。
+但是 int 和 long 之间可以强转，因为他们都是基本数据类型，在内存中是连续的二进制位，所以直接作截断或者提升就可以了。
+强转 (Type) object 必须遵循向上转型（变成爸爸或者爷爷）或者向下转型（爸爸转成儿子），但是大儿子不能强转为二儿子。
+
+上面这个现象，第一个不报错，因为发生了隐式类型提升，int 自动变为 long。第二个报错，10 被装箱成 Integer 对象，然后尝试把 Integer 对象赋值给 Long 引用！！报错。
+
+所以我们修改原来的 BeanUtil.beanToMap 方法，手动调用一下 toString() 方法
+Map&lt;String, Object&gt; userMap = BeanUtil.beanToMap(userDTO,                        new HashMap&lt;&gt;(), // 目标的Map                        CopyOptions.create() // 创建拷贝选项                                .ignoreNullValue() // 设置忽略空值，当源对象的值为null时，忽略而不注入此值                                .setFieldValueEditor((key, value) -&gt; value.toString())); // 设置字段属性值编辑器，用于自定义属性值转换规则
+
+这里这个目标 Map 我是新建的一个空的，也可以不为空。这里还有一个问题，如果 value 为空调用这个方法岂不是报错，所以需要多一步判断
+Map&lt;String, Object&gt; userMap = BeanUtil.beanToMap(userDTO,                        new HashMap&lt;&gt;(),                        CopyOptions.create()                                .ignoreNullValue()                                .setFieldValueEditor((key, value) -&gt; value == null ? null : value.toString()));
+
+
+[!Warning]
+你可能疑问，这里不是前面加了 ignoreNullValue 了吗，怎么还要判断？
+因为 ignoreNullValue 为当源对象值为 null 时，忽略而不注入。而 setFieldValueEditor 是自定义属性值的转换规则，有可能结果是 null，所以是先改值再忽略 null 值。
+
+然后我们登录，可以看到 token 被存入到本地浏览器的 session storage，并且发送请求的时候会把 token 放入请求头。
+
+
+解决状态登录刷新的问题前面其实也有个小问题，用户操作是不是应该就刷新时间，无论是在首页浏览还是看个人信息，但是前面那个拦截器只拦截了部分，对于查看首页是没有做拦截的，也就是说 token 有效期不会刷新，所以要解决这个问题，我们可以再加一层拦截器，只用来刷新有效期、存用户信息。
+
+第一层拦截器
+public class RefreshTokenInterceptor implements HandlerInterceptor &#123;    private StringRedisTemplate redisTemplate;    public RefreshTokenInterceptor(StringRedisTemplate redisTemplate) &#123;        this.redisTemplate = redisTemplate;    &#125;    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;        // 获取 请求头中的 token        String token = request.getHeader(&quot;Authorization&quot;);        if (StrUtil.isBlank(token)) &#123;            return true; // 为空就放行，因为用户可能在请求不需要登录的功能，比如首页浏览        &#125;        String key = LOGIN_USER_KEY + token;        // 获取 redis 中的用户        Map&lt;Object, Object&gt; userMap = redisTemplate.opsForHash().entries(key);        if (userMap.isEmpty()) &#123;            // 说明过期了或者 token 不对，token 即使过期了，用户也可能在请求不需要登录的功能，继续放行            return true;        &#125;        UserDTO userDTO = BeanUtil.fillBeanWithMap(userMap, new UserDTO(), false);        // 设置有效期        redisTemplate.expire(key, LOGIN_USER_TTL, TimeUnit.MINUTES);        // 存在，保存用户信息到 ThreadLocal        UserHolder.saveUser(userDTO);        // 放行        return true;    &#125;    @Override    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception &#123;        // 移除用户        UserHolder.removeUser();    &#125;&#125;
+
+
+它来获取 token，没有就放行（因为可能没有登录，但是也能访问首页什么的），如果有，获取用户信息，然后设置有效期、保存用户信息等。这里相当于做了通用的操作，这里只放行，不拦截，是因为这个拦截器功能是刷新 Token 有效期
+
+第二个登录拦截器，拦截部分需要登录才能访问的请求，第一个拦截器里面已经把用户信息拿到了，所以这里只要做个判断就可以了。
+public class LoginInterceptor implements HandlerInterceptor &#123;    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;        if(UserHolder.getUser() == null) &#123;            response.setStatus(401);            return false;        &#125;        // 放行        return true;    &#125;&#125;
+
+然后我们需要修改配置类
+@Configurationpublic class MvcConfig implements WebMvcConfigurer &#123;    @Resource    private StringRedisTemplate stringRedisTemplate;    @Override    public void addInterceptors(InterceptorRegistry registry) &#123;        registry.addInterceptor(new LoginInterceptor()) // 不需要 stringRedisTemplate 了                .excludePathPatterns(                        &quot;/user/login&quot;,                        &quot;/user/code&quot;,                        &quot;/shop/**&quot;,                        &quot;/blog/hot&quot;,                        &quot;/shop-type/**&quot;,                        &quot;/voucher/**&quot;,                        &quot;/upload/**&quot;)                .order(1);        registry.addInterceptor(new RefreshTokenInterceptor(stringRedisTemplate))                .addPathPatterns(&quot;/**&quot;) // 默认就是全部拦截                .order(0); ；// 设置执行顺序，越小优先级越高    &#125;&#125;
+
+如果不设置优先级，默认拦截器的 order 都是 0，那就看定义的时候谁先定义的，先定义的优先级高。
+运行，如果是在首页、个人页都能实现进行请求时就刷新 token 有效期，那么就成功了
+商户查询缓存缓存介绍缓存 就是数据交换的缓冲区，是存储数据的临时地方，一般读写性能较高。缓存数据存储于代码中，而代码运行在内存中，内存的读写性能远高于磁盘，缓存可以大大降低用户访问并发量带来的服务器读写压力，但是缓存也会增加代码复杂度和运营成本
+
+如何使用缓存实际开发中，会构筑多级缓存来时系统运行速度进一步提升，例如：本地缓存与 Redis 中的缓存并发使用
+
+浏览器缓存：主要是存在于浏览器端的缓存
+应用层缓存：可以分为 tomcat 本地缓存，例如之前提到的 map 或者是使用 Redis 作为缓存
+数据库缓存：在数据库中有一片空间是 buffer pool，增改查数据都会先加载到 mysql 的缓存中
+CPU 缓存：当代计算机最大的问题就是 CPU 性能提升了，但是内存读写速度没有跟上，所以为了适应当下的情况，增加了 CPU 的 L1，L2，L3 级的缓存
+
+缓存的作用
+降低后端负载（减少查数据库的次数，也就是磁盘读写次数）
+提高读写效率，降低响应时间
+
+缓存的成本
+数据一致性成本
+代码维护成本
+运维成本（一般采用服务器集群，需要多加机器，机器就是钱，还需要人维护）
+
+添加商户缓存
+
+原本的逻辑是，比如查询，直接查询数据库，然后返回结果，逻辑代码如下（Mybatis-plus 提供的方法）
+// 根据 id 查询商户信息@GetMapping(&quot;/&#123;id&#125;&quot;)public Result queryShopById(@PathVariable(&quot;id&quot;) Long id) &#123;    return Result.ok(shopService.getById(id));&#125;
+
+优化的思路是在客户端与数据库之间加上一个 Redis 缓存，先从 Redis 中查询，如果没有查到，再去 MySQL 中查询，同时查询完毕之后，将查询到的数据也存入 Redis，这样当下一个用户来进行查询的时候，就可以直接从 Redis 中获取到数据
+
+
+代码流程如下
+
+
+实现如下
+@Overridepublic Result queryById(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否存在    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 存在，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return Result.ok(shop);    &#125;    // 4 不存在，根据 id 查询数据库    Shop shop = this.getById(id);    // 5 不存在，返回错误    if (shop == null) &#123;        return Result.fail(&quot;店铺不存在!&quot;);    &#125;    // 6 存在，写入 Redis    stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop));    // 7 返回    return Result.ok(shop);&#125;
+
+这里应该用 Hash 的，只不过这里用 JSON 来练练手
+我们比较一下带缓存和不带缓存的查询时间，第一个不带缓存，也就是第一次请求
+
+
+
+数据确实被缓存了，然后再次请求
+
+速度很快了。
+并且控制台打印没有输出查询商户的SQL，说明这次查询没有走MySQL。
+
+[!Caution]
+其实这里教程说的有问题，上面这个内容没问题，结果的解释有问题。这个加速并不是 Redis 缓存起到的加速。因为视频里面是重启了 SpringBoot，然后再发起的请求，第一次请求时间长是因为 mvc 组建懒加载导致的，并不是因为 MySQL 查的慢。你第二次请求、第三次、第四次请求其实速度就一样了，并且你试一下，用 MySQL 和用 Redis 基本上没差别，我多试了几下，基本上平均 Redis 比 MySQL 能快 1ms 左右吧，偶尔有的时候比 MySQL 慢，优化很小。其实也是因为查询的数据太少了，只有一条数据，优化不明显，并且咱们做的时候还是本地查询，没有进行网络请求。
+类似Redis 可能 6~10 ms 左右，MySQL 7-11 ms 左右，平均来说提高了，但是偶尔 MySQL 可能还会快一点。比如 MySQL 查下有时候 7ms，Redis 可能 10ms呢。
+
+添加商铺类型缓存
+
+也就是这一块的缓存，原来对应代码如下
+@RestController@RequestMapping(&quot;/shop-type&quot;)public class ShopTypeController &#123;    @Resource    private IShopTypeService typeService;    @GetMapping(&quot;list&quot;)    public Result queryTypeList() &#123;        List&lt;ShopType&gt; typeList = typeService                .query().orderByAsc(&quot;sort&quot;).list();        return Result.ok(typeList);    &#125;&#125;
+
+然后我们进行改造
+ControllerServiceServiceImpl@GetMapping(&quot;list&quot;)public Result queryTypeList() &#123;    return typeService.queryTypeList();&#125;Result queryTypeList();@Overridepublic Result queryTypeList() &#123;    String key = &quot;cache:shopType:list&quot;;    // 1 从 Redis 查询缓存    List&lt;String&gt; shopTypes = stringRedisTemplate.opsForList().range(key, 0, -1);    // 2 缓存存在则返回, 存在且不为空    if (CollUtil.isNotEmpty(shopTypes)) &#123;        ArrayList&lt;ShopType&gt; temp = new ArrayList&lt;&gt;();        for (String shopType : shopTypes) &#123;            temp.add(JSONUtil.toBean(shopType, ShopType.class));        &#125;        return Result.ok(temp);    &#125;    // 3 缓存不存在从数据库中查询    List&lt;ShopType&gt; temp = query().orderByAsc(&quot;sort&quot;).list();    // 4 转为 JSON 字符串    if (CollUtil.isNotEmpty(temp)) &#123;        for (ShopType shopType : temp) &#123;            String json = JSONUtil.toJsonStr(shopType);            shopTypes.add(json);        &#125;    &#125;    // 5 存入缓存    stringRedisTemplate.opsForList().leftPushAll(key, shopTypes);    // 6 返回    return Result.ok(temp);&#125;
+
+也可以用流来实现一下
+@Overridepublic Result queryTypeList() &#123;    String key = &quot;cache:shopType:list&quot;;    // 1 从 Redis 查询缓存    List&lt;String&gt; shopTypes = stringRedisTemplate.opsForList().range(key, 0, -1);    // 2 缓存存在则返回, 存在且不为空    if (CollUtil.isNotEmpty(shopTypes)) &#123;        List&lt;ShopType&gt; temp = shopTypes                .stream()                .map(i -&gt; JSONUtil.toBean(i, ShopType.class))                .toList();        return Result.ok(temp);    &#125;    // 3 缓存不存在从数据库中查询    List&lt;ShopType&gt; temp = query().orderByAsc(&quot;sort&quot;).list();    // 4 转为 JSON 字符串    if (CollUtil.isNotEmpty(temp)) &#123;        shopTypes = temp.stream().map(JSONUtil::toJsonStr).toList();    &#125;    // 5 存入缓存    stringRedisTemplate.opsForList().leftPushAll(key, shopTypes);    // 6 返回    return Result.ok(temp);&#125;
+
+缓存更新策略
+内存淘汰：Redis 自动进行，当 Redis 内存使用达到我们设定的 max-memery 时，会自动触发淘汰机制，淘汰掉一些不重要的数据。这个原来是 Redis 来解决数据越来越多内存不足的方式。（有好多种策略），默认是开启的。一致性比较差，不是我们能控制的，淘汰什么数据、什么时候淘汰我们都不知道，但是不用我们管，没有维护成本。
+超时剔除：当我们给 Redis 设置了过期时间 TTL 之后，Redis 会将超时的数据进行删除，这样再次查询的时候会把数据库的数据同步过来，根据这个方式来进行维护一致性。所以一致性的情况跟 TTL 设置的时长也有关系（比如 TTL 30 分钟，但是这个期间数据库发生变化了，就出现不一致了）。维护成本也不高，只要加一个过期时间就可以了，一行代码。
+主动更新：我们可以手动调用方法把缓存删除掉，通常用于解决缓存和数据库不一致问题。
+
+
+
+
+
+内存淘汰
+超时剔除
+主动更新
+
+
+
+说明
+不用自己维护，利用 Redis 的内存淘汰机制，当内存不足时自动淘汰部分数据。下次查询时更新缓存。
+给缓存数据添加 TTL 时间，到期后自动删除缓存。下次查询时更新缓存。
+编写业务逻辑，在修改数据库的同时，更新缓存。
+
+
+一致性
+差
+一般
+好
+
+
+维护成本
+无
+低
+高
+
+
+业务场景：
+
+低一致性需求：使用内存淘汰机制。例如商铺类型的查询缓存（很久都不更新一次）
+高一致性需求：主动更新，并用超时剔除作为兜底方案。例如商铺详情查询的缓存
+
+不一致性解决方案由于我们的缓存数据源来自数据库，而数据库的数据是会发生变化的，因此，如果当数据库中数据发生变化，而缓存却没有同步，此时就会有一致性问题存在，用户就会使用缓存中的过时数据，就会产生类似多线程数据安全问题
+主动更新目前有如下三种主流方式
+
+Cache Aside Pattern 人工编码方式：缓存调用者在更新完数据库之后再去更新缓存，也称之为双写方案
+
+Read&#x2F;Write Through Pattern：缓存与数据库整合为一个服务，由服务来维护一致性。调用者调用该服务，无需关心缓存一致性问题，由它来管理缓存和数据库的一致性。但是维护这样一个服务很复杂，市面上也不容易找到这样的一个现成的服务，开发成本高
+
+Write Behind Caching Pattern：调用者&#x3D;&#x3D;只操作缓存&#x3D;&#x3D;，其他线程去异步处理数据库，最终实现一致性。但是维护这样的一个异步的任务很复杂，需要实时监控缓存中的数据更新，其他线程去异步更新数据库也可能不太及时，一致性不能完全保证，而且缓存服务器如果宕机，那么缓存的数据也就丢失了
+好处
+
+比如十次写操作，先放到缓存，然后线程再执行一次批处理，把内容同步到数据库，只操作一次数据库
+比如对某个数据进行了多次修改，只需要同步最后一次的结果就可以，效率高
+
+
+
+不一致性解决方法在企业的实际应用中，方案一是主流的，而且比较可靠的，那么就需要考虑三个问题
+
+删除缓存还是更新缓存？更新缓存：每次更新数据库都更新缓存，无效写操作较多。比如连续更新了100次数据，但是没有人读，更新缓存其实没什么用。❌删除缓存：更新数据库时让缓存失效，查询时再更新缓存，避免了无效写操作，减少更新次数。✅
+
+如何保证缓存与数据库的操作同时成功或失败？需要保证缓存与数据库操作的原子性，比如更新数据库成功了，但是删除缓存失败了，那就没意义了单体系统：将缓存与数据库操作放在一个事务分布式系统：利用 TTC 等分布式事务方案
+
+先操作缓存还是先操作数据库？
+在并发情况下，删除缓存和更新数据库操作不同线程之间可能会交叉，不可避免出现问题。
+
+先删除缓存，再操作数据库
+
+正常情况异常情况正常情况如下，比如先操作数据库再删除缓存，刚开始缓存和数据库都有数据 10，线程 1 执行的时候先删除缓存，然后更新数据库为 20，然后线程 2 查询的时候缓存未命中，就从数据库查询并且写入缓存，此时缓存和数据库都是数据 20。
+还是刚开始初始值都是 10，线程 1 先删除缓存，然后去更新，业务比较复杂比较慢，这个时候线程 2 也来更新，查询缓存，没查到，就去查询数据库并且写入缓存，因为更新操作还没完成，所以读取的是之前的值 10，然后写入了缓存，之后线程 1 更新数据库完成，最终缓存值为 10，数据库值为 20，出现不一致，出现线程安全性。
+这种情况出现的概率还是很高的！！因为是先删缓存，再操作数据库，删缓存快，写入数据库慢，查缓存、查数据库、写缓存都快。所以这个线程 1 的空隙很大，很容易被线程 2 这种查询的捕捉到。
+
+
+
+先操作数据库，再删除缓存
+
+正常情况异常情况这没啥问题，不多说
+这里刚开始缓存和数据库数据都是 10，假如说线程 1 来查询缓存的时候，缓存刚好失效了，没查到（查到不就直接返回了吗），然后去查询了数据库，得到值 10，在它拿值写入缓存的空隙，线程 2 更新了数据库为 20，并且删除了缓存（缓存本来就没数据，删了没影响），然后线程 1 把值 10 写入了缓存，出现了不一致。但是这种情况出现概率很低
+
+出现并发情况
+
+需要线程 1 操作的时候缓存失效
+
+需要在写入缓存这个极短的间隙中（微秒）完成更新数据库这个比较耗时的操作
+
+
+
+
+所以方案 2 胜出，我们先写数据库，再写缓存
+
+
+最终整体方案就为
+
+低一致性需求：使用 Redis 自带的内存淘汰机制。
+高一致性需求：主动更新，并以超时剔除作为兜底方案。
+读操作：
+缓存命中则直接返回
+缓存未命中则查询数据库，并写入缓存，设定超时时间
+
+
+写操作：
+先写数据库，然后再删除缓存（尽可能保证线程安全性）
+要确保数据库与缓存操作的原子性（单体系统用事务，分布式系统用 TTC 等分布式事务）
+
+
+
+
+
+:question: 新增数据、删除数据怎么处理缓存，比如商铺分类列表之类的？
+实现商铺缓存与数据库的双写一致性分为查询和更新操作两部分
+查询原来缓存未命中去查询数据库并写入缓存的逻辑已经实现了，再加上设置超时时间就可以了。
+@Overridepublic Result queryById(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否存在    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 存在，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return Result.ok(shop);    &#125;    // 4 不存在，根据 id 查询数据库    Shop shop = this.getById(id);    // 5 不存在，返回错误    if (shop == null) &#123;        return Result.fail(&quot;店铺不存在!&quot;);    &#125;    // 6 存在，写入 Redis-   stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop));+   stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop), CACHE_SHOP_TTL, TimeUnit.MINUTES);    // 7 返回    return Result.ok(shop);&#125;
+
+
+
+更新@Override@Transactional // 控制更新数据库、更新缓存两个操作的原子性public Result update(Shop shop) &#123;    Long id = shop.getId();    if (id == null) &#123;        return Result.fail(&quot;店铺id不能为空&quot;);    &#125;    // 1. 更新数据库    updateById(shop);    // 2. 删除缓存    stringRedisTemplate.delete(CACHE_SHOP_KEY + shop.getId());    return Result.ok();&#125;
+
+结果就不啰嗦了，大致说一下。首先是查询，第一次查询把数据写入缓存，然后第二次再查看这个餐厅的时候就直接从缓存读了。因为这个没有管理端页面，没法发起请求，所以就用 Postman 来发起请求，修改名字，发起请求后，可以看到数据库被修改，缓存里没有这个数据了，直到再次请求这个商铺的信息的时候才会写入缓存。
+注意 JSON 格式的数据最后一行不能有逗号，否则会报错。
+
+
+  注解 Transactional 的作用是什么？怎么保证了操作的原子性？这里 @Transactional 并不是说把操作 MySQL 和操作 Redis 封装成一个事务了，而是假装封装成一个事务。
+
+假如先删除缓存，再更新数据库缓存删除成功，但是数据库更新失败，这个时候会出发回滚。但是删缓存不会导致有不一致性问题，但是这个时候会导致大量请求从缓存转移到数据库，也就是出现缓存击穿
+如果是先更新库，再删缓存那么如果更新成功，但是删缓存报错，函数报错，触发回滚，这个时候就保证了一致性。
+
+
+  注解 Transactional 到底管谁呢？底层怎么做呢？@Transactional 直接作用于数据库连接，只要支持 ACID 事务且提供了标准 JDBC 驱动的数据库都可以，比如 MySQL（InnoDB引擎，因为这个引擎支持事务）、Oracle、PostgreSQL、SQL Server 都能用。
+当给一个方法加上 @Transactional 时，到底做了什么呢？
+
+创建代理对象Spring 启动的时候，发现你这个方法 update 有这个注解，那就会给这个类 ShopServiceImpl 生成一个代理类
+
+环绕增强
+当你调用 service.update(shop) 时，实际上执行的是代理对象的方法：
+
+开启事务： 代理对象先通过 DataSource 拿到一个数据库连接，执行 connection.setAutoCommit(false)（关掉自动提交，这是核心！）。
+执行业务： 调用你真正的 updateById(shop) 和 redis.delete()。
+判断结果：
+成功： 如果整个方法没报错，代理对象执行 connection.commit()，数据正式写入磁盘。
+异常： 如果抛出了 RuntimeException，代理对象立刻执行 connection.rollback()。
+
+
+释放连接： 把连接还给连接池。
+
+
+
+所以这里真正进行撤回操作的只有数据库。
+
+
+缓存穿透缓存穿透是指客户端请求的数据在缓存中和数据库中都不存在，这样缓存永远不会生效，这些请求都会打到数据库。（有些人可能恶意请求某些不存在的数据，导致频繁访问数据库）
+解决方案常见的解决方案有两种
+
+缓存空对象：当数据库不存在这个数据的时候，把这个数据也写入缓存，只不过值为空
+当客户端访问不存在的数据时，会先请求 redis，但是此时 redis 中也没有数据，就会直接访问数据库，但是数据库里也没有数据，那么这个数据就穿透了缓存，直击数据库。但是数据库能承载的并发不如 redis 这么高，所以如果大量的请求同时都来访问这个不存在的数据，那么这些请求就会访问到数据库，所以如果这个数据在数据库里不存在，我们也把这个这个数据存在 redis 中去（额外的内存消耗），这样下次请求这个不存在的数据时，redis 缓存中也能找到这个数据，不用去查数据库。
+
+
+
+优点：实现简单，维护方便
+缺点：额外的内存消耗；可能造成短期的不一致（我们通过设置 TTL 过期时间，不过在这个过期时间内可能会出现不一致，如果一致性要求高，可以在数据写入的时候把缓存更新一下）
+
+
+布隆过滤布隆过滤器是采用哈希思想来解决这个问题，通过一个庞大的二进制数组，根据哈希思想去判断当前这个要查询的数据是否存在，如果布隆过滤器判断存在，则放行，后续操作就和前面一样了。如果布隆过滤器判断这个数据不存在，则直接返回。
+
+
+
+优点：内存占用较少，没有多余 key
+缺点：实现复杂（不过 Redis 提供了 bitmap 帮我们做了）；存在误判可能（因为底层是用的哈希原理，就可能会出现哈希冲突，所以如果这个里面判断不存在，那就一定不存在，判断存在也可能不存在，也会出现缓存穿透）
+
+
+
+解决商铺查询缓存穿透问题
+
+原来的流程是查询的时候根据商铺 id 来从 Redis 查，如果不存在则去数据库查，查到了就写入缓存并且返回商铺信息，查不到就返回 404，说明商铺页面没找到。
+解决缓存穿透问题，需要修改的地方是数据库查不到之后，把空值也写入 redis，并且返回错误信息，不过这样之后呢，取到缓存之后需要多一步操作，先判断一下是不是空值，是空值就 404，不是再返回商铺信息。
+然后，我们去实现一下代码
+@Overridepublic Result queryById(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否存在    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 存在，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return Result.ok(shop);    &#125;+   if (shopJson != null) &#123;+       return Result.fail(&quot;店铺不存在&quot;);+   &#125;    // 4 不存在，根据 id 查询数据库    Shop shop = this.getById(id);    // 5 不存在，空值写入缓存，返回错误    if (shop == null) &#123;+       stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);        return Result.fail(&quot;店铺不存在!&quot;);    &#125;    // 6 存在，写入 Redis    stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop), CACHE_SHOP_TTL, TimeUnit.MINUTES);    // 7 返回    return Result.ok(shop);&#125;
+
+
+查询数据库的时候，如果店铺不存在，也要存一份空值到缓存，注意这里是 &quot;&quot;，不是 null，并且这个 TTL 一般短一点，可以一分钟、两分钟
+在查询用户缓存的时候，第 2 步结束后，如果没有返回，说明商铺信息为 null（说明缓存里面真的没有） 或者 &quot;&quot;（说明是自己设置的空值），所以需要再判断一下。
+
+ 写入缓存的时候可以存 null 吗这个代码里面写的是 &quot;&quot;，存 null 是不可以的，会直接报错，因为 Spring Data Redis 底层在执行 set 操作前，会进行严格的非空检查。Redis 设计意图是： SET 命令本身就是在存值，如果你想表达没有值，应该删除它而不是存入 null。
+
+缓存穿透的解决方案有哪些？
+
+缓存 null 值
+布隆过滤
+增强 id 的复杂度，避免被猜测 id 规律
+做好数据的基础格式校验（比如规定id长度必须为10，那不是10位的id请求直接pass）
+加强用户权限校验（比如必须登录、访问的频率限制）
+做好热点参数的限流（比如统计 id 被访问的次数，比如正常是每秒访问 50 次，但是某个时刻被访问了每秒 500 次，我们可以设置一个规则进行限流，只能每秒访问100次，超过直接拒绝）这里不介绍，比如阿里巴巴开源的 Sentinel 可以来做这件事。
+
+
+
+
+缓存雪崩缓存雪崩是指在同一时段大量的缓存 key 同时失效或者 Redis 服务宕机，导致大量请求到达数据库，带来巨大压力。
+
+
+
+解决方案
+解决大量的缓存 key 同时失效问题：给不同的 Key 的 TTL 添加随机值，让其在不同时间段分批失效比如平时做缓存的时候，有些数据是批量导入的，设置的相同的过期时间，比如30分钟，我们可以在这个基础上加一个 1～5 分钟的随机值，避免同时过期
+解决宕机问题：利用Redis集群提高服务的可用性使用一个或者多个哨兵(Sentinel)实例组成的系统，对redis节点进行监控，在主节点出现故障的情况下，能将从节点中的一个升级为主节点，进行故障转移，保证系统的可用性。
+给缓存业务添加降级限流策略发现 Redis 宕机了，对于请求进行限流、拒绝，避免将压力给到数据库
+给业务添加多级缓存浏览器访问静态资源时，优先读取浏览器本地缓存；访问非静态资源（ajax查询数据）时，访问服务端；请求到达Nginx后，优先读取Nginx本地缓存；如果Nginx本地缓存未命中，则去直接查询Redis（不经过Tomcat）；如果Redis查询未命中，则查询Tomcat；请求进入Tomcat后，优先查询JVM进程缓存；如果JVM进程缓存未命中，则查询数据库
+
+
+
+缓存击穿缓存击穿也叫热点 Key 问题，就是一个被高并发访问并且缓存重建业务较复杂的 key 突然失效了，那么无数请求访问就会在瞬间给数据库带来巨大的冲击
+比如某个 key 失效了，但是重建这个 key 要从数据库查询，然后构建存入 Redis，但是这个构建过程复杂，耗时长，就会出现缓存击穿。
+如图，假设线程1在查询缓存之后，本来应该去查询数据库，然后把这个数据重新加载到缓存的，此时只要线程1走完这个逻辑，其他线程就都能从缓存中加载这些数据了，但是假设在线程1没有走完的时候，后续的线程2，线程3，线程4同时过来访问当前这个方法， 那么这些线程都不能从缓存中查询到数据，那么他们就会同一时刻来访问查询缓存，都没查到，接着同一时间去访问数据库，同时的去执行数据库代码，对数据库访问压力过大
+
+
+解决方案互斥锁利用锁的互斥性
+
+
+假设现在线程1过来访问，他查询缓存没有命中，但是此时他获得到了锁的资源，那么线程1就会一个人去执行逻辑，假设现在线程2过来，线程2在执行过程中，并没有获得到锁，那么线程2就可以休眠一会，然后去重试，直到线程1把锁释放后，线程2获得到锁，然后再来执行逻辑，此时就能够从缓存中拿到数据了。
+问题：如果重建缓存数据时间比较久，那在这个期间所有进来的请求线程都在等待，性能比较差。
+逻辑过期分析：之所以会出现缓存击穿问题，主要原因是在于我们对 key 设置了 TTL，如果我们不设置 TTL，那么就不会有缓存击穿问题，但是不设置 TTL，数据又会一直占用我们的内存，所以我们可以采用逻辑过期方案
+
+
+解决方案是将 TTL 设置在 redis 的 value 中，注意：这个过期时间并不会直接作用于 Redis，而是我们后续通过逻辑去处理。假设线程1去查询缓存，然后从 value 中判断当前数据已经过期了，此时线程1去获得互斥锁，获得了锁的进程会开启一个新线程去进行之前的重建缓存数据的逻辑，直到新开的线程完成重建缓存数据逻辑之后，才会释放锁，而线程1不进行等待，直接获取过期数据然后返回，假设现在线程3过来访问，由于线程2拿着锁，所以线程3无法获得锁，线程3也直接返回数据（但只能返回旧数据，牺牲了数据一致性，换取性能上的提高），只有等待线程2重建缓存数据之后，其他线程才能返回新的数据
+这种方案是在异步构建缓存数据，缺点是在重建完缓存数据之前，返回的都是旧数据
+对比
+
+
+解决方案
+优点
+缺点
+
+
+
+互斥锁
+没有额外的内存消耗 保证一致性 实现简单
+线程需要等待，性能受影响 可能有死锁风险
+
+
+逻辑过期
+线程无需等待，性能较好
+不保证一致性 有额外内存消耗 实现复杂
+
+
+
+互斥锁方案：由于保证了互斥性，所以数据一致，且实现简单，只是加了一把锁而已，也没有其他的事情需要操心，所以没有额外的内存消耗（不用 expire 字段了），缺点在于有锁的情况，就可能死锁，所以只能串行执行，性能会受到影响
+逻辑过期方案：线程读取过程中不需要等待，性能好，有一个额外的线程持有锁去进行重构缓存数据，但是在重构数据完成之前，其他线程只能返回脏数据，出现数据不一致性问题，且实现起来比较麻烦
+
+基于互斥锁方式解决缓存击穿问题核心思路：相较于原来从缓存中查询不到数据后直接查询数据库而言，现在的方案是，进行查询之后，如果没有从缓存中查询到数据，则进行互斥锁的获取，获取互斥锁之后，判断是否获取到了锁，如果没获取到，则休眠一段时间，过一会儿再去尝试，直到获取到锁进行下一步或者从缓存中拿到数据为止。如果获取到了锁的线程，则进行查询，将查询到的数据写入 Redis，再释放锁，返回数据，利用互斥锁就能保证只有一个线程去执行数据库的逻辑，防止缓存击穿。
+
+&#x3D;&#x3D;redis本身就是单线程写入，所以不用担心并发问题&#x3D;&#x3D;
+核心思路就是利用 redis 的 setnx 方法来表示获取锁，如果 redis 没有这个 key，则插入成功，返回 1，如果已经存在这个 key，则插入失败，返回 0。在StringRedisTemplate 中返回 true&#x2F;false，我们可以根据返回值来判断是否有线程成功获取到了锁
+为了防止系统出现故障，在加锁后未能解锁，对加锁过程设置一个有效期。有效期的时长一般根据该锁对应的业务时长确定 
+
+
+
+加锁释放锁private boolean tryLock(String key) &#123;    Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(key, &quot;1&quot;, 10, TimeUnit.SECONDS);    return BooleanUtil.isTrue(flag); // 防止 flag 为 null&#125;private void unlock(String key) &#123;    stringRedisTemplate.delete(key);&#125;
+
+
+  为什么 tryLock 函数不直接返回 flag 假如说在操作 Redis 的时候连接超时或出错，flag 可能是 null，当把 null 值赋值给 boolean 时，JVM 的自动拆箱（调用 flag.booleanValue()），直接报 NullPointerException。所以在返回的时候使用了 BooleanUtil.isTrue(flag);
+public static boolean isTrue(Boolean bool) &#123;  return Boolean.TRUE.equals(bool);&#125;
+
+现在我们要改动 queryById 方法了，原来咱们演示解决缓存穿透的代码就单独领出来吧（和本章节无关）
+public Shop queryWithPassThrough(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否存在    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 存在，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return shop;    &#125;    if (shopJson != null) &#123;        return null;    &#125;    // 4 不存在，根据 id 查询数据库    Shop shop = this.getById(id);    // 5 不存在，空值写入缓存，返回错误    if (shop == null) &#123;        stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);        return null;    &#125;    // 6 存在，写入 Redis    stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop), CACHE_SHOP_TTL, TimeUnit.MINUTES);    return shop;&#125;
+
+
+然后咱们开始编写用互斥锁解决缓存击穿的代码
+互斥锁解决缓存击穿queryByIdpublic Shop queryWithMutex(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否命中    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 命中，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return shop;    &#125;    // 判断命中的是否是空值    if (shopJson != null) &#123;        // 返回一个错误信息        return null;    &#125;    String lockKey = &quot;lock:shop:&quot; + id;    Shop shop = null;    // 4 实现缓存重建    // 4.1 获取互斥锁    try &#123;        boolean isLock = tryLock(lockKey);        // 4.2 判断是否成功        if (!isLock) &#123;            // 4.3 失败则休眠并重试            Thread.sleep(50); // 模拟重建的延时，50ms            return queryWithMutex(id); // 递归        &#125;        // 4.4 成功，根据 id 查询数据库        // 注意：获取锁成功应该再次检查 redis 缓存是否存在，做 DoubleCheck。如果存在则无需重建缓存        shop = this.getById(id);        // 5 不存在，空值写入缓存，返回错误        if (shop == null) &#123;            stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);            return null;        &#125;        // 6 存在，写入 Redis        stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop), CACHE_SHOP_TTL, TimeUnit.MINUTES);    &#125; catch (InterruptedException e) &#123;        throw new RuntimeException(e);    &#125; finally &#123; // 无论是否成功都要释放        // 7 释放互斥锁        unlock(lockKey);    &#125;    // 8 返回    return shop;&#125;
+
+这里我们 key 定义为 &quot;lock:shop:&quot; + id 的形式，因为是查询的一个商铺信息，所以对这一个加锁。
+这里获取锁失败，我们是使用的递归方法来重复执行前面查询缓存、判断是否命中、获取锁的逻辑
+获取锁成功应该再次检查 redis 缓存是否存在，做 DoubleCheck。如果存在则无需重建缓存
+在 finally 中写释放锁的代码，因为无论是否出现异常最后都得把锁释放掉
+@Overridepublic Result queryById(Long id) &#123;    // 缓存击穿    Shop shop = queryWithMutex(id);    if (shop == null) &#123;        return Result.fail(&quot;店铺不存在！&quot;);    &#125;    // 返回    return Result.ok(shop);&#125;
+
+
+这里我们用 JMeter 进行测试，用 homebrew 安装并且终端输入 jmeter 就可以打开 GUI 界面了。我们模拟缓存击穿的情景，缓存击穿是指在某时刻，一个热点数据的 TTL 到期了，此时用户不能从 Redis 中获取热点商品数据，然后就都得去数据库里查询，造成数据库压力过大。我们首先将 Redis 中的热点商品数据删除，模拟 TTL 到期，然后用 Jmeter 进行压力测试，开 1000 个线程来访问这个没有缓存的热点数据配置如下（5秒1000次，qps大约在 200&#x2F;s）
+然后我清空 Java 程序控制台，启动并发请求，查看控制台只输出了一次数据库查询！！！没有发生缓存击穿
+基于逻辑过期方式解决缓存击穿问题思路分析：当用户开始查询 redis 时，判断是否命中
+
+如果没有命中则直接返回空数据，不查询数据库（热点数据一般会由后台管理系统直接将其导入缓存中，所以这里如果未命中就代表其不是热点数据）
+如果命中，则将 value 取出，判断 value 中的过期时间是否满足
+如果没有过期，则直接返回 redis 中的数据
+如果过期，则在开启独立线程后，直接返回之前的数据，独立线程去重构数据，重构完成后再释放互斥锁
+
+
+
+封装数据：因为现在 redis 中存储的数据需要带上过期时间，此时要么你去修改原来的实体类，要么新建一个类包含原有的数据和过期时间两种方案，只推荐第一种
+方法1方法2推荐如下方式，创建一个 RedisData 类，里面用来封装数据+过期时间这里是不是用泛型更好，省的后面 Object 使用不方便
+@Datapublic class RedisData &#123;    private LocalDateTime expireTime;    private Object data;&#125;这种方法不推荐，因为侵入性太强，Shop 实体类通常和数据库表一一对应，加了个这个，在增删改查的时候字段和数据库不一致了，而且如果有其他类也做逻辑过期，难道都要继承吗？而且Java是单继承的，这很珍贵。
+// 定义一个类@Datapublic class RedisData &#123;    protected LocalDateTime expireTime;&#125;public class Shop extends RedisData implements Serializable&#123;&#125;
+
+
+一般来说热点数据都会由后台管理系统导入到缓存中，这里我们做个模拟放到缓存里面
+实现方法测试 Test// 查询数据并设置逻辑过期时间导入到缓存中public void saveShop2Redis(Long id, Long expireSeconds) &#123;    // 查询店铺数据    Shop shop = getById(id);    // 封装逻辑过期时间    RedisData redisData = new RedisData();    redisData.setData(shop);    redisData.setExpireTime(LocalDateTime.now().plusSeconds(expireSeconds));    // 写入 Redis    stringRedisTemplate.opsForValue().set(CACHE_SHOP_KEY + id, JSONUtil.toJsonStr(redisData)); // 不含真实过期时间&#125;@SpringBootTestclass HmDianPingApplicationTests &#123;    @Resource    private ShopServiceImpl shopService;    @Test    void testSaveShop()&#123;        shopService.saveShop2Redis(1L, 10L);    &#125;&#125;
+
+
+这里不用加对缓存穿透处理的代码了，因为缓存穿透是指客户端请求的数据在缓存中和数据库中都不存在的时候猛烈攻击数据库，但是这里我们是处理热点 key，数据不在缓存的时候就返回空了
+@Overridepublic Result queryById(Long id) &#123;    // 解决缓存穿透    // Shop shop = queryWithPassThrough(id);    // 互斥锁解决缓存击穿    // Shop shop = queryWithMutex(id);    Shop shop = queryWithLogicalExpire(id);    if (shop == null) &#123;        return Result.fail(&quot;店铺不存在！&quot;);    &#125;    // 返回    return Result.ok(shop);&#125;// 线程池，有10个线程private static final ExecutorService CACHE_REBUILD_EXECUTOR = Executors.newFixedThreadPool(10);public Shop queryWithLogicalExpire(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否命中    if (StrUtil.isBlank(shopJson)) &#123;        // 3 未命中，直接返回        return null;    &#125;    // 4 命中, JSON反序列化为对象    RedisData redisData = JSONUtil.toBean(shopJson, RedisData.class);    Shop shop = JSONUtil.toBean((JSONObject) redisData.getData(), Shop.class); // 强转    LocalDateTime expireTime = redisData.getExpireTime();    // 5. 判断是否过期    if(expireTime.isAfter(LocalDateTime.now()))&#123;        // 5.1 未过期，直接返回商铺信息        return shop;    &#125;    // 5.2 已过期，需要缓存重建    // 6 缓存重建    // 6.1 获取互斥锁    String lockKey = LOCK_SHOP_KEY + id;    boolean isLock = tryLock(lockKey);    // 6.2 判断是否获取锁成功    if (isLock) &#123;        // 6.3 成功，开启独立线程，实现缓存重建        CACHE_REBUILD_EXECUTOR.submit(() -&gt; &#123;            try &#123;                // 重建缓存                this.saveShop2Redis(id, 20L);            &#125; catch (Exception e) &#123;                throw new RuntimeException(e);            &#125; finally &#123;                // 释放锁                unlock(lockKey);            &#125;        &#125;);    &#125;    // 6.4 无论成功与否都返回过期的商铺信息    return shop;&#125;public void saveShop2Redis(Long id, Long expireSeconds) throws InterruptedException &#123;    TimeUnit.MILLISECONDS.sleep(200); // 模拟重建业务延迟 200ms    // 查询店铺数据    Shop shop = getById(id);    // 封装逻辑过期时间    RedisData redisData = new RedisData();    redisData.setData(shop);    redisData.setExpireTime(LocalDateTime.now().plusSeconds(expireSeconds));    // 写入 Redis    stringRedisTemplate.opsForValue().set(CACHE_SHOP_KEY + id, JSONUtil.toJsonStr(redisData)); // 不含真实过期时间&#125;
+
+查询商库缓存
+不存在，直接返回null
+存在，取出数据，判断是否过期
+已过期
+获取锁
+开启独立线程进行缓存重建
+释放锁
+返回过期商铺信息
+
+
+未过期，直接返回商铺信息
+
+
+
+
+
+下面进行测试
+存入缓存并发测试将数据存入缓存，我们设置过期时间是 10s，来模拟热点数据过期了
+@Testvoid testSaveShop() throws InterruptedException &#123;    shopService.saveShop2Redis(1L, 10L);&#125;
+同时更新一下数据库的数据，把 102 茶餐厅名字改为 101 茶餐厅，这样缓存数据和数据库数据不一致，进行测试启动程序，然后我们 JMeter 进行测试，这次我们测试100个线程，1s执行完。我们前面代码模拟重建业务设置200ms，也就是说第一个线程来了之后，去执行重建业务需要200ms左右，那么这个期间到达的线程拿的都是旧数据，之后应该都是新数据，我们跑一下看看靠前的就是拿到旧数据，靠后的拿到的就是新数据。大约前20个是旧数据，后面80个都是新的并且重建只执行了一次
+
+
+封装 Redis 工具类基于 StringRedisTemplate 封装一个缓存工具类先定义一下基本存储方法
+
+将 Java 对象序列化为 JSON，并且存储到 String 类型的 key 中，设置过期时间
+
+public void set(String key, Object value, Long time, TimeUnit timeUnit) &#123;    stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(value),time, timeUnit);&#125;
+
+将 Java 对象序列化为 JSON，并且存储到 String 类型的 key 中，设置逻辑过期时间
+
+public void setWithLogicalExpire(String key, Object value, Long time, TimeUnit timeUnit) &#123;    // 设置逻辑过期    RedisData redisData = new RedisData();    redisData.setData(value);    // 转为 seconds    redisData.setExpireTime(LocalDateTime.now().plusSeconds(timeUnit.toSeconds(time)));    stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(redisData));&#125;
+
+之后我们封装解决缓存穿透问题的工具方法 –&gt; 利用缓存空值
+原方法改为通用方法使用方法@Overridepublic Shop queryWithPassThrough(Long id) &#123;    //先从Redis中查，这里的常量值是固定的前缀 + 店铺id    String shopJson = stringRedisTemplate.opsForValue().get(CACHE_SHOP_KEY + id);    //如果不为空（查询到了），则转为Shop类型直接返回    if (StrUtil.isNotBlank(shopJson)) &#123;        return JSONUtil.toBean(shopJson, Shop.class);    &#125;    if (shopjson != null) &#123;        return null;    &#125;    //否则去数据库中查    Shop shop = getById(id);    //查不到，则将空值写入Redis    if (shop == null) &#123;        stringRedisTemplate.opsForValue().set(CACHE_SHOP_KEY + id, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);        return null;    &#125;    //查到了则转为json字符串    String jsonStr = JSONUtil.toJsonStr(shop);    //并存入redis，设置TTL    stringRedisTemplate.opsForValue().set(CACHE_SHOP_KEY + id, jsonStr, CACHE_SHOP_TTL, TimeUnit.MINUTES);    //最终把查询到的商户信息返回给前端    return shop;&#125;
+返回值类型变为泛型 R，所以还需要传入返回值类型
+主键类型变为泛型 ID
+查询数据库方法需要传入
+缓存 key 需要指定
+过期时间和过期单位需要指定
+
+public &lt;R, ID&gt; R queryWithPassThrough(String keyPrefix,                                      ID id,                                      Class&lt;R&gt; type,                                      Function&lt;ID, R&gt; dbFallback,                                      Long time,                                      TimeUnit timeUnit) &#123;    String key = keyPrefix + id;    String json = stringRedisTemplate.opsForValue().get(key);    if (StrUtil.isNotBlank(json)) &#123;        return JSONUtil.toBean(json, type);    &#125;    if (json != null) &#123;        return null;    &#125;    R r = dbFallback.apply(id);    if (r == null) &#123;        stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);        return null;    &#125;    this.set(key, r, time, timeUnit);    return r;&#125;直接调用即可
+public Result queryById(Long id) &#123;    Shop shop = cacheClient.            queryWithPassThrough(CACHE_SHOP_KEY, id, Shop.class, this::getById, CACHE_SHOP_TTL, TimeUnit.MINUTES);    if (shop == null) &#123;        return Result.fail(&quot;店铺不存在！！&quot;);    &#125;    return Result.ok(shop);&#125;
+
+
+然后是解决缓存击穿问题，整体是有两种的，都封装一下
+逻辑过期互斥锁这里面其实锁的 key 也要传一下
+// 线程池，有10个线程private static final ExecutorService CACHE_REBUILD_EXECUTOR = Executors.newFixedThreadPool(10);public &lt;R, ID&gt; R queryWithLogicalExpire(String keyPrefix,                                        ID id,                                        Class&lt;R&gt; type,                                        Function&lt;ID, R&gt; dbFallback,                                        Long time,                                        TimeUnit timeUnit)  &#123;    String key = keyPrefix + id;    // 1 从 Redis 查询缓存    String json = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否命中    if (StrUtil.isBlank(json)) &#123;        // 3 未命中，直接返回        return null;    &#125;    // 4 命中, JSON反序列化为对象    RedisData redisData = JSONUtil.toBean(json, RedisData.class);    R r = JSONUtil.toBean((JSONObject) redisData.getData(), type); // 强转    LocalDateTime expireTime = redisData.getExpireTime();    // 5. 判断是否过期    if(expireTime.isAfter(LocalDateTime.now()))&#123;        // 5.1 未过期，直接返回信息        return r;    &#125;    // 5.2 已过期，需要缓存重建    // 6 缓存重建    // 6.1 获取互斥锁    String lockKey = LOCK_SHOP_KEY + id;    boolean isLock = tryLock(lockKey);    // 6.2 判断是否获取锁成功    if (isLock) &#123;        // 6.3 成功，开启独立线程，实现缓存重建        CACHE_REBUILD_EXECUTOR.submit(() -&gt; &#123;            try &#123;                // 查询数据库                R r1 = dbFallback.apply(id);                // 放入缓存                this.setWithLogicalExpire(key, r1, time, timeUnit);            &#125; catch (Exception e) &#123;                throw new RuntimeException(e);            &#125; finally &#123;                // 释放锁                unlock(lockKey);            &#125;        &#125;);    &#125;    // 6.4 无论成功与否都返回过期信息    return r;&#125;public &lt;R, ID&gt; R queryWithMutex(String keyPrefix,                                ID id, Class&lt;R&gt; type,                                Function&lt;ID, R&gt; dbFallback,                                Long time,                                TimeUnit timeUnit) &#123;    String key = keyPrefix + id;    // 1 从 Redis 查询缓存    String json = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否命中    if (StrUtil.isNotBlank(json)) &#123;        // 3 命中，直接返回        return JSONUtil.toBean(json, type);    &#125;    // 判断命中的是否是空值    if (json != null) &#123;        // 返回一个错误信息        return null;    &#125;    String lockKey = &quot;lock:shop:&quot; + id;    R r = null;    // 4 实现缓存重建    // 4.1 获取互斥锁    try &#123;        boolean isLock = tryLock(lockKey);        // 4.2 判断是否成功        if (!isLock) &#123;            // 4.3 失败则休眠并重试            Thread.sleep(50); // 50ms            return queryWithMutex(keyPrefix, id, type, dbFallback, time, timeUnit); // 递归        &#125;        // 4.4 成功，根据 id 查询数据库        // 注意：获取锁成功应该再次检查 redis 缓存是否存在，做 DoubleCheck。如果存在则无需重建缓存        r = dbFallback.apply(id);        // 5 不存在，空值写入缓存，返回错误        if (r == null) &#123;            stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);            return null;        &#125;        // 6 存在，写入 Redis        this.set(key, r, time, timeUnit);    &#125; catch (InterruptedException e) &#123;        throw new RuntimeException(e);    &#125; finally &#123; // 无论是否成功都要释放        // 7 释放互斥锁        unlock(lockKey);    &#125;    // 8 返回    return r;&#125;
+
+整体完整代码如下
+@Slf4j@Component // 注册为组件public class CacheClient &#123;    @Resource    private StringRedisTemplate stringRedisTemplate;    // 线程池，有10个线程    private static final ExecutorService CACHE_REBUILD_EXECUTOR = Executors.newFixedThreadPool(10);    public void set(String key, Object value, Long time, TimeUnit timeUnit) &#123;        stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(value),time, timeUnit);    &#125;    public void setWithLogicalExpire(String key, Object value, Long time, TimeUnit timeUnit) &#123;        // 设置逻辑过期        RedisData redisData = new RedisData();        redisData.setData(value);        // 转为 seconds        redisData.setExpireTime(LocalDateTime.now().plusSeconds(timeUnit.toSeconds(time)));        stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(redisData));    &#125;    public &lt;R, ID&gt; R queryWithPassThrough(String keyPrefix,                                          ID id,                                          Class&lt;R&gt; type,                                          Function&lt;ID, R&gt; dbFallback,                                          Long time,                                          TimeUnit timeUnit) &#123;        String key = keyPrefix + id;        String json = stringRedisTemplate.opsForValue().get(key);        if (StrUtil.isNotBlank(json)) &#123;            return JSONUtil.toBean(json, type);        &#125;        if (json != null) &#123;            return null;        &#125;        R r = dbFallback.apply(id);        if (r == null) &#123;            stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);            return null;        &#125;        this.set(key, r, time, timeUnit);        return r;    &#125;    public &lt;R, ID&gt; R queryWithLogicalExpire(String keyPrefix,                                            ID id,                                            Class&lt;R&gt; type,                                            Function&lt;ID, R&gt; dbFallback,                                            Long time,                                            TimeUnit timeUnit)  &#123;        String key = keyPrefix + id;        // 1 从 Redis 查询缓存        String json = stringRedisTemplate.opsForValue().get(key);        // 2 判断是否命中        if (StrUtil.isBlank(json)) &#123;            // 3 未命中，直接返回            return null;        &#125;        // 4 命中, JSON反序列化为对象        RedisData redisData = JSONUtil.toBean(json, RedisData.class);        R r = JSONUtil.toBean((JSONObject) redisData.getData(), type); // 强转        LocalDateTime expireTime = redisData.getExpireTime();        // 5. 判断是否过期        if(expireTime.isAfter(LocalDateTime.now()))&#123;            // 5.1 未过期，直接返回商铺信息            return r;        &#125;        // 5.2 已过期，需要缓存重建        // 6 缓存重建        // 6.1 获取互斥锁        String lockKey = LOCK_SHOP_KEY + id;        boolean isLock = tryLock(lockKey);        // 6.2 判断是否获取锁成功        if (isLock) &#123;            // 6.3 成功，开启独立线程，实现缓存重建            CACHE_REBUILD_EXECUTOR.submit(() -&gt; &#123;                try &#123;                    // 查询数据库                    R r1 = dbFallback.apply(id);                    // 放入缓存                    this.setWithLogicalExpire(key, r1, time, timeUnit);                &#125; catch (Exception e) &#123;                    throw new RuntimeException(e);                &#125; finally &#123;                    // 释放锁                    unlock(lockKey);                &#125;            &#125;);        &#125;        // 6.4 无论成功与否都返回过期的商铺信息        return r;    &#125;    public &lt;R, ID&gt; R queryWithMutex(String keyPrefix,                                    ID id, Class&lt;R&gt; type,                                    Function&lt;ID, R&gt; dbFallback,                                    Long time,                                    TimeUnit timeUnit) &#123;        String key = keyPrefix + id;        // 1 从 Redis 查询缓存        String json = stringRedisTemplate.opsForValue().get(key);        // 2 判断是否命中        if (StrUtil.isNotBlank(json)) &#123;            // 3 命中，直接返回            return JSONUtil.toBean(json, type);        &#125;        // 判断命中的是否是空值        if (json != null) &#123;            // 返回一个错误信息            return null;        &#125;        String lockKey = &quot;lock:shop:&quot; + id;        R r = null;        // 4 实现缓存重建        // 4.1 获取互斥锁        try &#123;            boolean isLock = tryLock(lockKey);            // 4.2 判断是否成功            if (!isLock) &#123;                // 4.3 失败则休眠并重试                Thread.sleep(50); // 50ms                return queryWithMutex(keyPrefix, id, type, dbFallback, time, timeUnit); // 递归            &#125;            // 4.4 成功，根据 id 查询数据库            // 注意：获取锁成功应该再次检查 redis 缓存是否存在，做 DoubleCheck。如果存在则无需重建缓存            r = dbFallback.apply(id);            // 5 不存在，空值写入缓存，返回错误            if (r == null) &#123;                stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);                return null;            &#125;            // 6 存在，写入 Redis            this.set(key, r, time, timeUnit);        &#125; catch (InterruptedException e) &#123;            throw new RuntimeException(e);        &#125; finally &#123; // 无论是否成功都要释放            // 7 释放互斥锁            unlock(lockKey);        &#125;        // 8 返回        return r;    &#125;    private boolean tryLock(String key) &#123;        Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(key, &quot;1&quot;, 10, TimeUnit.SECONDS);        return BooleanUtil.isTrue(flag); // 防止 flag 为 null    &#125;    private void unlock(String key) &#123;        stringRedisTemplate.delete(key);    &#125;&#125;
+
+优惠券秒杀全局唯一ID在各类购物 APP 里面，都有优惠券（满45减50），用户下单之后，会把订单信息保存起来，如果订单表和别的一些表一样也用数据库自增 ID 就会出现一些问题。
+
+id 规律太明显：用户下单之后，通常会发送给用户订单号，如果是自增的，那么就很容易猜出来敏感信息，比如一天卖了多少单
+受单表数据量大限制：商场规模越来越大的时候，订单量也越来越大，而 MySQL 单表容量不宜超过 500W，数据量过大之后就需要拆库拆表，拆分表之后，如果每张表还是自增 ID，就会出现 ID 重复的问题，所以需要我们保证 ID 的唯一性。
+
+接下来，引出我们的 全局 ID 生成器, 全局ID生成器是一种在分布式系统下用来生成全局唯一ID的工具，一般要满足一下特性
+
+唯一性(不能有重复 ID)
+高可用(任何时候来索要 ID 都能成功, 不能出现宕机、错误)
+高性能(生成 ID 速度快)
+递增性(ID 主键变大，因为是替代数据库自增，有利于数据库建立索引，提高插入速度)
+安全性(规律性不能太强)
+
+为了增加 ID 的安全性，我们可以不直接使用 Redis 自增的数值，而是拼接一些其它信息
+
+ID组成部分
+
+符号位：1bit，永远为0
+时间戳：31bit，以秒为单位，可以使用69年（2^31秒约等于69年）
+序列号：32bit，秒内的计数器，支持每秒传输2^32个不同ID
+
+完整代码如下
+@Componentpublic class RedisIdWorker &#123;    // 开始时间戳 这里设定的是 2022.01.01 00:00:00    private static final long BEGIN_TIMESTAMP = 1640995200L;    // 序列号位数    private static final int COUNT_BITS = 32;    @Resource    private StringRedisTemplate stringRedisTemplate;    public long nextId(String keyPrefix) &#123;        // 1 生成时间戳        LocalDateTime now = LocalDateTime.now();        long nowSecond = now.toEpochSecond(ZoneOffset.UTC);        long timestamp = nowSecond - BEGIN_TIMESTAMP;        // 2 生成序列号        // 2.1 获取当前日期，精确到天        String date = now.format(DateTimeFormatter.ofPattern(&quot;yyyyMMdd&quot;));        // 2.2 自增长, 值不存在时会自动创建并赋值 0 然后 +1 返回        long count = stringRedisTemplate.opsForValue().increment(&quot;icr:&quot; + keyPrefix + &quot;:&quot; + date);        // 3 拼接并返回        return timestamp &lt;&lt; COUNT_BITS | count;    &#125;&#125;
+
+这里序列号的获取是通过 Redis 自增来实现的，这里的 key 使用的是 &quot;icr:&quot; + keyPrefix + &quot;:&quot; + date, 如果只用 &quot;icr:&quot; + keyPrefix，那么它就会越来越大，加上 date 之后不仅可以有一个每天重置的效果，也方便后续统计每天的订单量。
+keyPrefix 是不同业务的前缀，比如 order
+获取 BEGIN_TIMESTAMP 的方式如下public static void main(String[] args) &#123;    //设置一下起始时间，时间戳就是起始时间与当前时间的秒数差    LocalDateTime tmp = LocalDateTime.of(2022, 1, 1, 0, 0, 0);    System.out.println(tmp.toEpochSecond(ZoneOffset.UTC));    //结果为1640995200L&#125;
+
+下面对比几种全局唯一 ID 生成策略
+
+
+
+策略
+原理
+优点
+缺点
+场景
+
+
+
+UUID
+基于算法生成一个 128 位的长字符串
+本地生成，性能极高
+太长且无序。作为 MySQL 主键会导致 B+ 树索引频繁分裂，影响插入性能
+不需要排序、不作为数据库主键的场景（如：临时文件名、日志追踪 ID）
+
+
+Redis 自增
+利用 Redis 的原子操作 INCR。为了好管理，通常采用 时间戳 + 序列号 的组合
+有序性：对数据库索引友好高性能：Redis 每秒支持 10w+ 写入
+依赖 Redis，如果宕机业务就挂了(利用集群、哨兵来保障)
+秒杀券、订单号生成(高并发且需要数字递增
+
+
+Twitter 开源的算法。将一个 64 位的 long 拆分,1位符号位（固定 0） + 41位时间戳 + 10位机器 ID + 12位序列号
+本地生成，递增性
+时钟回拨问题。如果服务器时间跳回到过去，可能会生成重复ID
+大厂分布式环境下的通用主键生成策略
+
+
+
+还有一种方法，单独介绍一下，其他雪花算法和UUID都知道一点。数据库分段模式在分布式环境下，为了克服单机数据库自增的缺点，专门建立一个独立的数据库表来统一管理ID生成工作流程：
+
+预取号段：Java 服务启动时，去这张表里“批发”一批 ID。比如把 order_id 从 1000 改为 1500。
+内存自增：Java 服务把这 500 个 ID 存在自己的内存里。
+消耗号段：每来一个订单，内存里的 ID 就加 1，完全不访问数据库。
+再次批发：当这 500 个 ID 用完了，再去数据库表里拿下一个号段。
+
+优点
+
+比纯数据库自增快得多，因为不是每次下单都扫数据库
+ID 绝对自增，对MySQL的聚簇索引友好，查询性能高缺点
+强依赖数据库，如果主键表所在的数据库挂了，整个系统都拿不到ID
+如果Java服务宕机，内存没消耗的号段就没了（虽通常也不是大问题）
+
+添加优惠券优惠券也分为两种类型，平价券和秒杀券，平价券什么时候都可以抢，没有数量限制，秒杀券有时间限制、库存限制。数据库有两张表，tb_voucher 和 tb_seckill_vocher秒杀券也是一种优惠券，所以 tb_seckill_voucher 的主键对应 tb_voucher 里面的主键。
+代码逻辑如下
+新增普通券新增秒杀券将普通的券信息保存到表中
+@PostMappingpublic Result addVoucher(@RequestBody Voucher voucher) &#123;    voucherService.save(voucher);    return Result.ok(voucher.getId());&#125;逻辑在 addSeckillVoucher 中, 先保存一份优惠券信息，再把信息放到秒杀券里面
+@PostMapping(&quot;seckill&quot;)public Result addSeckillVoucher(@RequestBody Voucher voucher) &#123;    voucherService.addSeckillVoucher(voucher);    return Result.ok(voucher.getId());&#125;
+@Override@Transactionalpublic void addSeckillVoucher(Voucher voucher) &#123;    // 保存优惠券    save(voucher);    // 保存秒杀信息    SeckillVoucher seckillVoucher = new SeckillVoucher();    // 关联普通券id    seckillVoucher.setVoucherId(voucher.getId());    // 设置库存    seckillVoucher.setStock(voucher.getStock());    // 设置开始时间    seckillVoucher.setBeginTime(voucher.getBeginTime());    // 设置结束时间    seckillVoucher.setEndTime(voucher.getEndTime());    // 保存信息到秒杀券表中    seckillVoucherService.save(seckillVoucher);&#125;
+
+然后我们通过 bruno 添加一个秒杀券，数据如下
+&#123;    &quot;shopId&quot;:1,    &quot;title&quot;:&quot;100元代金券&quot;,    &quot;subTitle&quot;:&quot;周一至周五可用&quot;,    &quot;rules&quot;:&quot;全场通用\\n无需预约\\n可无限叠加&quot;,    &quot;payValue&quot;:8000,    &quot;actualValue&quot;:10000,    &quot;type&quot;:1,    &quot;stock&quot;:100,    &quot;beginTime&quot;:&quot;2026-01-01T00:00:00&quot;,    &quot;endTime&quot;:&quot;2026-10-31T23:59:59&quot;&#125;
+
+实现秒杀下单下单时需要判断两点
+
+秒杀是否开始或结束，如果尚未开始或已经结束则无法下单
+库存是否充足，不足则无法下单
+
+流程如下
+
+代码如下
+@Override@Transactionalpublic Result seckillVocher(Long voucherId) &#123;    // 1 查询优惠券信息    SeckillVoucher voucher = seckillVoucherService.getById(voucherId);    // 2 判断秒杀是否开始    if (voucher.getBeginTime().isAfter(LocalDateTime.now())) &#123;        // 尚未开始        return Result.fail(&quot;秒杀尚未开始!&quot;);    &#125;    // 3 判断秒杀是否结束    if (voucher.getEndTime().isBefore(LocalDateTime.now())) &#123;        // 已经结束        return Result.fail(&quot;秒杀已经结束!&quot;);    &#125;    // 4 判断库存是否充足    if (voucher.getStock() &lt; 1) &#123;        return Result.fail(&quot;库存不足!&quot;);    &#125;    // 5 扣减库存    boolean success = seckillVoucherService.update()            .eq(&quot;voucher_id&quot;, voucherId)            .setSql(&quot;stock = stock - 1&quot;)            .update(); // 执行更新，两个 update 返回值不一样哦    if (!success) &#123;        // 扣减失败        return Result.fail(&quot;库存不足!&quot;);    &#125;    // 6 创建订单    VoucherOrder voucherOrder = new VoucherOrder();    // 6.1 订单id    long orderId = redisIdWorker.nextId(&quot;order&quot;);    voucherOrder.setId(orderId);    // 6.2 用户id    Long userId = UserHolder.getUser().getId();    voucherOrder.setUserId(userId);    // 6.3 代金券id    voucherOrder.setVoucherId(voucherId);    this.save(voucherOrder);    // 7 返回订单 id    return Result.ok(orderId);&#125;
+
+
+涉及订单、优惠券两次操作表，所以添加了事务 Transactional
+用 UserHolder.getUser().getId() 来获取当前用户 ID
+用 redisIdWorker.nextId(&quot;order&quot;) 来获取全局唯一 ID
+
+超卖问题之前的代码在遇到高并发的时候，会出现超卖现象，我们可以用 JMeter 开 200 个线程来模拟抢优惠券的场景
+设置 Http 请求头，把 token 放进去，防止被拦截设置 200 个线程模拟 200 个用户抢同一个优惠券我们把优惠券数量再改回 100，订单删掉，方便观察
+
+
+按理来说应该是 200 个用户抢 100 个券，有 100 个人抢到，200 个人没抢到，库存剩余 0, 订单数量是 100但是结果是库存剩余 -9订单数量是 109
+那我们就得分析一下问题了，理想中应该是下面这种情况线程 1 查询库存只有一个，大于 0，减去了 1 库存。线程 2 查询库存剩 0 个，就无法购买了。
+但是多线程情况下就会出现下面这种情况，线程 1 查询到库存到减去库存这中间，很多线程都去查了库存，都得到结果 1，他们都判断结果大于 0，所以都去进行了扣减，都下了单！！！也就是下面这段代码的问题，多个线程在同一时间读取库存都认为充足，都去执行了扣减库存的操作。
+// 4 判断库存是否充足if (voucher.getStock() &lt; 1) &#123;    return Result.fail(&quot;库存不足!&quot;);&#125;// 5 扣减库存boolean success = seckillVoucherService.update()        .eq(&quot;voucher_id&quot;, voucherId)        .setSql(&quot;stock = stock - 1&quot;)        .update(); // 执行更新，两个 update 返回值不一样哦if (!success) &#123;    // 扣减失败    return Result.fail(&quot;库存不足!&quot;);&#125;
+
+解决方案超卖问题是典型的多线程安全问题，针对这一问题的常见解决方案就是加锁：而对于加锁，我们通常有两种解决方案
+
+悲观锁
+悲观锁认为线程安全问题一定会发生，因此在操作数据之前先获取锁，确保线程串行执行
+例如Synchronized、Lock、数据库的互斥锁，都是悲观锁
+
+
+乐观锁
+乐观锁认为线程安全问题不一定会发生，因此不加锁，只是在更新数据的时候再去判断有没有其他线程对数据进行了修改
+如果没有修改，则认为自己是安全的，自己才可以更新数据
+如果已经被其他线程修改，则说明发生了安全问题，此时可以重试或者异常
+
+
+
+
+
+悲观锁优点是简单粗暴，但是性能一般，因为是串行执行乐观锁不加锁，在更新时判断是否有其他线程在修改，优点是性能好，但是存在成功率低的问题
+这里我们主要是用乐观锁比如这里，刚开始 stock  = 1, version = 1
+
+线程 1 查询库存和版本号，为 1, 1
+线程 2 也来查询了库存和版本号 1, 1
+线程 1 进行扣减库存，发现 version 和查询时版本一致，代表库存没有被变动过，执行更新操作
+线程 2 进行扣减库存，发现 version 和查询时版本不一致，所以不能更新扣减库存
+
+乐观锁还有一种变种的处理方式 CAS(Compare-And-Swap), 利用CAS进行无锁化机制加锁，刚刚介绍的方法需要借助 version 字段来实现，但是 stock 本身就能充当这个功能，它本身的值就能作为 version 来使用。
+乐观锁解决超卖我们采用 CAS 法
+boolean success = seckillVoucherService.update()        .setSql(&quot;stock = stock - 1&quot;)        .eq(&quot;voucher_id&quot;, voucherId)+       .eq(&quot;stock&quot;, voucher.getStock())        .update(); // 执行更新，两个 update 返回值不一样哦if (!success) &#123;    // 扣减失败    return Result.fail(&quot;库存不足!&quot;);&#125;
+我们只需要判断更新的时候库存数量是否和查询的时候一致。
+但是这样其实还是有问题，如果并发在库存还剩 100 的时候有两个线程都读到是 100，第一个线程执行的快，先扣减，库存剩 99, 第二个线程发现版本不对，就不扣减了！但是明明还有库存。
+所以乐观锁存在成功率低的问题，最后跑一下程序可以发现，100 个库存 200 个人抢，最后还能剩好多，没抢完，，，
+所以针对这个场景，我们可以做一个单独优化，只要判断库存大于 0, 其实我就能扣减下单了
+boolean success = seckillVoucherService.update()        .setSql(&quot;stock = stock - 1&quot;)        .eq(&quot;voucher_id&quot;, voucherId)+       .gt(&quot;stock&quot;, 0)        .update(); // 执行更新，两个 update 返回值不一样哦if (!success) &#123;    // 扣减失败    return Result.fail(&quot;库存不足!&quot;);&#125;
+
+再使用 JMeter 测试，你会发现优惠券刚好抢空了。
+如果必须根本版本来判断，不能特殊处理呢？分批加锁、分段锁, 后面再了解吧
+
+
+
+一人一单优惠券力度一般比较大，所以我们要求同一个优惠券，一个用户只能下一单
+
+初步代码
+@Override@Transactionalpublic Result seckillVocher(Long voucherId) &#123;    // 1 查询优惠券信息    SeckillVoucher voucher = seckillVoucherService.getById(voucherId);    // 2 判断秒杀是否开始    if (voucher.getBeginTime().isAfter(LocalDateTime.now())) &#123;        // 尚未开始        return Result.fail(&quot;秒杀尚未开始!&quot;);    &#125;    // 3 判断秒杀是否结束    if (voucher.getEndTime().isBefore(LocalDateTime.now())) &#123;        // 已经结束        return Result.fail(&quot;秒杀已经结束!&quot;);    &#125;    // 4 判断库存是否充足    if (voucher.getStock() &lt; 1) &#123;        return Result.fail(&quot;库存不足!&quot;);    &#125;    // 5 一人一单+   Long userId = UserHolder.getUser().getId();    // 5.1 查询订单+   Long count = query().eq(&quot;user_id&quot;, userId).eq(&quot;voucher_id&quot;, voucherId).count();    // 5.2 判断是否存在+   if (count &gt; 0) &#123;+       return Result.fail(&quot;用户已经买过一次了!&quot;);+   &#125;    // 6 扣减库存    boolean success = seckillVoucherService.update()            .setSql(&quot;stock = stock - 1&quot;)            .eq(&quot;voucher_id&quot;, voucherId)            .gt(&quot;stock&quot;, 0)            .update(); // 执行更新，两个 update 返回值不一样哦    if (!success) &#123;        // 扣减失败        return Result.fail(&quot;库存不足!&quot;);    &#125;    // 7 创建订单    VoucherOrder voucherOrder = new VoucherOrder();    // 7.1 订单id    long orderId = redisIdWorker.nextId(&quot;order&quot;);    voucherOrder.setId(orderId);    // 7.2 用户id    voucherOrder.setUserId(userId);    // 7.3 代金券id    voucherOrder.setVoucherId(voucherId);    this.save(voucherOrder);    // 8 返回订单 id    return Result.ok(orderId);&#125;
+但是这个还是存在问题，如果这个用户故意开多线程抢优惠券，在查询订单的时候多个线程都判断到没买过，那么还是会继续向下执行扣减库存的操作，但是这个又和乐观锁解决不一样，因为乐观锁是作用在更新操作上，这个查询没办法用乐观锁。所以这里使用悲观锁来解决这个问题。
+我们把一人一单逻辑的代码提取到 createVoucherOrder 方法中，然后对这个方法加 synchronized 锁
+不管哪一个线程（例如线程A），运行到这个方法时，都要检查有没有其它线程B（或者C、 D等）正在用这个方法(或者该类的其他同步方法)，有的话要等正在使用 synchronized 方法的线程B（或者C 、D）运行完这个方法后再运行此线程A，没有的话，锁定调用者，然后直接运行。
+@Overridepublic Result seckillVocher(Long voucherId) &#123;    // 1 查询优惠券信息    SeckillVoucher voucher = seckillVoucherService.getById(voucherId);    // 2 判断秒杀是否开始    if (voucher.getBeginTime().isAfter(LocalDateTime.now())) &#123;        // 尚未开始        return Result.fail(&quot;秒杀尚未开始!&quot;);    &#125;    // 3 判断秒杀是否结束    if (voucher.getEndTime().isBefore(LocalDateTime.now())) &#123;        // 已经结束        return Result.fail(&quot;秒杀已经结束!&quot;);    &#125;    // 4 判断库存是否充足    if (voucher.getStock() &lt; 1) &#123;        return Result.fail(&quot;库存不足!&quot;);    &#125;    return createVoucherOrder(voucherId);&#125;// 因为这个方法才进行了插入修改，所以 @Transactional 注解搬到这里@Transactionalpublic synchronized Result createVoucherOrder(Long voucherId) &#123;    // 5 一人一单    Long userId = UserHolder.getUser().getId();    // 5.1 查询订单    Long count = query().eq(&quot;user_id&quot;, userId).eq(&quot;voucher_id&quot;, voucherId).count();    // 5.2 判断是否存在    if (count &gt; 0) &#123;        return Result.fail(&quot;用户已经买过一次了!&quot;);    &#125;    // 6 扣减库存    boolean success = seckillVoucherService.update()            .setSql(&quot;stock = stock - 1&quot;)            .eq(&quot;voucher_id&quot;, voucherId)            .gt(&quot;stock&quot;, 0)            .update(); // 执行更新，两个 update 返回值不一样哦    if (!success) &#123;        // 扣减失败        return Result.fail(&quot;库存不足!&quot;);    &#125;    // 7 创建订单    VoucherOrder voucherOrder = new VoucherOrder();    // 7.1 订单id    long orderId = redisIdWorker.nextId(&quot;order&quot;);    voucherOrder.setId(orderId);    // 7.2 用户id    voucherOrder.setUserId(userId);    // 7.3 代金券id    voucherOrder.setVoucherId(voucherId);    this.save(voucherOrder);    // 8 返回订单 id    return Result.ok(orderId);&#125;
+
+这样加锁，锁的细粒度太粗了，在使用锁的过程中，控制锁粒度是一个非常重要的事情，因为如果锁的粒度太大，会导致每个线程进来都会被锁住，现在的情况就是所有用户都公用这一把锁，串行执行，效率很低，我们现在要完成的业务是一人一单，所以这个锁，应该只加在单个用户上，用户标识可以用 userId
+@Transactionalpublic Result createVoucherOrder(Long voucherId) &#123;    // 5 一人一单    Long userId = UserHolder.getUser().getId();    synchronized (userId.toString().intern()) &#123; // 对 userId 加锁        // 5.1 查询订单        Long count = query().eq(&quot;user_id&quot;, userId).eq(&quot;voucher_id&quot;, voucherId).count();        // 5.2 判断是否存在        if (count &gt; 0) &#123;            return Result.fail(&quot;用户已经买过一次了!&quot;);        &#125;        // 6 扣减库存        boolean success = seckillVoucherService.update()                .setSql(&quot;stock = stock - 1&quot;)                .eq(&quot;voucher_id&quot;, voucherId)                .gt(&quot;stock&quot;, 0)                .update(); // 执行更新，两个 update 返回值不一样哦        if (!success) &#123;            // 扣减失败            return Result.fail(&quot;库存不足!&quot;);        &#125;        // 7 创建订单        VoucherOrder voucherOrder = new VoucherOrder();        // 7.1 订单id        long orderId = redisIdWorker.nextId(&quot;order&quot;);        voucherOrder.setId(orderId);        // 7.2 用户id        voucherOrder.setUserId(userId);        // 7.3 代金券id        voucherOrder.setVoucherId(voucherId);        this.save(voucherOrder);        // 8 返回订单 id        return Result.ok(orderId);    &#125;    // 执行到这里，锁已经被释放了，但是可能当前事务还未提交，如果此时有线程进来，不能确保事务不出问题&#125;
+
+由于 toString 的源码是 new String()，所以如果我们只用 userId.toString() 拿到的也不是同一个用户，需要使用 intern()，如果字符串常量池中已经包含了一个等于这个 string 对象的字符串（由equals（object）方法确定），那么将返回池中的字符串。否则，将此 String 对象添加到池中，并返回对此 String 对象的引用。
+但是上述代码还是存在问题，问题在于当前方法是 Spring 的事务控制，如果在内部加锁，会导致当前方法事务还没有提交，但是锁已经释放了，这样也会导致问题，所以我们选择将当前方法整体包裹起来，确保事务不会出现问题
+@Overridepublic Result seckillVocher(Long voucherId) &#123;    // 1 查询优惠券信息    SeckillVoucher voucher = seckillVoucherService.getById(voucherId);    // 2 判断秒杀是否开始    if (voucher.getBeginTime().isAfter(LocalDateTime.now())) &#123;        // 尚未开始        return Result.fail(&quot;秒杀尚未开始!&quot;);    &#125;    // 3 判断秒杀是否结束    if (voucher.getEndTime().isBefore(LocalDateTime.now())) &#123;        // 已经结束        return Result.fail(&quot;秒杀已经结束!&quot;);    &#125;    // 4 判断库存是否充足    if (voucher.getStock() &lt; 1) &#123;        return Result.fail(&quot;库存不足!&quot;);    &#125;    Long userId = UserHolder.getUser().getId();    synchronized (userId.toString().intern()) &#123;        return createVoucherOrder(voucherId); // 这样就是方法执行完，事务提交了才释放锁    &#125;&#125;
+但是这还是有问题，因为调用的方法，其实是 this. 的方式调用的，但是事务是 Spring 管理的，也就是说加了 @Transactional 会生成一个代理对象，由代理对象进行的事务提交，所以这个地方，我们需要获取原始的事务对象，来操作事务，这里可以使用 AopContext.currentProxy() 来获取当前对象的代理对象，然后再用代理对象调用方法，记得要去 IVoucherOrderService 中创建 createVoucherOrder 方法
+方法接口定义@Overridepublic Result seckillVocher(Long voucherId) &#123;    // 1 查询优惠券信息    SeckillVoucher voucher = seckillVoucherService.getById(voucherId);    // 2 判断秒杀是否开始    if (voucher.getBeginTime().isAfter(LocalDateTime.now())) &#123;        // 尚未开始        return Result.fail(&quot;秒杀尚未开始!&quot;);    &#125;    // 3 判断秒杀是否结束    if (voucher.getEndTime().isBefore(LocalDateTime.now())) &#123;        // 已经结束        return Result.fail(&quot;秒杀已经结束!&quot;);    &#125;    // 4 判断库存是否充足    if (voucher.getStock() &lt; 1) &#123;        return Result.fail(&quot;库存不足!&quot;);    &#125;    Long userId = UserHolder.getUser().getId();    synchronized (userId.toString().intern()) &#123;        IVoucherOrderService proxy = (IVoucherOrderService)AopContext.currentProxy();        return proxy.createVoucherOrder(voucherId);    &#125;&#125;public interface IVoucherOrderService extends IService&lt;VoucherOrder&gt; &#123;    Result seckillVocher(Long voucherId);    Result createVoucherOrder(Long voucherId); // 定义这个方法&#125;
+
+但是这个方法也会用到一个依赖，我们需要导入一下
+pom.xml注解开启&lt;dependency&gt;    &lt;groupId&gt;org.aspectj&lt;/groupId&gt;    &lt;artifactId&gt;aspectjweaver&lt;/artifactId&gt;&lt;/dependency&gt;启动类上加上注解
+@MapperScan(&quot;com.hmdp.mapper&quot;)@EnableAspectJAutoProxy(exposeProxy = true) // 开启@SpringBootApplicationpublic class HmDianPingApplication &#123;    public static void main(String[] args) &#123;        SpringApplication.run(HmDianPingApplication.class, args);    &#125;&#125;
+
+测试200个并发，结果是只抢了一单，因为我们设定 200 个线程进行抢的时候，设置了请求头，这个头是跟用户绑定的，所以相当于1个人发起了 200 次请求。
+集群下的并发问题通过加锁可以解决在单机情况下的一人一单安全问题，但是在集群模式下就不行了
+
+我们将服务启动两份，端口分别为 8081 和 8082
+然后修改 nginx 的 config 目录下的 nginx.conf 文件，配置反向代理和负载均衡（默认轮询就行）也就是把请求以轮询方式分发给 8081 和 8082具体操作，我们使用 POSTMAN 发送两次请求，header 携带同一用户的 token，尝试用同一账号抢两张优惠券，发现是可行的。
+
+失败原因分析：由于我们部署了两个 Tomcat，每个 Tomcat 都有一个属于自己的 jvm，那么假设在服务器 A 的 Tomcat 内部，有两个线程，即线程1和线程2，这两个线程使用的是同一份代码，那么他们的锁对象是同一个，是可以实现互斥的。但是如果在另一个 Tomcat 的内部，又有两个线程，但是他们的锁对象虽然写的和服务器 A 一样，但是锁对象却不是同一个，所以线程3和线程4可以实现互斥，但是却无法和线程1和线程2互斥这就是集群环境下，syn锁失效的原因，在这种情况下，我们需要使用分布式锁来解决这个问题，让锁不存在于每个 jvm 的内部，而是让所有 jvm 公用外部的一把锁（Redis）
+分布式锁基本原理与实现方式对比分布式锁：满足分布式系统或集群模式下多进程(多JVM)可见并且互斥的锁
+分布式锁的核心思想就是让大家共用同一把锁，那么我们就能锁住线程，不让线程进行，让程序串行执行，这就是分布式锁的核心思路
+
+分布式锁应该满足哪些条件？
+
+多进程可见：多个线程都能看到它(比如把锁放到 Redis、MySQL 这些独立于 JVM 的, 其实线程都能看到)。
+互斥：互斥是分布式锁的最基本条件，使得程序串行执行
+高可用：程序不易崩溃，时时刻刻都保证较高的可用性
+高性能：由于加锁本身就让性能降低，所以对于分布式锁需要他较高的加锁性能和释放锁性能
+安全性：安全也是程序中必不可少的一环
+
+
+
+
+
+MySQL
+Redis
+Zookeeper
+
+
+
+互斥
+利用mysql本身的互斥锁机制
+利用setnx这样的互斥命令
+利用节点的唯一性和有序性实现互斥
+
+
+高可用
+好(也支持主从)
+好
+好
+
+
+高性能
+一般
+好
+一般
+
+
+安全性
+断开连接，自动释放锁(数据也会回滚)
+利用锁超时时间，到期释放
+临时节点，断开连接自动释放
+
+
+常见的分布式锁有三种
+
+MySQL：MySQL本身就带有锁机制，并且有事务、但是由于MySQL的性能一般，所以采用分布式锁的情况下，使用MySQL作为分布式锁比较少见
+Redis：Redis作为分布式锁是非常常见的一种使用方式，现在企业级开发中基本都是用Redis或者Zookeeper作为分布式锁，利用SETNX这个方法，如果插入Key成功，则表示获得到了锁，如果有人插入成功，那么其他人就回插入失败，无法获取到锁，利用这套逻辑完成互斥，从而实现分布式锁。
+Zookeeper：Zookeeper也是企业级开发中较好的一种实现分布式锁的方案，但本文是学Redis的，所以这里就不过多阐述了
+
+基于 Redis 的分布式锁实现分布式锁时需要实现两个基本方法
+
+获取锁
+
+互斥：确保只能有一个线程获取锁
+非阻塞：尝试一次，成功返回true，失败返回false。也有阻塞式, 就是获取不到锁的时候就阻塞等待，这里先不实现SET lock thread01 NX EX 10
+
+
+释放锁
+
+手动释放DEL lock
+超时释放：获取锁的时候添加一个超时时间
+
+
+核心思路我们利用 redis 的 SETNX 方法，当有多个线程进入时，我们就利用该方法来获取锁。第一个线程进入时，redis 中就有这个key了，返回了1，如果结果是1，则表示他抢到了锁，那么他去执行业务，然后再删除锁，退出锁逻辑，没有抢到锁（返回了0）的线程，等待一定时间之后重试
+
+
+
+如果业务超时或者服务宕机也有超时释放的机制
+基于 Redis 实现分布式锁的初级版本我们先定义一个锁的接口
+public interface ILock &#123;    /**     * 尝试获取锁     *     * @param timeoutSec 锁持有的超时时间，过期自动释放     * @return true表示获取锁成功，false表示获取锁失败     */    boolean tryLock(long timeoutSec);    /**     * 释放锁     */    void unlock();&#125;
+
+然后我们实现一下
+public class SimpleRedisLock implements ILock &#123;    //锁的前缀    private static final String KEY_PREFIX = &quot;lock:&quot;;    //具体业务名称，将前缀和业务名拼接之后当做Key    private String name;    //这里不是@Autowired注入，采用的是构造器注入，在创建SimpleRedisLock时，将RedisTemplate作为参数传入    private StringRedisTemplate stringRedisTemplate;    public SimpleRedisLock(String name, StringRedisTemplate stringRedisTemplate) &#123;        this.name = name;        this.stringRedisTemplate = stringRedisTemplate;    &#125;    @Override    public boolean tryLock(long timeoutSec) &#123;        //获取线程标识        long threadId = Thread.currentThread().getId();        //获取锁，使用SETNX方法进行加锁，同时设置过期时间，防止死锁        Boolean success = stringRedisTemplate.opsForValue().setIfAbsent(KEY_PREFIX + name, threadId + &quot;&quot;, timeoutSec, TimeUnit.SECONDS);        //自动拆箱可能会出现null，这样写更稳妥        return Boolean.TRUE.equals(success);    &#125;    @Override    public void unlock() &#123;        //通过DEL来删除锁        stringRedisTemplate.delete(KEY_PREFIX + name);    &#125;&#125;
+
+然后我们改造前面存在集群并发问题的代码
+@Overridepublic Result seckillVocher(Long voucherId) &#123;    // 1 查询优惠券信息    SeckillVoucher voucher = seckillVoucherService.getById(voucherId);    // 2 判断秒杀是否开始    if (voucher.getBeginTime().isAfter(LocalDateTime.now())) &#123;        // 尚未开始        return Result.fail(&quot;秒杀尚未开始!&quot;);    &#125;    // 3 判断秒杀是否结束    if (voucher.getEndTime().isBefore(LocalDateTime.now())) &#123;        // 已经结束        return Result.fail(&quot;秒杀已经结束!&quot;);    &#125;    // 4 判断库存是否充足    if (voucher.getStock() &lt; 1) &#123;        return Result.fail(&quot;库存不足!&quot;);    &#125;    Long userId = UserHolder.getUser().getId();    // 因为我们是要求一个人只能下一单，所以我们用 order:userId 来作为 key    SimpleRedisLock lock = new SimpleRedisLock(&quot;order:&quot; + userId, stringRedisTemplate);    // 获取锁对象    boolean isLock = lock.tryLock(1200); // 时长根据业务来定，一般比业务执行时间长几倍    if (!isLock) &#123;        return Result.fail(&quot;不允许重复下单!&quot;);    &#125;    try&#123;        IVoucherOrderService proxy = (IVoucherOrderService)AopContext.currentProxy();        return proxy.createVoucherOrder(voucherId);    &#125;finally &#123;        lock.unlock();    &#125;&#125;
+
+
+这是怎么解决的集群并发问题呢？原来如果使用 syn 锁，它是依赖于 JVM 的，每个机器上都是互不关联的锁，两份数据。但是如果都用 Redis，不同服务器接的都是同一个 Redis 服务，操作的都是同一份数据。
+
+Redis 分布式锁误删情况说明
+
+持有锁的线程1在锁的内部出现了阻塞，导致他的锁 TTL 到期，自动释放
+此时线程2也来尝试获取锁，由于线程1已经释放了锁，所以线程2可以拿到
+但是现在线程1阻塞完了，继续往下执行，要开始释放锁了
+那么此时就会将属于线程2的锁释放，这就是误删别人锁的情况
+这时候线程3又可以获取到锁了，线程2执行完业务又释放锁了，但是线程3还在执行
+
+解决方案
+解决方案就是在每个线程释放锁的时候，都判断一下这个锁是不是自己的，如果不属于自己，则不进行删除操作。假设还是上面的情况，线程1阻塞，锁自动释放，线程2进入到锁的内部执行逻辑，此时线程1阻塞完了，继续往下执行，开始删除锁，但是线程1发现这把锁不是自己的，所以不进行删除锁的逻辑，当线程2执行到删除锁的逻辑时，如果TTL还未到期，则判断当前这把锁是自己的，于是删除这把锁
+
+改进 Redis 的分布式锁改动：
+
+在获取锁的时候存入线程标识（用UUID标识，在一个JVM中，ThreadId 是递增的，一般不会重复，但是如果是集群模式，有多个JVM，多个JVM之间可能会出现ThreadId重复的情况），
+在释放锁的时候先获取锁的线程标识，判断是否与当前线程标识一致
+如果一致则释放锁
+如果不一致则不释放锁
+
+
+
+改造代码，第一步，改动 RedisLock 锁中的线程标识
+public class SimpleRedisLock implements ILock&#123;    private String name;    private StringRedisTemplate stringRedisTemplate;    private static final String KEY_PREFIX = &quot;lock:&quot;;    private static final String ID_PREFIX = UUID.randomUUID().toString(true) + &quot;-&quot;;    public SimpleRedisLock(String name, StringRedisTemplate stringRedisTemplate) &#123;        this.name = name;        this.stringRedisTemplate = stringRedisTemplate;    &#125;    @Override    public boolean tryLock(long timeoutSec) &#123;        // 获取线程标识 UUID+ThreadId        String threadId = ID_PREFIX + Thread.currentThread().getId();        // 获取锁        Boolean success = stringRedisTemplate.opsForValue()                .setIfAbsent(KEY_PREFIX + name, threadId, timeoutSec, TimeUnit.SECONDS);        return Boolean.TRUE.equals(success);    &#125;    @Override    public void unlock() &#123;        // 获取线程标识        String threadId = ID_PREFIX + Thread.currentThread().getId();        // 获取锁中的标识        String id = stringRedisTemplate.opsForValue().get(KEY_PREFIX + name);        // 判断标识是否一致        if(threadId.equals(id)) &#123;            // 一致则释放锁            stringRedisTemplate.delete(KEY_PREFIX + name);        &#125;    &#125;&#125;
+
+分布式锁原子性问题考虑更为极端的误删情况
+
+假设线程1已经获取了锁，在判断标识一致之后，准备释放锁的时候，又出现了阻塞（例如JVM垃圾回收机制）
+在这个期间锁的TTL到期了，自动释放了
+线程2趁虚而入，拿到了一把锁
+线程1阻塞结束，因为已经执行过判断标识是否一致的代码，所以线程1认为锁还在自己手里，执行删除锁的逻辑，现在线程1把线程2的锁给删了
+
+
+这就是删锁时的原子性问题，出现这个问题的原因是因为判断标识，删锁，不是原子操作
+Lua 脚本解决多条命令原子性问题Redis 提供了 Lua 脚本功能，在一个脚本中编写多条Redis命令，确保多条命令执行时的原子性。Lua是一种编程语言，它的基本语法可以上菜鸟教程看看，链接：https://www.runoob.com/lua/lua-tutorial.html
+这里重点介绍Lua 调用 Redis 的函数。Redis提供的调用函数语法如下
+redis.call(&#x27;命令名称&#x27;,&#x27;key&#x27;,&#x27;其他参数&#x27;, ...)
+
+比如想执行 set name Kyle，则脚本是这样
+redis.call(&#x27;set&#x27;, &#x27;name&#x27;, &#x27;Kyle&#x27;)
+
+例如想要执行 set name David，再执行 get name，则脚本如下
+-- 先执行set name Davidredis.call(&#x27;set&#x27;, &#x27;name&#x27;, &#x27;David&#x27;)-- 再执行get namelocal name = redis.call(&#x27;get&#x27;, &#x27;name&#x27;)-- 返回return name
+
+写好脚本以后，需要用Redis命令来调用脚本，调用脚本的常见命令如下
+EVAL script numkeys key [key ...] arg [arg ...]
+
+例如，我们要调用 redis.call(&#39;set&#39;, &#39;name&#39;, &#39;Kyle&#39;) 这个脚本，语法如下
+EVAL &quot;return redis.call(&#x27;set&#x27;, &#x27;name&#x27;, &#x27;Kyle&#x27;)&quot; 
+
+如果脚本中的key和value不想写死，可以作为参数传递，key类型参数会放入KEYS数组，其他参数会放入ARGV数组，在脚本中可以从KEYS和ARGV数组中获取这些参数
+
+注意：在Lua中，数组下标从1开始
+
+EVAL &quot;return redis.call(&#x27;set&#x27;, KEYS[1], ARGV[1])&quot; 1 name Lucy
+
+上面这个数值 1 代表要传入的 KEY 的个数那现在我们来使用Lua脚本来代替我们释放锁的逻辑
+原逻辑Lua脚本@Overridepublic void unlock() &#123;    // 获取当前线程的标识    String threadId = ID_PREFIX + Thread.currentThread().getId();    // 获取锁中的标识    String id = stringRedisTemplate.opsForValue().get(KEY_PREFIX + name);    // 判断标识是否一致    if (threadId.equals(id)) &#123;        // 释放锁        stringRedisTemplate.delete(KEY_PREFIX + name);    &#125;&#125;代码如下
+-- KEYS[1] 就是锁中的标识，传入的锁的 key-- ARGS[1] 就是线程标识-- 比较线程标识与锁中的标识是否一致if(redis.call(&#x27;get&#x27;, KEYS[1]) == ARGV[1]) then  -- 释放锁 del key  return redis.call(&#x27;del&#x27;, KEYS[1])endreturn 0
+
+
+利用Java代码调用Lua脚本改造分布式锁在 RedisTemplate 中，可以利用 execute 方法执行 lua 脚本
+public &lt;T&gt; T execute(RedisScript&lt;T&gt; script, List&lt;K&gt; keys, Object... args) &#123;  return scriptExecutor.execute(script, keys, args);&#125;
+
+对应 Java 代码如下
+private static final DefaultRedisScript&lt;Long&gt; UNLOCK_SCRIPT;static &#123;    UNLOCK_SCRIPT = new DefaultRedisScript&lt;&gt;();    UNLOCK_SCRIPT.setLocation(new ClassPathResource(&quot;unlock.lua&quot;));    UNLOCK_SCRIPT.setResultType(Long.class);&#125;@Overridepublic void unlock() &#123;    // 调用 lua 脚本    stringRedisTemplate.execute(UNLOCK_SCRIPT, Collections.singletonList(KEY_PREFIX + name),            ID_PREFIX + Thread.currentThread().getId());    // 返回值不重要&#125;
+
+我们在类加载的时候就把 lua 脚本加载进来，防止每次释放锁都要加载一次脚本。lua 脚本放在资源目录下，然后我们用Spring提供的 ClassPathResource 进行加载。这样我们调用脚本就能命令执行的原子性，因为删除成功与否其实都不关心，我们是要保证操作的原子性，所以这里没有理会返回值。
+小结：基于Redis分布式锁的实现思路
+
+利用SET NX EX获取锁，并设置过期时间，保存线程标识
+释放锁时先判断线程标识是否与自己一致，一致则删除锁
+
+特性
+
+利用SET NX满足互斥性
+利用SET EX保证故障时依然能释放锁，避免死锁，提高安全性
+利用lua脚本保证原子性
+利用Redis集群保证高可用和高并发特性
+
+
+
+
+Redisson 分布式锁基于SETNX实现的分布式锁存在以下问题
+
+重入问题重入问题是指获取锁的线程，可以再次进入到相同的锁的代码块中，可重入锁的意义在于防止死锁，例如在HashTable这样的代码中，它的方法都是使用synchronized修饰的，假如它在一个方法内调用另一个方法，如果此时是不可重入的，那就死锁了。所以可重入锁的主要意义是防止死锁，我们的synchronized和Lock锁都是可重入的
+
+不可重试我们编写的分布式锁只能尝试一次，失败了就返回false，没有重试机制。但合理的情况应该是：当线程获取锁失败后，他应该能再次尝试获取锁
+
+超时释放我们在加锁的时候增加了TTL，这样我们可以防止死锁，但是如果卡顿(阻塞)时间太长，也会导致锁的释放。虽然我们采用Lua脚本来防止删锁的时候，是防止误删别人的锁，但现在的新问题是没锁住，我自己执行业务的时候锁超时释放了
+
+主从一致性如果Redis提供了主从集群，那么当我们向集群写数据时，主机需要异步的将数据同步给从机，万一在同步之前，主机宕机了(主从同步存在延迟，虽然时间很短，但还是发生了)，那么又会出现死锁问题
+
+
+因此，我们引入 RedissonRedisson是一个在Redis的基础上实现的Java驻内存数据网格(In-Memory Data Grid)。它不仅提供了一系列的分布式Java常用对象，还提供了许多分布式服务，其中就包含了各种分布式锁的实现Redis提供了分布式锁的多种多样功能
+
+可重入锁(Reentrant Lock)
+公平锁(Fair Lock)
+联锁(MultiLock)
+红锁(RedLock)
+读写锁(ReadWriteLock)
+信号量(Semaphore)
+可过期性信号量(PermitExpirableSemaphore)
+闭锁(CountDownLatch)
+
+Redisson 入门
+导入依赖
+
+&lt;dependency&gt;    &lt;groupId&gt;org.redisson&lt;/groupId&gt;    &lt;artifactId&gt;redisson&lt;/artifactId&gt;    &lt;version&gt;4.3.0&lt;/version&gt;&lt;/dependency&gt;
+
+
+配置 Redisson 客户端，在 config 包下新建 RedissonConfig 类
+
+import org.redisson.Redisson;import org.redisson.api.RedissonClient;import org.redisson.config.Config;import org.springframework.context.annotation.Bean;import org.springframework.context.annotation.Configuration;@Configurationpublic class RedissonConfig &#123;    @Bean    public RedissonClient redissonClient() &#123;        Config config = new Config();        config.useSingleServer().setAddress(&quot;redis://127.0.0.1:6379&quot;).setPassword(&quot;123456&quot;);        return Redisson.create(config);    &#125;&#125;
+
+其实 SpringBoot 也提供了对 Redisson 的整合，后面可以试试
+
+使用 Redisson 的分布式锁
+
+@Resourceprivate RedissonClient redissonClient;@Testvoid testRedisson() throws InterruptedException &#123;    //获取可重入锁    RLock lock = redissonClient.getLock(&quot;anyLock&quot;);    //尝试获取锁，三个参数分别是：获取锁的最大等待时间(期间会重试)，锁的自动释放时间，时间单位    boolean success = lock.tryLock(1, 10, TimeUnit.SECONDS);    //判断获取锁成功    if (success) &#123;        try &#123;            System.out.println(&quot;执行业务&quot;);        &#125; finally &#123;            //释放锁            lock.unlock();        &#125;    &#125;&#125;
+
+lock.tryLock 的前两个参数
+
+第一个 WaitTime 代表锁的最大等待时间，也就是如果锁被占用，当前这个线程最多等多久，超过这个时间没获取到就返回 false。如果不写默认值就为 0 代表只请求一次，不成功就直接返回 false
+第二个 LeaseTime 代表锁自动释放时间，是指取到锁之后自动释放时间，默认是 -1，也就是 30 秒。但是这个 30 秒是后面说的看门狗机制，每隔 10 秒查看一下业务有没有执行完，没执行完我就把过期时间重置为 30 秒，这样即使宕机，这个锁也能过期自动释放。
+
+最后我们重构代码，把原来 Redis 实现的分布式锁换为 Redisson 的
+Diff完整代码+ @Autowired+ private RedissonClient redissonClient;  @Override  public Result seckillVocher(Long voucherId) &#123;      // 1 查询优惠券信息      SeckillVoucher voucher = seckillVoucherService.getById(voucherId);      // 2 判断秒杀是否开始      if (voucher.getBeginTime().isAfter(LocalDateTime.now())) &#123;          // 尚未开始          return Result.fail(&quot;秒杀尚未开始!&quot;);      &#125;      // 3 判断秒杀是否结束      if (voucher.getEndTime().isBefore(LocalDateTime.now())) &#123;          // 已经结束          return Result.fail(&quot;秒杀已经结束!&quot;);      &#125;      // 4 判断库存是否充足      if (voucher.getStock() &lt; 1) &#123;          return Result.fail(&quot;库存不足!&quot;);      &#125;      Long userId = UserHolder.getUser().getId();      // 因为我们是要求一个人只能下一单，所以我们用 order:userId 来作为 key-     SimpleRedisLock lock = new SimpleRedisLock(&quot;order:&quot; + userId, stringRedisTemplate);-     boolean isLock = lock.tryLock(1200); // 时长根据业务来定，一般比业务执行时间长几倍      // 获取锁对象+     RLock lock = redissonClient.getLock(&quot;lock:order:&quot; + userId);+     boolean isLock = lock.tryLock();      if (!isLock) &#123;          return Result.fail(&quot;不允许重复下单!&quot;);      &#125;      try&#123;          IVoucherOrderService proxy = (IVoucherOrderService)AopContext.currentProxy();          return proxy.createVoucherOrder(voucherId);      &#125;finally &#123;          lock.unlock();      &#125;  &#125;代码改动很少，这里相当于把锁升级成可重入锁了
+@Autowiredprivate RedissonClient redissonClient;@Overridepublic Result seckillVocher(Long voucherId) &#123;    // 1 查询优惠券信息    SeckillVoucher voucher = seckillVoucherService.getById(voucherId);    // 2 判断秒杀是否开始    if (voucher.getBeginTime().isAfter(LocalDateTime.now())) &#123;        // 尚未开始        return Result.fail(&quot;秒杀尚未开始!&quot;);    &#125;    // 3 判断秒杀是否结束    if (voucher.getEndTime().isBefore(LocalDateTime.now())) &#123;        // 已经结束        return Result.fail(&quot;秒杀已经结束!&quot;);    &#125;    // 4 判断库存是否充足    if (voucher.getStock() &lt; 1) &#123;        return Result.fail(&quot;库存不足!&quot;);    &#125;    Long userId = UserHolder.getUser().getId();    // 获取锁对象    RLock lock = redissonClient.getLock(&quot;lock:order:&quot; + userId);    boolean isLock = lock.tryLock();    if (!isLock) &#123;        return Result.fail(&quot;不允许重复下单!&quot;);    &#125;    try&#123;        IVoucherOrderService proxy = (IVoucherOrderService)AopContext.currentProxy();        return proxy.createVoucherOrder(voucherId);    &#125;finally &#123;        lock.unlock();    &#125;&#125;
+
+Redisson可重入锁原理如果不可重入会出现什么问题呢？比如 method1 方法先获取锁，拿到了，然后调用了 method2 方法，但是 method2 方法也在申请这个锁，因为不可重入，method2 是拿不到这个锁的，它就得阻塞等待(或者返回false,虽然这样避免了死锁，但是业务也断了)。这样 method1 等 method2 执行完业务，method2 又等 method1 释放锁，出现了死锁。
+注意：这里的可重入锁是指某个线程可重复拿到锁，不同线程的不可以(我们之前的内容就是避免不同线程拿到同一个锁)
+
+
+下面的这个 RLock 就是一个可重入锁
+@Resourceprivate RedissonClient redissonClient;private RLock lock;@BeforeEachvoid setUp() &#123;    lock = redissonClient.getLock(&quot;lock&quot;);&#125;@Testvoid method1() &#123;    boolean success = lock.tryLock();    if (!success) &#123;        log.error(&quot;获取锁失败，1&quot;);        return;    &#125;    try &#123;        log.info(&quot;获取锁成功&quot;);        method2();    &#125; finally &#123;        log.info(&quot;释放锁，1&quot;);        lock.unlock();    &#125;&#125;void method2() &#123;    RLock lock = redissonClient.getLock(&quot;lock&quot;);    boolean success = lock.tryLock();    if (!success) &#123;        log.error(&quot;获取锁失败，2&quot;);        return;    &#125;    try &#123;        log.info(&quot;获取锁成功，2&quot;);    &#125; finally &#123;        log.info(&quot;释放锁，2&quot;);        lock.unlock();    &#125;&#125;
+
+所以我们需要额外判断，看 method1 和 method2 是否处于同一个线程，如果是同一个线程，则可以拿到锁，但是 state 会+1，之后执行 method2 中的方法，释放锁，释放锁的时候也只是将 state 进行-1，只有减至0，才会真正释放锁由于我们需要额外存储一个 state，所以用字符串型 SET NX EX 是不行的，需要用到 Hash 结构，但是 Hash 结构又没有 NX 这种方法，所以我们需要将原有的逻辑拆开，进行手动判断
+
+我们自己来写 lua 脚本(保证获取锁释放锁的原子性)来实现这个可重入锁。
+获取锁释放锁local key = KEYS[1]; -- 锁的keylocal threadId = ARGV[1]; -- 线程唯一标识local releaseTime = ARGV[2]; -- 锁的自动释放时间-- 锁不存在if (redis.call(&#x27;exists&#x27;, key) == 0) then    -- 获取锁并添加线程标识，state设为1    redis.call(&#x27;hset&#x27;, key, threadId, &#x27;1&#x27;);    -- 设置锁有效期    redis.call(&#x27;expire&#x27;, key, releaseTime);    return 1; -- 返回结果end;-- 锁存在，判断threadId是否为自己if (redis.call(&#x27;hexists&#x27;, key, threadId) == 1) then    -- 锁存在，重入次数 +1，这里用的是hash结构的incrby增长    redis.call(&#x27;hincrby&#x27;, key, thread, 1);    -- 设置锁的有效期    redis.call(&#x27;expire&#x27;, key, releaseTime);    return 1; -- 返回结果end;return 0; -- 代码走到这里，说明获取锁的不是自己，获取锁失败local key = KEYS[1];local threadId = ARGV[1];local releaseTime = ARGV[2];-- 如果锁不是自己的if (redis.call(&#x27;HEXISTS&#x27;, key, threadId) == 0) then    return nil; -- 直接返回end;-- 锁是自己的，锁计数-1，还是用hincrby，不过自增长的值为-1local count = redis.call(&#x27;hincrby&#x27;, key, threadId, -1);-- 判断重入次数为多少if (count &gt; 0) then    -- 大于0，重置有效期    redis.call(&#x27;expire&#x27;, key, releaseTime);    return nil;else    -- 否则直接释放锁    redis.call(&#x27;del&#x27;, key);    return nil;end;
+
+
+redisson 底层也是通过这种 lua 脚本来实现的，和我们基本是一致的
+获取锁源码释放锁源码&lt;T&gt; RFuture&lt;T&gt; tryLockInnerAsync(long waitTime, long leaseTime, TimeUnit unit, long threadId, RedisStrictCommand&lt;T&gt; command) &#123;    this.internalLockLeaseTime = unit.toMillis(leaseTime);    return this.evalWriteAsync(this.getName(), LongCodec.INSTANCE, command,       &quot;if (redis.call(&#x27;exists&#x27;, KEYS[1]) == 0) then &quot; +       &quot;redis.call(&#x27;hincrby&#x27;, KEYS[1], ARGV[2], 1); &quot; +       &quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[1]); &quot; +       &quot;return nil; end; &quot; +       &quot;if (redis.call(&#x27;hexists&#x27;, KEYS[1], ARGV[2]) == 1) then &quot; +       &quot;redis.call(&#x27;hincrby&#x27;, KEYS[1], ARGV[2], 1); &quot; +       &quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[1]); return nil; end; &quot; +       &quot;return redis.call(&#x27;pttl&#x27;, KEYS[1]);&quot;, Collections.singletonList(this.getName()),       this.internalLockLeaseTime, this.getLockName(threadId));&#125;protected RFuture&lt;Boolean&gt; unlockInnerAsync(long threadId) &#123;    return this.evalWriteAsync(this.getName(), LongCodec.INSTANCE, RedisCommands.EVAL_BOOLEAN,       &quot;if (redis.call(&#x27;hexists&#x27;, KEYS[1], ARGV[3]) == 0) then return nil;end; &quot; +       &quot;local counter = redis.call(&#x27;hincrby&#x27;, KEYS[1], ARGV[3], -1); &quot; +       &quot;if (counter &gt; 0) then redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[2]); return 0; &quot; +       &quot;else redis.call(&#x27;del&#x27;, KEYS[1]); redis.call(&#x27;publish&#x27;, KEYS[2], ARGV[1]); return 1; end; &quot; +       &quot;return nil;&quot;, Arrays.asList(this.getName(), this.getChannelName()),       LockPubSub.UNLOCK_MESSAGE, this.internalLockLeaseTime, this.getLockName(threadId));&#125;
+
+
+锁重试与WatchDog机制锁重试锁重试跟 tryLock() 第一个参数有关，我们来看一下
+tryAcquireAsync
+private &lt;T&gt; RFuture&lt;Long&gt; tryAcquireAsync(long waitTime, long leaseTime, TimeUnit unit, long threadId) &#123;        if (leaseTime != -1L) &#123;        return this.tryLockInnerAsync(waitTime, leaseTime, unit, threadId, RedisCommands.EVAL_LONG);    &#125; else &#123;        // 如果没有指定释放时间时间，则指定默认释放时间为getLockWatchdogTimeout，底层源码显示是30*1000ms，也就是30秒        RFuture&lt;Long&gt; ttlRemainingFuture = this.tryLockInnerAsync(waitTime, this.commandExecutor.getConnectionManager().getCfg().getLockWatchdogTimeout(), TimeUnit.MILLISECONDS, threadId, RedisCommands.EVAL_LONG);        ttlRemainingFuture.onComplete((ttlRemaining, e) -&gt; &#123;            if (e == null) &#123;                if (ttlRemaining == null) &#123;                    this.scheduleExpirationRenewal(threadId);                &#125;            &#125;        &#125;);        return ttlRemainingFuture;    &#125;&#125;
+
+在这个里面不是调用的 tryLockInnserAsync 吗，其实就是刚刚我们看的这个
+&lt;T&gt; RFuture&lt;T&gt; tryLockInnerAsync(long waitTime, long leaseTime, TimeUnit unit, long threadId, RedisStrictCommand&lt;T&gt; command) &#123;    this.internalLockLeaseTime = unit.toMillis(leaseTime);    return this.evalWriteAsync(this.getName(), LongCodec.INSTANCE, command,       &quot;if (redis.call(&#x27;exists&#x27;, KEYS[1]) == 0) then &quot; +       &quot;redis.call(&#x27;hincrby&#x27;, KEYS[1], ARGV[2], 1); &quot; +       &quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[1]); &quot; +       &quot;return nil; end; &quot; +       &quot;if (redis.call(&#x27;hexists&#x27;, KEYS[1], ARGV[2]) == 1) then &quot; +       &quot;redis.call(&#x27;hincrby&#x27;, KEYS[1], ARGV[2], 1); &quot; +       &quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[1]); return nil; end; &quot; +       &quot;return redis.call(&#x27;pttl&#x27;, KEYS[1]);&quot;, Collections.singletonList(this.getName()),       this.internalLockLeaseTime, this.getLockName(threadId));&#125;
+
+它的返回值：如果能成功获取锁，返回 nil，否则返回这个键的剩余有效期
+public boolean tryLock(long waitTime, long leaseTime, TimeUnit unit) throws InterruptedException &#123;    long time = unit.toMillis(waitTime);    long current = System.currentTimeMillis();    long threadId = Thread.currentThread().getId();    Long ttl = this.tryAcquire(waitTime, leaseTime, unit, threadId);    //判断ttl是否为null    if (ttl == null) &#123;        return true;    &#125; else &#123;        //计算当前时间与获取锁时间的差值，让等待时间减去这个值        time -= System.currentTimeMillis() - current;        //如果消耗时间太长了，直接返回false，获取锁失败        if (time &lt;= 0L) &#123;            this.acquireFailed(waitTime, unit, threadId);            return false;        &#125; else &#123;            //等待时间还有剩余，再次获取当前时间            current = System.currentTimeMillis();            //订阅别人释放锁的信号            RFuture&lt;RedissonLockEntry&gt; subscribeFuture = this.subscribe(threadId);            //在剩余时间内，等待这个信号            if (!subscribeFuture.await(time, TimeUnit.MILLISECONDS)) &#123;                if (!subscribeFuture.cancel(false)) &#123;                    subscribeFuture.onComplete((res, e) -&gt; &#123;                        if (e == null) &#123;                            //取消订阅                            this.unsubscribe(subscribeFuture, threadId);                        &#125;                    &#125;);                &#125;                //剩余时间内没等到，返回false                this.acquireFailed(waitTime, unit, threadId);                return false;            &#125; else &#123;                try &#123;                    //如果剩余时间内等到了别人释放锁的信号，再次计算当前剩余最大等待时间                    time -= System.currentTimeMillis() - current;                    if (time &lt;= 0L) &#123;                        //如果剩余时间为负数，则直接返回false                        this.acquireFailed(waitTime, unit, threadId);                        boolean var20 = false;                        return var20;                    &#125; else &#123;                        boolean var16;                        do &#123;                            //如果剩余时间等到了，dowhile循环重试获取锁                            long currentTime = System.currentTimeMillis();                            ttl = this.tryAcquire(waitTime, leaseTime, unit, threadId);                            if (ttl == null) &#123;                                var16 = true;                                return var16;                            &#125;                            time -= System.currentTimeMillis() - currentTime;                            if (time &lt;= 0L) &#123;                                this.acquireFailed(waitTime, unit, threadId);                                var16 = false;                                return var16;                            &#125;                            currentTime = System.currentTimeMillis();                            if (ttl &gt;= 0L &amp;&amp; ttl &lt; time) &#123;                                ((RedissonLockEntry)subscribeFuture.getNow()).getLatch().tryAcquire(ttl, TimeUnit.MILLISECONDS);                            &#125; else &#123;                                ((RedissonLockEntry)subscribeFuture.getNow()).getLatch().tryAcquire(time, TimeUnit.MILLISECONDS);                            &#125;                            time -= System.currentTimeMillis() - currentTime;                        &#125; while(time &gt; 0L);                        this.acquireFailed(waitTime, unit, threadId);                        var16 = false;                        return var16;                    &#125;                &#125; finally &#123;                    this.unsubscribe(subscribeFuture, threadId);                &#125;            &#125;        &#125;    &#125;&#125;
+
+WatchDog这里就需要跟进 tryAcquireAsync 的下半部分代码，也就是 scheduleExpirationRenewal 
+private void scheduleExpirationRenewal(long threadId) &#123;    ExpirationEntry entry = new ExpirationEntry();      //不存在，才put，表明是第一次进入，不是重入    ExpirationEntry oldEntry = (ExpirationEntry)EXPIRATION_RENEWAL_MAP.putIfAbsent(this.getEntryName(), entry);    if (oldEntry != null) &#123;        oldEntry.addThreadId(threadId);    &#125; else &#123;        //如果是第一次进入，则更新有效期        entry.addThreadId(threadId);        this.renewExpiration();    &#125;&#125;
+
+private void renewExpiration() &#123;    ExpirationEntry ee = (ExpirationEntry)EXPIRATION_RENEWAL_MAP.get(this.getEntryName());    if (ee != null) &#123;        //Timeout是一个定时任务        Timeout task = this.commandExecutor.getConnectionManager().newTimeout(new TimerTask() &#123;            public void run(Timeout timeout) throws Exception &#123;                ExpirationEntry ent = (ExpirationEntry)RedissonLock.EXPIRATION_RENEWAL_MAP.get(RedissonLock.this.getEntryName());                if (ent != null) &#123;                    Long threadId = ent.getFirstThreadId();                    if (threadId != null) &#123;                        //重置有效期                        RFuture&lt;Boolean&gt; future = RedissonLock.this.renewExpirationAsync(threadId);                        future.onComplete((res, e) -&gt; &#123;                            if (e != null) &#123;                                RedissonLock.log.error(&quot;Can&#x27;t update lock &quot; + RedissonLock.this.getName() + &quot; expiration&quot;, e);                            &#125; else &#123;                                if (res) &#123;                                    //然后调用自己，递归重置有效期 --&gt; 每 10 秒重置一次有效期为 30 秒                                    RedissonLock.this.renewExpiration();                                &#125;                            &#125;                        &#125;);                    &#125;                &#125;            &#125;            //internalLockLeaseTime是之前WatchDog默认有效期30秒，那这里就是 30 / 3 = 10秒之后，才会执行        &#125;, this.internalLockLeaseTime / 3L, TimeUnit.MILLISECONDS);        ee.setTimeout(task);    &#125;&#125;
+
+在这个里面里面去调用了 RedissonLock.this.renewExpirationAsync 方法来重置有效期, 也是写的 lua 脚本来更新的
+protected RFuture&lt;Boolean&gt; renewExpirationAsync(long threadId) &#123;    return this.evalWriteAsync(this.getName(),       LongCodec.INSTANCE, RedisCommands.EVAL_BOOLEAN,       &quot;if (redis.call(&#x27;hexists&#x27;, KEYS[1], ARGV[2]) == 1) then &quot; +       &quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[1]); return 1; end; return 0;&quot;,       Collections.singletonList(this.getName()),       this.internalLockLeaseTime, this.getLockName(threadId));&#125;
+
+在锁释放的时候时候把这个定时任务(重置有效期的任务)终止
+void cancelExpirationRenewal(Long threadId) &#123;    //将之前的线程终止掉    ExpirationEntry task = (ExpirationEntry)EXPIRATION_RENEWAL_MAP.get(this.getEntryName());    if (task != null) &#123;        if (threadId != null) &#123;            task.removeThreadId(threadId);        &#125;        if (threadId == null || task.hasNoThreads()) &#123;            //获取之前的定时任务            Timeout timeout = task.getTimeout();            if (timeout != null) &#123;                //取消                timeout.cancel();            &#125;            EXPIRATION_RENEWAL_MAP.remove(this.getEntryName());        &#125;    &#125;&#125;
+
+
+Redisson 分布式锁原理
+
+可重入：利用 hash 结构记录线程ID和重入次数
+可重试：利用信号量和发布订阅功能实现等待、唤醒，获取锁失败的重试机制
+超时续约：利用watchDog,每隔一段时间(releseTime &#x2F; 3), 重置超时时间
+
+分别解决了刚开始的不可重入、不可重试、超时释放
+
+
+multiLock原理然后还有主从一致性问题
+为了提高Redis的可用性，我们会搭建集群或者主从，现在以主从为例。此时我们去写命令，写在主机上，主机会将数据同步给从机，但是假设主机还没来得及把数据写入到从机去的时候，主机宕机了
+哨兵会发现主机宕机了，于是选举一个slave(从机)变成master(主机)，而此时新的master(主机)上并没有锁的信息，那么其他线程就可以获取锁，又会引发安全问题
+为了解决这个问题。Redisson提出来了MutiLock锁，使用这把锁的话，那我们就不用主从了，每个节点的地位都是一样的，都可以当做是主机，那我们就需要将加锁的逻辑写入到每一个主从节点上，只有所有的服务器都写入成功，此时才是加锁成功，假设现在某个节点挂了，那么他去获取锁的时候，只要有一个节点拿不到，都不能算是加锁成功，就保证了加锁的可靠性
+虚拟机额外搭建两个 Redis 节点
+@Configurationpublic class RedissonConfig &#123;    @Bean    public RedissonClient redissonClient() &#123;        Config config = new Config();        config.useSingleServer().setAddress(&quot;redis://192.168.137.130:6379&quot;)                .setPassword(&quot;root&quot;);        return Redisson.create(config);    &#125;    @Bean    public RedissonClient redissonClient2() &#123;        Config config = new Config();        config.useSingleServer().setAddress(&quot;redis://92.168.137.131:6379&quot;)                .setPassword(&quot;root&quot;);        return Redisson.create(config);    &#125;    @Bean    public RedissonClient redissonClient3() &#123;        Config config = new Config();        config.useSingleServer().setAddress(&quot;redis://92.168.137.132:6379&quot;)                .setPassword(&quot;root&quot;);        return Redisson.create(config);    &#125;&#125;
+
+然后使用
+@Resourceprivate RedissonClient redissonClient;@Resourceprivate RedissonClient redissonClient2;@Resourceprivate RedissonClient redissonClient3;private RLock lock;@BeforeEachvoid setUp() &#123;    RLock lock1 = redissonClient.getLock(&quot;lock&quot;);    RLock lock2 = redissonClient2.getLock(&quot;lock&quot;);    RLock lock3 = redissonClient3.getLock(&quot;lock&quot;); // 这三种锁都是可重入锁    lock = redissonClient.getMultiLock(lock1, lock2, lock3); // 创建联锁, 他们也是可重入锁&#125;@Testvoid method1() &#123;    boolean success = lock.tryLock();    redissonClient.getMultiLock();    if (!success) &#123;        log.error(&quot;获取锁失败，1&quot;);        return;    &#125;    try &#123;        log.info(&quot;获取锁成功&quot;);        method2();    &#125; finally &#123;        log.info(&quot;释放锁，1&quot;);        lock.unlock();    &#125;&#125;void method2() &#123;    RLock lock = redissonClient.getLock(&quot;lock&quot;);    boolean success = lock.tryLock();    if (!success) &#123;        log.error(&quot;获取锁失败，2&quot;);        return;    &#125;    try &#123;        log.info(&quot;获取锁成功，2&quot;);    &#125; finally &#123;        log.info(&quot;释放锁，2&quot;);        lock.unlock();    &#125;&#125;
+
+这里创建联锁，实际上会放到一个 List 集合里面
+public RedissonMultiLock(RLock... locks) &#123;    if (locks.length == 0) &#123;        throw new IllegalArgumentException(&quot;Lock objects are not defined&quot;);    &#125; else &#123;        this.locks.addAll(Arrays.asList(locks));    &#125;&#125;
+
+
+查看源码
+public boolean tryLock(long waitTime, long leaseTime, TimeUnit unit) throws InterruptedException &#123;    long newLeaseTime = -1L;    //如果传入了释放时间    if (leaseTime != -1L) &#123;        //再判断一下是否有等待时间        if (waitTime == -1L) &#123;            //如果没传等待时间，不重试，则只获得一次            newLeaseTime = unit.toMillis(leaseTime);        &#125; else &#123;            //想要重试，耗时较久，万一释放时间小于等待时间，则会有问题，所以这里将等待时间乘以二            newLeaseTime = unit.toMillis(waitTime) * 2L;        &#125;    &#125;    //获取当前时间    long time = System.currentTimeMillis();    //剩余等待时间    long remainTime = -1L;    if (waitTime != -1L) &#123;        remainTime = unit.toMillis(waitTime);    &#125;    //锁等待时间，与剩余等待时间一样        long lockWaitTime = this.calcLockWaitTime(remainTime);    //锁失败的限制，源码返回是的0    int failedLocksLimit = this.failedLocksLimit();    //已经获取成功的锁    List&lt;RLock&gt; acquiredLocks = new ArrayList(this.locks.size());    //迭代器，用于遍历    ListIterator&lt;RLock&gt; iterator = this.locks.listIterator();    while(iterator.hasNext()) &#123;        RLock lock = (RLock)iterator.next();        boolean lockAcquired;        try &#123;            //没有等待时间和释放时间，调用空参的tryLock            if (waitTime == -1L &amp;&amp; leaseTime == -1L) &#123;                lockAcquired = lock.tryLock();            &#125; else &#123;                //否则调用带参的tryLock                long awaitTime = Math.min(lockWaitTime, remainTime);                lockAcquired = lock.tryLock(awaitTime, newLeaseTime, TimeUnit.MILLISECONDS);            &#125;        &#125; catch (RedisResponseTimeoutException var21) &#123;            this.unlockInner(Arrays.asList(lock));            lockAcquired = false;        &#125; catch (Exception var22) &#123;            lockAcquired = false;        &#125;        //判断获取锁是否成功        if (lockAcquired) &#123;            //成功则将锁放入成功锁的集合            acquiredLocks.add(lock);        &#125; else &#123;            //如果获取锁失败            //判断当前锁的数量，减去成功获取锁的数量，如果为0，则所有锁都成功获取，跳出循环            if (this.locks.size() - acquiredLocks.size() == this.failedLocksLimit()) &#123;                break;            &#125;            //否则将拿到的锁都释放掉            if (failedLocksLimit == 0) &#123;                this.unlockInner(acquiredLocks);                //如果等待时间为-1，表示不想重试，直接返回false                if (waitTime == -1L) &#123;                    return false;                &#125;                failedLocksLimit = this.failedLocksLimit();                // 如果想重试，把前面所有已经拿到的锁都清空，，，，，                acquiredLocks.clear();                //将迭代器往前迭代，相当于重置指针，放到第一个然后重试获取锁                while(iterator.hasPrevious()) &#123;                    iterator.previous();                &#125;            &#125; else &#123;                --failedLocksLimit;            &#125;        &#125;        //如果剩余时间不为-1，很充足        if (remainTime != -1L) &#123;            //计算现在剩余时间            remainTime -= System.currentTimeMillis() - time;            time = System.currentTimeMillis();            //如果剩余时间为负数，则获取锁超时了            if (remainTime &lt;= 0L) &#123;                //将之前已经获取到的锁释放掉，并返回false                this.unlockInner(acquiredLocks);                //联锁成功的条件是：每一把锁都必须成功获取，一把锁失败，则都失败                return false;            &#125;        &#125;    &#125;    // 如果设置了锁的有效期，重置所有锁的有效期一致，因为原来是顺序遍历,第一把锁和最后一把锁TTL会有差距，    // 可能出现问题，所以这里重置(因为本来就不应该包含获取锁的时间,所以重置到leaseTime)    if (leaseTime != -1L) &#123;        List&lt;RFuture&lt;Boolean&gt;&gt; futures = new ArrayList(acquiredLocks.size());        //迭代器用于遍历已经获取成功的锁        Iterator var24 = acquiredLocks.iterator();        while(var24.hasNext()) &#123;            RLock rLock = (RLock)var24.next();            //设置每一把锁的有效期            RFuture&lt;Boolean&gt; future = ((RedissonLock)rLock).expireAsync(unit.toMillis(leaseTime), TimeUnit.MILLISECONDS);            futures.add(future);        &#125;        var24 = futures.iterator();        while(var24.hasNext()) &#123;            RFuture&lt;Boolean&gt; rFuture = (RFuture)var24.next();            rFuture.syncUninterruptibly();        &#125;    &#125;    //但如果没设置有效期，则会触发WatchDog机制，自动帮我们设置有效期，所以大多数情况下，我们不需要自己设置有效期    return true;&#125;
+
+最后总结
+SETNX -&gt; 可重入锁 -&gt; MultiLock
+Redis 分布式锁类型对比
+
+不可重入 Redis 分布式锁原理： 利用 setnx 的互斥性；利用 ex 避免死锁；释放锁时判断线程标示。缺陷： 不可重入、无法重试、锁超时失效。
+可重入的 Redis 分布式锁原理： 利用 hash 结构，记录线程标示和重入次数；利用 watchDog 延续锁时间；利用信号量控制锁重试等待。缺陷： Redis 宕机引起锁失效问题。
+Redisson 的 multiLock原理： 多个独立的 Redis 节点，必须在所有节点都获取重入锁，才算获取锁成功。缺陷： 运维成本高、实现复杂。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <tags>
+        <tag>NoSQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JUC笔记</title>
     <url>/undefined/355501020/</url>
     <content><![CDATA[1 前期准备配置好 lombok 和 slf4j 打印日志
@@ -3854,1334 +5736,6 @@ source /etc/profile
 
 查看是否安装成功
 
-]]></content>
-  </entry>
-  <entry>
-    <title>redis笔记</title>
-    <url>/undefined/36858/</url>
-    <content><![CDATA[基础篇1 初识RedisRedis是一种键值型的NoSQL数据库，这里有两个关键字
-
-键值型
-NoSQL
-
-其中键值型是指Redis中存储的数据都是以Key-Value键值对的形式存储，而Value的形式多种多样，可以使字符串、数值甚至Json
-而NoSQL则是相对于传统关系型数据库而言，有很大差异的一种数据库
-1.1 认识NoSQLNoSql可以翻译做Not Only Sql（不仅仅是SQL），或者是No Sql（非Sql的）数据库。是相对于传统关系型数据库而言，有很大差异的一种特殊的数据库，因此也称之为非关系型数据库。
-结构化与非结构化传统关系型数据库是结构化数据，每张表在创建的时候都有严格的约束信息，如字段名、字段数据类型、字段约束等，插入的数据必须遵循这些约束
-而NoSQL则对数据库格式没有约束，可以是键值型（Redis），也可以是文档型（MongoDB），列类型（HBase）甚至是图格式（Neo4j）
-关联与非关联传统数据库的表与表之间往往存在关联，例如外键约束而非关系型数据库不存在关联关系，要维护关系要么靠代码中的业务逻辑，要么靠数据之间的耦合
-&#123;  id: 1,  name: &quot;张三&quot;,  orders: [    &#123;       id: 1,       item: &#123;   id: 10, title: &quot;荣耀6&quot;, price: 4999       &#125;    &#125;,    &#123;       id: 2,       item: &#123;   id: 20, title: &quot;小米11&quot;, price: 3999       &#125;    &#125;  ]&#125;
-
-例如此处要维护张三与两个手机订单的关系，不得不冗余的将这两个商品保存在张三的订单文档中，不够优雅，所以建议使用业务逻辑来维护关联关系。
-查询方式传统关系型数据库会基于Sql语句做查询，语法有统一的标准
-SELECT id, age FROM tb_user WHERE id = 1
-
-而不同的非关系型数据库查询语法差异极大
-Redis:  get user:1MongoDB: db.user.find(&#123;_id: 1&#125;)elasticsearch:  GET http://localhost:9200/users/1
-
-事务传统关系型数据库能满足事务的ACID原则(原子性、一致性、独立性及持久性)而非关系型数据库汪汪不支持事务，或者不能要个保证ACID的特性，只能实现计本的一致性
-总结
-
-
-
-SQL
-NoSQL
-
-
-
-数据结构
-结构化(Structured)
-非结构化
-
-
-数据关联
-关联的(Relational)
-无关联的
-
-
-查询方式
-SQL查询
-非SQL
-
-
-事务特性
-ACID
-BASE
-
-
-存储方式
-磁盘
-内存
-
-
-扩展性
-垂直
-水平
-
-
-使用场景
-1）数据结构固定 2)相关业务对数据安全性、一致性要求较高
-1)数据结构不固定 2)对一致性、安全性要求不高 3）对性能要求
-
-
-
-存储方式
-
-关系型数据库基于磁盘进行存储，会有大量的磁盘IO，对性能有一定影响
-非关系型数据库，他们的操作更多的是依赖于内存来操作，内存的读写速度会非常快，性能自然会好一些
-
-
-扩展性
-
-关系型数据库集群模式一般是主从，主从数据一致，起到数据备份的作用，称为垂直扩展。
-非关系型数据库可以将数据拆分，存储在不同机器上，可以保存海量数据，解决内存大小有限的问题。称为水平扩展。
-关系型数据库因为表之间存在关联关系，如果做水平扩展会给数据查询带来很多麻烦
-
-
-
-1.2 认识RedisRedis诞生于2009年，全称是Remote Dictionary Server远程词典服务器，是一个基于内存的键值型NoSQL数据库。
-特征：
-
-键值(Key-Value)型，Value支持多种不同的数据结构，功能丰富
-&#x3D;&#x3D;单线程，每个命令具有原子性&#x3D;&#x3D;
-低延迟，速度快(基于内存&#x3D;&#x3D;主要&#x3D;&#x3D;、IO多路复用、良好的编码（基于C语言）)
-支持数据持久化
-支持主从集群、分片集群
-支持多语言客户端
-
-作者：Antirez
-Redis官网：https://redis.io/
-1.3 安装Rediswindows 安装参考
-https://cyborg2077.github.io/2022/10/17/ReggieRedis/
-Redis 官网有关于 macos 系统安装的教程
-https://redis.io/docs/latest/operate/oss_and_stack/install/archive/install-redis/install-redis-on-mac-os/
-redis.conf 配置文件在 /opt/homebrew/etc/redis.conf
-
-
-
-
-
-
-我们修改完 redis.conf 保存
-！！！实际开发需要设置开机自启，需要一个脚本
-
-同时我们在 IDEA 里面配置我们 homebrew 安装的 maven
-1.4 Redis桌面客户端安装完成Redis，我们就可以操作Redis，实现数据的CRUD了。这需要用到Redis客户端，包括：
-
-命令行客户端
-图形化桌面客户端
-编程客户端
-
-Redis命令行客户端Redis安装完成后就自带了命令行客户端：redis-cli，使用方式如下：
-redis-cli [options] [commonds]
-
-其中常见的options有：
-
--h 127.0.0.1：指定要连接的redis节点的IP地址，默认是127.0.0.1
--p 6379：指定要连接的redis节点的端口，默认是6379
--a 123321：指定redis的访问密码
-
-其中的commonds就是Redis的操作命令，例如：
-
-ping：与redis服务端做心跳测试，服务端正常会返回&#96;pong
-
-图形化桌面客户端安装包：https://github.com/lework/RedisDesktopManager-Windows/releases
-Redis默认有16个仓库，编号从0至15. 通过配置文件可以设置仓库数量，但是不超过16，并且不能自定义仓库名称。
-如果是基于redis-cli连接Redis服务，可以通过select命令来选择数据库：
-## 选择0号数据库select 0
-
-2 Redis常用命令Redis是典型的key-value数据库，key一般是字符串，而value包含很多不同的数据类型
-2.1 Redis通用命令常用的通用命令有以下几个
-
-
-
-命令
-描述
-
-
-
-KEYS pattern
-查找所有符合给定模式(pattern)的key
-
-
-EXISTS key
-检查给定key是否存在
-
-
-TYPE key
-返回key所储存的值的类型
-
-
-TTL key
-返回给定key的剩余生存时间(TTL, time to live)，以秒为单位
-
-
-DEL key
-该命令用于在key存在是删除key
-
-
-
-KEYS：查看符合模板的所有key
-
-不建议在生产环境设备上使用，因为Redis是单线程的，执行查询的时候会阻塞其他命令，当数据量很大的时候，使用KEYS进行模糊查询，效率很差
-在查询的时候，* 代表任意数量字符，? 代表单个字符
-
-
-DEL：删除一个指定的key
-
-也可以删除多个key，DEL name age，会将name和age都删掉
-返回值代表删除的key数量
-
-
-EXISTS：判断key是否存在
-
-EXISTS name，如果存在返回1，不存在返回0
-也可以判断多个key是否存在，比如 EXISTS age name，返回2代表都存在，返回1代表只有一个存在
-
-
-EXPIRE：给一个key设置有效期，有效期到期时该key会被自动删除
-
-EXPIRE name 20，给name设置20秒有效期，到期自动删除
-
-PERSIST age，设置永久有效
-
-
-
-TTL：查看一个key的剩余有效期(Time-To-Live)
-
-TTL name，查看name的剩余有效期，如果未设置有效期，则返回-1，代表永久有效期
--2 代表这个键不存在
-
-
-
-2.2 String类型String类型，也就是字符串类型，是Redis中最简单的存储类型其value是字符串，不过根据字符串的格式不同，又可以分为3类
-
-string：普通字符串
-int：整数类型，可以做自增、自减操作
-float：浮点类型，可以做自增、自减操作不管是哪种格式，底层都是字节数组形式存储，只不过是编码方式不同，字符串类型的最大空间不能超过512M
-
-String的常用命令String的常用命令有
-
-
-
-命令
-描述
-
-
-
-SET key value
-添加或者修改一个已经存在的String类型的键值对
-
-
-GET key
-根据key获取String类型的value
-
-
-MSET
-批量添加多个String类型的键值对
-
-
-MGET
-根据多个key获取多个String类型的value，返回的是一个数组
-
-
-INCR key
-让一个整型的key自增1
-
-
-INCRBY key value
-让一个整型的key自增并指定步长值，例如：incrby num 2，让num值自增2
-
-
-INCRBYFLOAT key value
-让一个浮点类型的数字自增并指定步长值
-
-
-SETNX
-添加一个String类型的键值对，前提是这个key不存在，否则不执行，可以理解为真正的新增，添加成功返回1，失败返回0
-
-
-SETEX
-添加一个String类型的键值对，并指定有效期
-
-
-规范做法是 SET name 18，其实和 SET name &quot;18&quot; 效果一样，都会当成数字，都能 INCR，但是规范一点，数字通常不加引号，字符串加引号
-
-SETNX 和 SETEX 效果可以等价的用 SET 后面的可选参数 NX、EX 来做。
-Key结构
-Redis没有类似MySQL中Table的概念，那么我们该如何区分不同类型的Key呢？
-
-例如：需要存储用户、商品信息到Redis，有一个用户的id是1，有一个商品的id恰好也是1，如果此时使用id作为key，那么就回冲突，该怎么办？
-
-我们可以通过给key添加前缀加以区分，不过这个前缀不是随便加的，有一定的规范
-
-Redis的key允许有多个单词形成层级结构，多个单词之间用:隔开，格式如下
-项目名:业务名:类型:id
-
-这个格式也并非是固定的，可以根据自己的需求来删除&#x2F;添加词条，这样我们就可以把不同数据类型的数据区分开了，从而避免了key的冲突问题
-
-例如我们的项目名叫reggie，有user和dish两种不同类型的数据，我们可以这样定义key
-
-user相关的key：reggie:user:1
-dish相关的key：reggie:dish:1
-
-
-
-
-如果value是一个Java对象，例如一个User对象，则可以将对象序列化为JSON字符串后存储
-
-
-
-
-
-KEY
-VALUE
-
-
-
-reggie:user:1
-{“id”:1, “name”: “Jack”, “age”: 21}
-
-
-reggie:dish:1
-{“id”:1, “name”: “鲟鱼火锅”, “price”: 4999}
-
-
-
-并且在Redis的桌面客户端中，也会以相同前缀作为层次结构，让数据看起来层次分明，关系清晰
-
-
-2.3 Hash类型
-Hash类型，也叫散列，其中value是一个无序字典，类似于Java中的HashMap结构
-String结构是将对象序列化为JSON字符串后存储，当我们要修改对象的某个属性值的时候很不方便，并且呢，因为它本身携带着 &#123;&#125; &quot;&quot; , 这些东西也都是占用内存的。
-
-
-
-
-KEY
-VALUE
-
-
-
-reggie:user:1
-{“id”:1, “name”: “Jack”, “age”: 21}
-
-
-reggie:dish:1
-{“id”:1, “name”: “鲟鱼火锅”, “price”: 4999}
-
-
-
-Hash结构可以将对象中的每个字段独立存储，可以针对单个字段做CRUD
-
-
-Hash的常用命令有
-
-
-
-
-
-命令
-描述
-
-
-
-HSET key field value
-添加或者修改hash类型key的field的值
-
-
-HGET key field
-获取一个hash类型key的field的值
-
-
-HMSET key field1 value1 [field2 value2]
-批量添加多个hash类型key的field的值
-
-
-HMGET key field1 [field2]
-批量获取多个hash类型key的field的值
-
-
-HGETALL key
-获取一个hash类型的key中的所有的field和value
-
-
-HKEYS key
-获取一个hash类型的key中的所有的field
-
-
-HVALS key
-获取一个hash类型的key中的所有的value
-
-
-HINCRBY key field number
-让一个hash类型key的字段值自增并指定步长
-
-
-HSETNX key field value
-添加一个hash类型的key的field值，前提是这个field不存在，否则不执行
-
-
-
-
-2.4 List类型
-Redis中的List类型与Java中的LinkedList类似，可以看做是一个双向链表结构。既可以支持正向检索和也可以支持反向检索。
-特征也与LinkedList类似：
-有序
-元素可以重复
-插入和删除快
-查询速度一般
-
-
-常用来存储一个有序数据，例如：朋友圈点赞列表，评论列表等。
-List的常见命令有：
-
-
-
-
-命令
-描述
-
-
-
-LPUSH key element …
-向列表左侧插入一个或多个元素
-
-
-LPOP key [count]
-移除并返回列表左侧的第一个元素，没有则返回nil，也可以指定数量
-
-
-RPUSH key element …
-向列表右侧插入一个或多个元素
-
-
-RPOP key
-移除并返回列表右侧的第一个元素
-
-
-LRANGE key star end
-返回一段角标范围内的所有元素，下标从 0 开始
-
-
-BLPOP&#x2F;BRPOP key time
-与LPOP和RPOP类似，只不过在key为空的时候等待指定时间time，而不是直接返回nil
-
-
-如果你执行命令
-LPUSH user 1 2 3; 那么链表是 [3, 2, 1]RPUSH user 1 2 3; 那么链表是 [1, 2, 3]
-
-
-
-
-
-2.5 Set类型
-Redis的Set结构与Java中的HashSet类似，可以看做是一个value为null的HashMap。因为也是一个hash表，因此具备与HashSet类似的特征：
-无序
-元素不可重复
-查找快
-支持交集、并集、差集等功能
-
-
-Set的常见命令有：
-
-
-
-
-命令
-描述
-
-
-
-SADD key member …
-向set中添加一个或多个元素
-
-
-SREM key member …
-移除set中的指定元素
-
-
-SCARD key
-返回set中元素的个数
-
-
-SISMEMBER key member
-判断一个元素是否存在于set中
-
-
-SMEMBERS
-获取set中的所有元素
-
-
-SINTER key1 key2 …
-求key1与key2的交集
-
-
-SUNION key1 key2 …
-求key1与key2的并集
-
-
-SDIFF key1 key2 …
-求key1与key2的差集
-
-
-练习题：
-
-将下列数据用Redis的Set集合来存储：
-
-张三的好友有：李四、王五、赵六
-127.0.0.1:6379&gt; sadd zhangsan lisi wangwu zhaoliu(integer) 3
-
-李四的好友有：王五、麻子、二狗
-127.0.0.1:6379&gt; sadd lisi wangwu mazi ergou(integer) 3
-
-
-利用Set的命令实现下列功能：
-
-计算张三的好友有几人
-127.0.0.1:6379&gt; scard zhangsan(integer) 3
-
-计算张三和李四有哪些共同好友
-127.0.0.1:6379&gt; sinter zhangsan lisi1) &quot;wangwu&quot;
-
-查询哪些人是张三的好友却不是李四的好友
-127.0.0.1:6379&gt; sdiff zhangsan lisi1) &quot;zhaoliu&quot;2) &quot;lisi&quot;
-
-查询张三和李四的好友总共有哪些人
-127.0.0.1:6379&gt; sunion zhangsan lisi1) &quot;wangwu&quot;2) &quot;zhaoliu&quot;3) &quot;ergou&quot;4) &quot;lisi&quot;5) &quot;mazi&quot;
-
-判断李四是否是张三的好友
-127.0.0.1:6379&gt; sismember zhangsan lisi(integer) 1
-
-判断张三是否是李四的好友
-127.0.0.1:6379&gt; sismember lisi zhangsan(integer) 0
-
-将李四从张三的好友列表中移除
-127.0.0.1:6379&gt; srem zhangsan lisi(integer) 1
-
-
-
-2.6 SortedSet类型
-Redis的SortedSet是一个可排序的set集合，与Java中的TreeSet有些类似，但底层数据结构却差别很大。SortedSet中的每一个元素都带有一个score属性，可以基于score属性对元素排序，底层的实现是一个跳表（SkipList）加 hash表。
-SortedSet具备下列特性：
-可排序
-元素不重复
-查询速度快
-
-
-因为SortedSet的可排序特性，经常被用来实现排行榜这样的功能。
-SortedSet的常见命令有：
-
-
-
-
-命令
-描述
-
-
-
-ZADD key score member
-添加一个或多个元素到sorted set ，如果已经存在则更新其score值
-
-
-ZREM key member
-删除sorted set中的一个指定元素
-
-
-ZSCORE key member
-获取sorted set中的指定元素的score值
-
-
-ZRANK key member
-获取sorted set 中的指定元素的排名
-
-
-ZCARD key
-获取sorted set中的元素个数
-
-
-ZCOUNT key min max
-统计score值在给定范围内的所有元素的个数，这个最大最小是分数
-
-
-ZINCRBY key increment member
-让sorted set中的指定元素自增，步长为指定的increment值
-
-
-ZRANGE key min max
-按照score排序后，获取指定排名范围内的元素，这个最大最小是排名0 代表第一个 -1 代表最后一个
-
-
-ZRANGEBYSCORE key min max
-按照score排序后，获取指定score范围内的元素，这个最大最小是分数
-
-
-ZDIFF、ZINTER、ZUNION
-求差集、交集、并集
-
-
-注意：所有的排名默认都是升序，如果要降序则在命令的Z后面添加REV即可，例如：
-
-升序获取sorted set 中的指定元素的排名：ZRANK key member
-
-降序获取sorted set 中的指定元素的排名：ZREVRANK key memeber
-
-练习题：
-
-将班级的下列学生得分存入Redis的SortedSet中：Jack 85, Lucy 89, Rose 82, Tom 95, Jerry 78, Amy 92, Miles 76
-127.0.0.1:6379&gt; zadd stu 85 Jack 89 Lucy 82 Rose 95 Tom 78 Jerry 92 Amy 76 Miles(integer) 7
-
-并实现下列功能：
-
-删除Tom同学
-127.0.0.1:6379&gt; zrem stu Tom(integer) 1
-
-获取Amy同学的分数
-127.0.0.1:6379&gt; zscore stu Amy&quot;92&quot;
-
-获取Rose同学的排名
-127.0.0.1:6379&gt; zrank stu Rose(integer) 2
-
-查询80分以下有几个学生
-127.0.0.1:6379&gt; zcount stu 0 80(integer) 2
-
-给Amy同学加2分
-127.0.0.1:6379&gt; zincrby stu 2 Amy&quot;94&quot;
-
-查出成绩前3名的同学
-127.0.0.1:6379&gt; zrange stu 0 21) &quot;Miles&quot;2) &quot;Jerry&quot;3) &quot;Rose&quot;
-
-查出成绩80分以下的所有同学
-127.0.0.1:6379&gt; zrangebyscore stu 0 801) &quot;Miles&quot;2) &quot;Jerry&quot;
-
-
-
-
-
-3 Redis的Java客户端
-目前主流的Redis的Java客户端有三种
-Jedis和Lettuce：这两个主要是提供了Redis命令对应的API，方便我们操作Redis，而SpringDataRedis又对这两种做了抽象和封装，因此我们后期会直接以SpringDataRedis来学习。
-Redisson：是在Redis基础上实现了&#x3D;&#x3D;分布式&#x3D;&#x3D;的可伸缩的java数据结构，例如Map、Queue等，而且支持跨进程的同步机制：Lock、Semaphore等待，比较适合用来实现特殊的功能需求。
-
-
-
-3.1 Jedis客户端快速入门
-使用Jedis的步骤
-
-导入Jedis的maven坐标
-&lt;!--jedis--&gt;&lt;dependency&gt;    &lt;groupId&gt;redis.clients&lt;/groupId&gt;    &lt;artifactId&gt;jedis&lt;/artifactId&gt;    &lt;version&gt;7.1.0&lt;/version&gt;&lt;/dependency&gt;&lt;!--单元测试--&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;    &lt;scope&gt;test&lt;/scope&gt;&lt;/dependency&gt;
-
-新建一个单元测试类
-@SpringBootTestclass JedisDemoApplicationTests &#123;    private Jedis jedis;    @BeforeEach    void setUp() &#123;        // 1.建立连接        jedis = new Jedis(&quot;127.0.0.1&quot;, 6379);        // 2.设置密码        jedis.auth(&quot;123456&quot;);        // 3.选择库        jedis.select(0);    &#125;    @Test    void testString() &#123;        String result = jedis.set(&quot;name&quot;, &quot;ergou&quot;);        System.out.println(result);        String name = jedis.get(&quot;name&quot;);        System.out.println(&quot;name = &quot; + name);    &#125;       // 关闭连接    @AfterEach    void tearDown() &#123;        if(jedis != null) &#123;            jedis.close();        &#125;    &#125;&#125;
-
-
-
-方法名称就是命令的名称，所以用起来没啥说的
-&#x3D;&#x3D;上述方式中，每一次调用都会连接一次redis，用完之后就释放&#x3D;&#x3D;
-连接池Jedis本身是线程不安全的，并且频繁的创建和销毁连接会有性能损耗，因此推荐使用Jedis连接池代替Jedis的直连方式。
-// jedispool 工具类public class JedisConnectionFactory &#123;    private static final JedisPool jedisPool;    static &#123;        // 配置连接池        JedisPoolConfig poolConfig = new JedisPoolConfig();        // 连接池最多能同时存在的连接数，同时可以有8个人连接，第9个人来得等        poolConfig.setMaxTotal(8);        // 连接池最多可以保留多少空闲连接        poolConfig.setMaxIdle(8);        // 长时间没人用时，最少缩短到几个连接        poolConfig.setMinIdle(0);        // 排队时限，如果连接全被占，新来的请求最多等多久(ms)，超时就报错        poolConfig.setMaxWaitMillis(1000); // 1s        // 创建连接池对象        jedisPool = new JedisPool(poolConfig,                &quot;127.0.0.1&quot;, 6379, 1000, &quot;123456&quot;);    &#125;    public static Jedis getJedis() &#123;        return jedisPool.getResource();    &#125;&#125;// 连接@BeforeEachvoid setUp() &#123;    // 1.建立连接    jedis = JedisConnectionFactory.getJedis();    // 2.设置密码    jedis.auth(&quot;123456&quot;);    // 3.选择库    jedis.select(0);&#125;// 关闭@AfterEachvoid tearDown() &#123;    if(jedis != null) &#123;        jedis.close();    &#125;&#125;
-
-这里可以看一下 jedis.close() 方法源码，其实并不是真正的关闭，而是返回连接池
-public void close() &#123;    if (this.dataSource != null) &#123;        Pool&lt;Jedis&gt; pool = this.dataSource;        this.dataSource = null;        if (this.isBroken()) &#123;            pool.returnBrokenResource(this);        &#125; else &#123;            pool.returnResource(this);        &#125;    &#125; else &#123;        this.connection.close();    &#125;&#125;
-
-
-
-这里可以看一下 jedis.close() 方法源码，其实并不是真正的关闭，而是返回连接池
-public void close() &#123;    if (this.dataSource != null) &#123;        Pool&lt;Jedis&gt; pool = this.dataSource;        this.dataSource = null;        if (this.isBroken()) &#123;            pool.returnBrokenResource(this);        &#125; else &#123;            pool.returnResource(this);        &#125;    &#125; else &#123;        this.connection.close();    &#125;&#125;
-
-
-[!CAUTION]
-为什么说jedis是线程不安全的？！
-
-多线程的使用在数据库中如果多个线程复用一个连接会存在数据库事务问题，那么在Redis中我们先来看下在多线程环境下使用一个连接会产生什么问题？
-首先启动两个线程，共同操作同一个 Jedis 实例，每一个线程循环 500 次，分别读取  Key 为 a 和 b 的值
-Jedis jedis = new Jedis(&quot;127.0.0.1&quot;, 6379);new Thread(() -&gt; &#123;   for (int i = 0; i &lt; 500; i++) &#123;       String result = jedis.get(&quot;a&quot;);       System.out.println(result);   &#125;&#125;).start();new Thread(() -&gt; &#123;   for (int i = 0; i &lt; 500; i++) &#123;       String result = jedis.get(&quot;b&quot;);       System.out.println(result);   &#125;&#125;).start();
-
-执行程序多次，可以看到日志中出现了各种奇怪的异常信息，有的未知答复错误，还有的是连接关闭异常等
-错误1：redis.clients.jedis.exceptions.JedisConnectionException: Unknown reply: 1错误2：java.io.IOException: Socket Closed
-
-  那我们先来看下 Jedis常用的（3.x）版本的源码
-public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommands,    AdvancedJedisCommands, ScriptingCommands, BasicCommands, ClusterCommands, SentinelCommands,    ModuleCommands&#123;&#125;     public class BinaryJedis implements BasicCommands, BinaryJedisCommands, MultiKeyBinaryCommands,    AdvancedBinaryJedisCommands, BinaryScriptingCommands, Closeable &#123;      protected final Client client;    &#125;  public class Client extends BinaryClient implements Commands &#123;&#125;  public class BinaryClient extends Connection &#123;&#125;    public class Connection implements Closeable &#123;      private Socket socket;      private RedisOutputStream outputStream;      private RedisInputStream inputStream;  &#125;    
-
-  首先Jedis 继承了 BinaryJedis，BinaryJedis 中保存了单个 Client 的实例，Client最终继承了 Connection，Connection 中保存了单个 Socket 的实例以及对应的两个读写流一个 RedisOutputStream 一个是 RedisInputStream。
-
-  BinaryClient 封装了各种 Redis 命令，其最终会调用的是 sendCommand 方法，发现其发送命令时是直接操作 RedisOutputStream 写入字节。
-private static void sendCommand(final RedisOutputStream os, final byte[] command,      final byte[]... args) &#123;    try &#123;      os.write(ASTERISK_BYTE);      os.writeIntCrLf(args.length + 1);      os.write(DOLLAR_BYTE);      os.writeIntCrLf(command.length);      os.write(command);      os.writeCrLf();      for (final byte[] arg : args) &#123;        os.write(DOLLAR_BYTE);        os.writeIntCrLf(arg.length);        os.write(arg);        os.writeCrLf();      &#125;    &#125; catch (IOException e) &#123;      throw new JedisConnectionException(e);    &#125;  &#125;
-
-  所以在多线程环境下使用 Jedis ，其实就是在复用RedisOutputStream。如果多个线程在执行操作，那么无法保证整条命令是原子写入 Socket。比如，写操作互相干扰，多条命令相互穿插的话，必然不是合法的 Redis 命令也就导致等等各种问题。
-  这也说明了Jedis是非线程安全。但是可以通过JedisPool连接池去管理实例，在多线程情况下让每个线程有自己独立的Jedis实例，可变为线程安全。
-
-新建一个com.blog.util，用于存放我们编写的工具类
-
-但后面我们使用SpringDataRedis的时候，可以直接在yml配置文件里配置这些内容
-public class JedisConnectionFactory &#123;    private static JedisPool jedisPool;    static &#123;        // 配置连接池        JedisPoolConfig poolConfig = new JedisPoolConfig();        poolConfig.setMaxTotal(8);  // 表示最多创建8个连接        poolConfig.setMaxIdle(8);   // 表示最多存在8个空闲连接        poolConfig.setMinIdle(0);   // 表示最少存在0个空闲连接        poolConfig.setMaxWaitMillis(1000);  // 没有空闲连接时进行等待，最多等待1000单位时间，若还没有，就报错        // 创建连接池对象，参数：连接池配置、服务端ip、服务端端口、超时时间、密码        jedisPool = new JedisPool(poolConfig, &quot;101.42.225.160&quot;, 6379, 1000, &quot;root&quot;);    &#125;  // 获取jedis对象    public static Jedis getJedis()&#123;        return jedisPool.getResource();    &#125;&#125;
-
-之后我们的测试类就可以修改为如下
-&#x3D;&#x3D;这里的代码和课程中展示的有出入！！！&#x3D;&#x3D;
-@SpringBootTestclass RedisTestApplicationTests &#123;    private Jedis jedis = JedisConnectionFactory.getJedis();    @Test    void testString()&#123;        jedis.set(&quot;name&quot;,&quot;Kyle&quot;);        String name = jedis.get(&quot;name&quot;);        System.out.println(&quot;name = &quot; + name);    &#125;    @Test    void testHash()&#123;        jedis.hset(&quot;reggie:user:1&quot;,&quot;name&quot;,&quot;Jack&quot;);        jedis.hset(&quot;reggie:user:2&quot;,&quot;name&quot;,&quot;Rose&quot;);        jedis.hset(&quot;reggie:user:3&quot;,&quot;name&quot;,&quot;Kyle&quot;);        jedis.hset(&quot;reggie:user:1&quot;,&quot;age&quot;,&quot;21&quot;);        jedis.hset(&quot;reggie:user:2&quot;,&quot;age&quot;,&quot;18&quot;);        jedis.hset(&quot;reggie:user:3&quot;,&quot;age&quot;,&quot;18&quot;);        Map&lt;String, String&gt; map = jedis.hgetAll(&quot;reggie:user:1&quot;);        System.out.println(map);    &#125;    @AfterEach    void tearDown()&#123;        if (jedis != null)&#123;            jedis.close();  // 由于根据连接池创建，所以这个时候不是销毁，还是归还连接池，可看源码        &#125;    &#125;&#125;
-
-3.2 SpringDataRedis客户端
-SpringData是Spring中数据操作的模块，包含对各种数据库的集成，其中对Redis的集成模块就叫做SpringDataRedis
-官网地址：https://spring.io/projects/spring-data-redis
-提供了对不同Redis客户端的整合（Lettuce和Jedis）&#x3D;&#x3D;默认整合Lettuce&#x3D;&#x3D;
-提供了RedisTemplate统一API来操作Redis
-支持Redis的发布订阅模型
-支持Redis哨兵和Redis集群
-支持基于Lettuce的响应式编程
-支持基于JDK、JSON、字符串、Spring对象的数据序列化及反序列化
-支持基于Redis的JDKCollection实现
-
-
-SpringDataRedis中提供了RedisTemplate工具类，其中封装了各种对Redis的操作。并且将不同数据类型的操作API封装到了不同的类型中：
-
-
-
-
-API
-返回值类型
-说明
-
-
-
-redisTemplate.opsForValue()
-ValueOperations
-操作String类型数据
-
-
-redisTemplate.opsForHash()
-HashOperations
-操作Hash类型数据
-
-
-redisTemplate.opsForList()
-ListOperations
-操作List类型数据
-
-
-redisTemplate.opsForSet()
-SetOperations
-操作Set类型数据
-
-
-redisTemplate.opsForzSet()
-ZSetOperations
-操作SortedSet类型数据
-
-
-redisTemplate
-
-通用的命令
-
-
-快速入门SpringBoot已经提供了对SpringDataRedis的支持，使用起来非常简单
-
-导入依赖，
-&lt;!--redis依赖--&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;!--连接池依赖 common-pool--&gt;&lt;dependency&gt;    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;&lt;/dependency&gt;&lt;!--Jackson依赖 springmvc里面会有，如果加了这个依赖，jackson就不用加了--&gt;&lt;dependency&gt;    &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;    &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;&lt;/dependency&gt;
-
-配置Redis
-spring:  data: # 需要有 data    redis:      host: 127.0.0.1      port: 6379      password: 123456      lettuce:        pool:          max-active: 8          min-idle: 0          max-idle: 8          max-wait: 100ms
-
-注入RedisTemplate因为有了SpringBoot的自动装配，我们可以拿来就用
-@Autowiredprivate RedisTemplate redisTemplate;
-
-编写测试方法
-@Testvoid stringTest()&#123;    redisTemplate.opsForValue().set(&quot;name&quot;,&quot;二狗&quot;);    String username = (String) redisTemplate.opsForValue().get(&quot;name&quot;);    System.out.println(username);&#125;
-
-输出结果如下
-二狗
-
-但是从 Redis 客户端来看存入的是乱码
-
-自定义序列化
-RedisTemplate 可以接收任意 Object 作为值写入 Redis (&#x3D;&#x3D;无论是key还是value都是Object对象，所以在存储时会序列化&#x3D;&#x3D;)，只不过写入前会把 Object 序列化为字节形式，默认是采用JDK序列化，得到的结果如上面那个图，一堆码。
-
-缺点：
-
-可读性差
-内存占用较大（&#x3D;&#x3D;实际存的很短，想要存的其实没那么长，因为多存了一些和实际内容没关的东西&#x3D;&#x3D;）
-
-
-
-我们尝试从客户端这里取值看看
-
-第一次 get name 并没有取到，发现里面存入的 name 并不是我们从 Java 里面存入的 name，Java 里面存入的 name 变成了很长的一个东西，最后有个 name。
-
-[!Caution]
-:question: 为什么出现这种现象？
-因为没有手动配置序列化器的时候，RedisTemplate 默认使用 JdkSerializationRedisSerializer，这种序列化器在转对象的时候，不仅会包含数据，还会包含Java类的元数据、版本号、签名等信息。所以图片 key 前面那个长串就是 JDK 序列化后的对象头标识。
-// RedisTemplate 类中@Overridepublic void afterPropertiesSet() &#123;super.afterPropertiesSet();if (defaultSerializer == null) &#123; // 默认的序列化器 defaultSerializer = new JdkSerializationRedisSerializer(     classLoader != null ? classLoader : this.getClass().getClassLoader());&#125;&#125;
-
-我们通过调试的方式看看，进入 set 方法
-
-
-它会对 key 和 value 值进行封装，进入看看
-
-这里有序列化的方法，进去看看，这里我们就进入了 Jdk 序列化工具
-
-一路走进去
-
-最后可以看到底层是用的 ObjectOutputStream 来写对象，把对象转为字节，在这个里面执行完就出现了乱码。那JDK序列化为什么这么做呢？序列化和反序列化就是为了Java对象传出去，还有接收的时候能知道这是哪个Java对象。所以不是说它不好，而是不适合在这里用。
-比如上面那个序列化后的字符串 name，Java序列化协议写入了一系列控制字符。
-魔数 (Magic Number): \xAC\xED。这是 Java 序列化流的固定开头，告诉 JVM，后面跟着的是一个 Java 对象。
-版本号: \x00\x05。
-类型标记: t (在十六进制中对应 \x74)，代表后面跟着的是一个 String 类型。
-长度描述: 紧跟着的字节会记录这个字符串有多长。
-内容: 最后才是真正的 name。
-但是 redis 读取到这个的时候就当成字节数组了，get 不到这个信息。
-下面这个就是 value 的。
-
-
-RedisTemplate 源码里面，对于 key、value、hashKey、hashValue 里面序列化器定义变量如下
-@SuppressWarnings(&quot;rawtypes&quot;) private @Nullable RedisSerializer keySerializer = null;@SuppressWarnings(&quot;rawtypes&quot;) private @Nullable RedisSerializer valueSerializer = null;@SuppressWarnings(&quot;rawtypes&quot;) private @Nullable RedisSerializer hashKeySerializer = null;@SuppressWarnings(&quot;rawtypes&quot;) private @Nullable RedisSerializer hashValueSerializer = null;
-
-不指定默认就是 jdk 序列化，所以我们需要指定。
-
-我们可以自定义RedisTemplate的序列化方式，代码如下在com.lh.config包下编写对应的配置类
-@Configurationpublic class RedisConfig &#123;    @Bean // 对默认 RedisTemplate 的覆盖    public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;        // 创建RedisTemplate对象        RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();        // 设置连接工厂        template.setConnectionFactory(redisConnectionFactory);        // 创建JSON序列化工具        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();        // 设置Key的序列化        template.setKeySerializer(RedisSerializer.string());    // 其实就是StringRedisSerializer.UTF_8        template.setHashKeySerializer(RedisSerializer.string());        // 设置value的序列化        template.setValueSerializer(genericJackson2JsonRedisSerializer);        template.setHashValueSerializer(genericJackson2JsonRedisSerializer);        // 返回        return template;    &#125;&#125;
-
-我们编写一个User类，并尝试将其创建的对象存入Redis，看看是什么效果
-@Data@AllArgsConstructor@NoArgsConstructorpublic class User &#123;    private String name;    private Integer age;&#125;
-
-测试方法
-@Testvoid stringTest()&#123;    redisTemplate.opsForValue().set(&quot;user&quot;, new User(&quot;二狗&quot;, 18));    User user = (User) redisTemplate.opsForValue().get(&quot;user&quot;); // User(name=二狗, age=18)    System.out.println(user);&#125;
-
-这里采用了JSON序列化来代替默认的JDK序列化方式。最终结果如下：
-
-
-
-
-整体可读性有了很大提升，并且&#x3D;&#x3D;能将Java对象自动的序列化为JSON字符串，并且查询时能自动把 JSON 反序列化为Java对象&#x3D;&#x3D;。不过，其中记录了序列化时对应的class名称，目的是为了查询时实现自动反序列化。这会带来&#x3D;&#x3D;额外的内存开销&#x3D;&#x3D;。所以肯定会有更好的方法
-
-
-StringRedisTemplate
-为了节省内存空间，我们并不不使用 JSON 序列化器来处理value，而是统一使用String序列化器，要求只能存储String类型的key和value。当需要存储Java对象时，手动完成对象的序列化和反序列化。
-
-因为存入和读取时的序列化及反序列化都是我们自己实现的，SpringDataRedis就不会将class信息写入Redis了
-
-这种用法比较普遍，因此SpringDataRedis就提供了RedisTemplate的子类：StringRedisTemplate，它的key和value的序列化方式默认就是String方式。源码如下
-public class StringRedisTemplate extends RedisTemplate&lt;String, String&gt; &#123;    public StringRedisTemplate() &#123;        this.setKeySerializer(RedisSerializer.string());        this.setValueSerializer(RedisSerializer.string());        this.setHashKeySerializer(RedisSerializer.string());        this.setHashValueSerializer(RedisSerializer.string());    &#125;
-
-省去了我们自定义RedisTemplate的序列化方式的步骤（可以将之前配置的RedisConfig删除掉），而是直接使用：
-@Autowiredprivate StringRedisTemplate stringRedisTemplate;// JOSN工具(用别的也可以，比如fastJson)private static final ObjectMapper mapper = new ObjectMapper(); // 这个是 springmvc 默认的工具@Testvoid stringTest() throws JsonProcessingException &#123;    //创建对象    User user = new User(&quot;张三&quot;, 18);    //手动序列化    String json = mapper.writeValueAsString(user);    //写入数据    stringRedisTemplate.opsForValue().set(&quot;userdata&quot;, json);    //获取数据    String userdata = stringRedisTemplate.opsForValue().get(&quot;userdata&quot;);    //手动反序列化    User readValue = mapper.readValue(userdata, User.class); // 需要手动指定类型！相当于原来自动转为对象，现在需要你指定对象类型了。    System.out.println(readValue);&#125;
-
-存入Redis中是这样的
-&#123;  &quot;name&quot;: &quot;张三&quot;,  &quot;age&quot;: 18&#125;
-
-
-对于 Hash 类型也类似
-void testHash() &#123;    stringRedisTemplate.opsForHash().put(&quot;user:100&quot;, &quot;name&quot;, &quot;二狗&quot;);    stringRedisTemplate.opsForHash().put(&quot;user:100&quot;, &quot;age&quot;, &quot;18&quot;);    Map&lt;Object, Object&gt; entries = stringRedisTemplate.opsForHash().entries(&quot;user:100&quot;);    System.out.println(&quot;entries = &quot; + entries); // entries = &#123;name=二狗, age=18&#125;&#125;
-
-
-实战篇1 项目导入项目架构如下
-
-项目是和 Java8 配对的，下面是 Java17+MySQL8的配置
-&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;com.mysql&lt;/groupId&gt;    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;    &lt;artifactId&gt;lombok&lt;/artifactId&gt;    &lt;optional&gt;true&lt;/optional&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;    &lt;scope&gt;test&lt;/scope&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;com.baomidou&lt;/groupId&gt;    &lt;artifactId&gt;mybatis-plus-spring-boot3-starter&lt;/artifactId&gt;    &lt;version&gt;3.5.16&lt;/version&gt;&lt;/dependency&gt;&lt;!-- 分页插件被单独弄出来了 --&gt;&lt;dependency&gt;    &lt;groupId&gt;com.baomidou&lt;/groupId&gt;    &lt;artifactId&gt;mybatis-plus-jsqlparser&lt;/artifactId&gt;    &lt;version&gt;3.5.16&lt;/version&gt;&lt;/dependency&gt;&lt;!--hutool--&gt;&lt;dependency&gt;    &lt;groupId&gt;cn.hutool&lt;/groupId&gt;    &lt;artifactId&gt;hutool-all&lt;/artifactId&gt;    &lt;version&gt;5.8.44&lt;/version&gt;&lt;/dependency&gt;
-
-需要注意的点
-
-新版本的 mybatis-plus 把分页插件单独拿出来了
-SpringBoot3 版本的 springmvc 的 javax 包改成了 jakarta
-mybatis-plus-boot-starter 要改为 mybatis-plus-spring-boot3-starter
-
-2 短信登录2.1 基于 Session 实现流程
-
-发送验证码用户在提交手机号后，会校验手机号是否合法，如果不合法，则要求用户重新输入手机号如果手机号合法，后台此时生成对应的验证码，同时将验证码进行保存，然后再通过短信的方式将验证码发送给用户
-短信验证码登录、注册用户将验证码和手机号进行输入，后台从session中拿到当前验证码，然后和用户输入的验证码进行校验，如果不一致，则无法通过校验，如果一致，则后台根据手机号查询用户，如果用户不存在，则为用户创建账号信息，保存到数据库，无论是否存在，都会将用户信息保存到session中，方便后续获得当前登录信息
-校验登录状态用户在请求的时候，会从cookie中携带JsessionId到后台，后台通过JsessionId从session中拿到用户信息，如果没有session信息，则进行拦截，如果有session信息，则将用户信息保存到threadLocal中，并放行
-
-
-[!Caution]
-当用户登录之后进行一系列操作产生数据的时候，一般都需要用户的信息，比如用户ID，用户手机号等来代表谁在操作数据，比如下单、评论什么的，都需要这个数据信息。
-:question: 那么之前都怎么做过呢？
-之前做过的项目里面尝试过下面这种方法
-
-在JSP里面，是把这个信息存到会话里面，HttpSession（从用户第一次访问网站开始，到用户退出登录、浏览器长时间不访问、或者 Session 失效为止，这一段期间内的交互过程）。为什么有这个东西呢？因为同一个人发起的两次请求，比如 /login，/user/me，服务器是根本不知道两次请求是同一个人发过来的，所以Web开发里就需要会话跟踪，当用户第一次请求网站时，就会新建一个 HttpSession，并且为这个会话分配一个 JsessionId，这个ID也会返回给浏览器，浏览器把这个存起来，往后每次请求都发一个。用户的数据都是保存在服务端的，占据内存
-小程序还有前端可以存到本地，比如 localStorage、sessionStorage、Cookie，这种方法简单。
-
-但是这些都有缺点
-
-HttpSession，如果项目采用集群方式，有多个服务器，但是 Session 只存在一台服务器，用户换台服务器就得重新登录，所以分布式场景下需要 Spring Session+Redis 来共享会话。并且 Session 数据保存在服务器，会占用内存，用户越多，会话越多，服务器压力也会更大。
-前端本地存储安全性差，容易被窃取和受到XSS等攻击影响。并且后端时间无法主动控制，比如管理员封禁了用户，但前端数据不会因此变化，用户浏览器里面原来的信息还在，就依然能发起带身份的请求。这个时候后端就必须每次请求都做额外检验，检查用户状态、token 是否过期等。
-
-
-
-实现发送短信验证码功能
-发送验证码
-
-controller 层方法定义如下
-/** * 发送手机验证码 */@PostMapping(&quot;code&quot;)public Result sendCode(@RequestParam(&quot;phone&quot;) String phone, HttpSession session) &#123;    return userService.sendCode(phone, session);&#125;
-
-service 层实现
-@Slf4j@Servicepublic class UserServiceImpl extends ServiceImpl&lt;UserMapper, User&gt; implements IUserService &#123;    @Override    public Result sendCode(String phone, HttpSession session) &#123;        // 1 校验手机号        if (RegexUtils.isPhoneInvalid(phone)) &#123;            // 返回校验信息            return Result.fail(&quot;手机号格式错误&quot;);        &#125;        // 2 生成验证码        String code = RandomUtil.randomNumbers(6);        // 3 保存到 session        session.setAttribute(&quot;code&quot;, code);        // 4 发送验证码        log.debug(&quot;发送验证码成功，验证码: &#123;&#125;&quot;, code);        return Result.ok();    &#125;&#125;
-
-
-校验手机号规则如下
-// 手机号正则public static final String PHONE_REGEX = &quot;^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\\d&#123;8&#125;$&quot;;
-
-校验工具类
-/** * 是否是无效手机格式 * @param phone 要校验的手机号 * @return true:符合，false：不符合 */public static boolean isPhoneInvalid(String phone)&#123;    return mismatch(phone, RegexPatterns.PHONE_REGEX);&#125;
-
-hutool 工具包
-RandomUtil.randomNumbers(6); // 生成一个包含 6 位数字的字符串
-
-
-登录如下
-
-@Overridepublic Result login(LoginFormDTO loginForm, HttpSession session) &#123;    // 1. 校验手机号 (防止发送验证码和登录的时候手机号不是同一个)    String phone = loginForm.getPhone();    if (RegexUtils.isPhoneInvalid(phone)) &#123;        // 返回校验信息        return Result.fail(&quot;手机号格式错误&quot;);    &#125;    // 2 校验验证码    String cacheCode = (String) session.getAttribute(&quot;code&quot;);    String code = loginForm.getCode();    if (cacheCode == null || !cacheCode.equals(code)) &#123; // 可能为空，直接点击的登录        return Result.fail(&quot;验证码错误&quot;);    &#125;    // 3 查询用户    User user = query().eq(&quot;phone&quot;, phone).one();    // 4 判断用户是否存在    if (user == null) &#123;        // 5 创建用户        user = createUserWithPhone(phone);    &#125;    // 6 保存用户到 session    session.setAttribute(&quot;user&quot;, user);    return Result.ok();&#125;private User createUserWithPhone(String phone) &#123;    User user = new User();    user.setPhone(phone);    // 随机10位字符，包括大写、小写字符和数字    user.setNickName(USER_NICK_NAME_PREFIX + RandomUtil.randomString(10));    // 保存用户    save(user);    return user;&#125;
-
-
-
-实现登录拦截功能定义登录拦截器
-public class LoginInterceptor implements HandlerInterceptor &#123;    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;        // 获取 session        HttpSession session = request.getSession();        // 获取 session 中的用户        Object user = session.getAttribute(&quot;user&quot;);        // 判断用户是否存在        if (user == null) &#123;            // 不存在，拦截，返回状态吗            response.setStatus(401);            return false;        &#125;        // 存在，保存用户信息到 ThreadLocal        UserHolder.saveUser((User) user);        // 放行        return true;    &#125;    @Override    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception &#123;        // 移除用户        UserHolder.removeUser();    &#125;&#125;
-
-配置 MvcConfig
-@Configurationpublic class MvcConfig implements WebMvcConfigurer &#123;    @Override    public void addInterceptors(InterceptorRegistry registry) &#123; // 添加拦截器        registry.addInterceptor(new LoginInterceptor())                .excludePathPatterns(                        &quot;/user/login&quot;,                        &quot;/user/code&quot;,                        &quot;/shop/**&quot;,                        &quot;/blog/hot&quot;,                        &quot;/shop-type/**&quot;,                        &quot;/voucher/**&quot;,                        &quot;/upload/**&quot;);    &#125;&#125;
-
-UserHolder 定义如下
-public class UserHolder &#123;    private static final ThreadLocal&lt;User&gt; tl = new ThreadLocal&lt;&gt;();    public static void saveUser(User user)&#123;        tl.set(user);    &#125;    public static User getUser()&#123;        return tl.get();    &#125;    public static void removeUser()&#123;        tl.remove();    &#125;&#125;
-
-实现 /user/me 功能，用来前端查看我的时候，返回个人信息
-@GetMapping(&quot;/me&quot;)public Result me()&#123;    User user = UserHolder.getUser();    return Result.ok(user);&#125;
-
-
-[!Caution]
-:question: ThreadLocal 怎么用的？为什么能保证线程安全？
-:question: 拦截器里面为什么用完要移除？说是防止内存泄漏，啥意思。
-:question: Tomcat 到底怎么用的？程序怎么部署到上面的？别人访问又是如何呢？
-
-隐藏用户敏感信息
-可以通过浏览器看到此时用户的全部信息都在，这很不靠谱，容易泄漏隐私、敏感信息。并且还有不必要的数据传输，比如这里面 createTime、updateTime、password 没必要传输，传输也需要时间，同时这个数据也是存到服务器的 Session 的，所以也会占用服务器内存。所以综上，怎么都应该只保留必要信息。
-从哪里开始改？从保存这个用户信息的地方开始下手，也就是 login，我们定义一个 UserDTO 类，用来表示必要的用户信息
-@Datapublic class UserDTO &#123;    private Long id;    private String nickName;    private String icon;&#125;
-
-login
-session.setAttribute(&quot;user&quot;, BeanUtil.copyProperties(user, UserDTO.class)); // 存 UserDTO 就够了
-
-之后 LoginInterceptor，UserHolder 类以及 /user/me 控制器内容都要调整，之后再登录，敏感信息就没有了
-
-session 共享问题分析每个 tomcat 中都有一份属于自己的 session,假设用户第一次访问第一台 tomcat，并且把自己的信息存放到第一台服务器的 session中，但是第二次这个用户访问到了第二台 tomcat，那么在第二台服务器上，肯定没有第一台服务器存放的 session，所以此时 整个登录拦截功能就会出现问题，我们能如何解决这个问题呢？早期的方案是 session 拷贝，就是说虽然每个 tomcat 上都有不同的 session，但是每当任意一台服务器的 session 修改时，都会同步给其他的 Tomcat 服务器的 session，这样的话，就可以实现 session 的共享了
-
-但是这种方案具有两个大问题
-每台服务器中都有完整的一份 session 数据，服务器压力过大。
-session拷贝数据时，可能会出现延迟
-
-
-所以我们后面都是基于 Redis 来完成，我们把 session 换成 Redis，Redis 数据本身就是共享的，就可以避免 session 共享的问题了
-
-
-2.2 基于 Redis 实现共享 session 登录
-
-
-用户发送短信验证码，服务端将生成的验证码保存到 Redis，这个 Key 要有标识性，因为是用手机号发起请求，可以根据这个特性来作为 key 值
-之后在进行登录的时候，以手机号为 key 来取验证码进行结果校验，之后把用户的信息保存到 Redis，并且用一个随机到 token 作为 key，并且把这个 token 返回给前端。
-前端是存储在本地的，所以不用手机号作为 key，而是随机 token 来保证用户隐私
-前端把 token 保存在本地 sessionStorage，每次发起请求的时候也用拦截器把 token 加到 header 请求头里面一般用 Authorization
-
-
-
-我们一步步来修改，第一步是保存验证码，在 sendCode 方法里面。
-@Overridepublic Result sendCode(String phone, HttpSession session) &#123;      if (RegexUtils.isPhoneInvalid(phone)) &#123;        return Result.fail(&quot;手机号格式错误&quot;);    &#125;    String code = RandomUtil.randomNumbers(6);      // 保存到 redis    // session.setAttribute(&quot;code&quot;, code);    stringRedisTemplate.opsForValue().set(&quot;login:code:&quot; + phone, code, 2, TimeUnit.MINUTES); // 过期时间两分钟    log.debug(&quot;发送验证码成功，验证码: &#123;&#125;&quot;, code);    return Result.ok();&#125;
-
-这里呢，应该更优雅一点，因为里面有常量  login:code, 2，一般这种都要拿出来单独放在一个常量类里面，因为引用比写更不容易出错，并且方便统一管理
-// 定义 Redis 常量类public class RedisConstants &#123;    public static final String LOGIN_CODE_KEY = &quot;login:code:&quot;;    public static final Long LOGIN_CODE_TTL = 2L;&#125;
-
-那上面那个也可以改成下面这种
-stringRedisTemplate.opsForValue().set(LOGIN_CODE_KEY + phone, code, LOGIN_CODE_TTL, TimeUnit.MINUTES);
-
-然后是登录
-@Overridepublic Result login(LoginFormDTO loginForm, HttpSession session) &#123;    String phone = loginForm.getPhone();    if (RegexUtils.isPhoneInvalid(phone)) &#123;        return Result.fail(&quot;手机号格式错误&quot;);    &#125;    // String cacheCode = (String) session.getAttribute(&quot;code&quot;);    // 校验验证码 --&gt; 从 redis 里面取出来    String cacheCode = stringRedisTemplate.opsForValue().get(LOGIN_CODE_KEY + phone);      String code = loginForm.getCode();    if (cacheCode == null || !cacheCode.equals(code)) &#123;         return Result.fail(&quot;验证码错误&quot;);    &#125;    User user = query().eq(&quot;phone&quot;, phone).one();    if (user == null) &#123;        user = createUserWithPhone(phone);    &#125;    // 6 保存用户到 redis    // 生成 token    String token = UUID.randomUUID().toString(true);// true 代表不带-,    UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);    // putAll 需要 map 对象    Map&lt;String, Object&gt; userMap = BeanUtil.beanToMap(userDTO);      stringRedisTemplate.opsForHash().putAll(LOGIN_USER_KEY + token, userMap);    // 设置有效期, 同 session 设置有效期为 30 分钟    stringRedisTemplate.expire(LOGIN_USER_KEY + token, LOGIN_USER_TTL, TimeUnit.MINUTES);    return Result.ok(token);&#125;
-
-
-验证码取出来是从 redis 里面取
-生成 token 我们用 hutool 包里面的 UUID，toString(true) 代表生成的 UUID 里面不带 -
-BeanUtil.beanToMap 把对象转为 map
-为该键设置有效期，我们同 session 有效期一样，设置为 30 分钟，这样也可以定期清除防止无限占用内存
-
-然后重写拦截器
-public class LoginInterceptor implements HandlerInterceptor &#123;    // 这里没有使用 @Autowired！    private StringRedisTemplate redisTemplate;        // 加了个构造器    public LoginInterceptor(StringRedisTemplate redisTemplate) &#123;        this.redisTemplate = redisTemplate;    &#125;    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;        // 获取 请求头中的 token        String token = request.getHeader(&quot;Authorization&quot;);        // 判断是否为空        if (StrUtil.isBlank(token)) &#123;             response.setStatus(401);            return false;        &#125;        String key = LOGIN_USER_KEY + token;        // 获取 redis 中的用户信息        Map&lt;Object, Object&gt; userMap = redisTemplate.opsForHash().entries(key);        if (userMap.isEmpty()) &#123;            // 说明过期了或者 token 不对            response.setStatus(401);            return false;        &#125;        // 从 Map 转为对象        UserDTO userDTO = BeanUtil.fillBeanWithMap(userMap, new UserDTO(), false);        // 设置有效期        redisTemplate.expire(key, LOGIN_USER_TTL, TimeUnit.MINUTES);        // 存在，保存用户信息到 ThreadLocal        UserHolder.saveUser(userDTO);        // 放行        return true;    &#125;    @Override    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception &#123;        // 移除用户        UserHolder.removeUser();    &#125;&#125;
-
-修改 MvcConfig
-@Configurationpublic class MvcConfig implements WebMvcConfigurer &#123;    @Resource    private StringRedisTemplate redisTemplate;    @Override    public void addInterceptors(InterceptorRegistry registry) &#123;        registry.addInterceptor(new LoginInterceptor(redisTemplate)) // 将 redisTemplate 作为参数传入                .excludePathPatterns(                        &quot;/user/login&quot;,                        &quot;/user/code&quot;,                        &quot;/shop/**&quot;,                        &quot;/blog/hot&quot;,                        &quot;/shop-type/**&quot;,                        &quot;/voucher/**&quot;,                        &quot;/upload/**&quot;);    &#125;&#125;
-
-
-这里 LoginInterceptor 没有对 redisTemplate 自动注入的原因是因为 LoginInterceptor 并没有被 Spring 接管（它上面没有加任何 @Component、@Service 等这种注解）所以这里的解决方法是通过构造器，然后传进来，所以在 WebMvcConfigurer 里面，因为这个配置类是在容器里面的，所以在这个里面自动注入，然后通过构造器传的方式放进去让登录拦截器去使用
-同时这里有重置有效期的操作，因为 Session 会话是 30 分钟无操作即自动断开连接，所以这里可以模仿他，那么就是每次请求时重置一下有效期。
-
-运行～发送验证码～没问题～登录～报错～
-
-报错提示到下面这一行
-Map&lt;String, Object&gt; userMap = BeanUtil.beanToMap(userDTO);stringRedisTemplate.opsForHash().putAll(LOGIN_USER_KEY + token, userMap); // 报错
-
-说 Long 类型无法转为 String 类型，原因是因为 UserDTO 里面的 id 是 Long 类型，但是咱们的 StringRedisTemplate 定义的泛型是 &lt;String, String&gt;，也就是键、值都是 String 类型。
-
-[!Caution]
-:question: Integer 里面不是有 toString() 方法吗？为什么不能强转
-这是混淆了强制类型转换（Casting）和类型转换。强制类型转换里面，被转换的对象必须本身就是那个类型或者它的子类。而 Long 和 String 在类继承树上属于平级。
-手动调用的 id.toString() 那是方法调用，是我要根据 Long 里的数字来创建一个 String 对象。
-所以同理，即使是 Integer 类也不能强转为 Long 类。
-但是 int 和 long 之间可以强转，因为他们都是基本数据类型，在内存中是连续的二进制位，所以直接作截断或者提升就可以了。
-强转 (Type) object 必须遵循向上转型（变成爸爸或者爷爷）或者向下转型（爸爸转成儿子），但是大儿子不能强转为二儿子。
-
-上面这个现象，第一个不报错，因为发生了隐式类型提升，int 自动变为 long。第二个报错，10 被装箱成 Integer 对象，然后尝试把 Integer 对象赋值给 Long 引用！！报错。
-
-所以我们修改原来的 BeanUtil.beanToMap 方法，手动调用一下 toString() 方法
-Map&lt;String, Object&gt; userMap = BeanUtil.beanToMap(userDTO,                        new HashMap&lt;&gt;(), // 目标的Map                        CopyOptions.create() // 创建拷贝选项                                .ignoreNullValue() // 设置忽略空值，当源对象的值为null时，忽略而不注入此值                                .setFieldValueEditor((key, value) -&gt; value.toString())); // 设置字段属性值编辑器，用于自定义属性值转换规则
-
-这里这个目标 Map 我是新建的一个空的，也可以不为空。这里还有一个问题，如果 value 为空调用这个方法岂不是报错，所以需要多一步判断
-Map&lt;String, Object&gt; userMap = BeanUtil.beanToMap(userDTO,                        new HashMap&lt;&gt;(),                        CopyOptions.create()                                .ignoreNullValue()                                .setFieldValueEditor((key, value) -&gt; value == null ? null : value.toString()));
-
-
-[!Warning]
-你可能疑问，这里不是前面加了 ignoreNullValue 了吗，怎么还要判断？
-因为 ignoreNullValue 为当源对象值为 null 时，忽略而不注入。而 setFieldValueEditor 是自定义属性值的转换规则，有可能结果是 null，所以是先改值再忽略 null 值。
-
-然后我们登录，可以看到 token 被存入到本地浏览器的 session storage，并且发送请求的时候会把 token 放入请求头。
-
-
-解决状态登录刷新的问题前面其实也有个小问题，用户操作是不是应该就刷新时间，无论是在首页浏览还是看个人信息，但是前面那个拦截器只拦截了部分，对于查看首页是没有做拦截的，也就是说 token 有效期不会刷新，所以要解决这个问题，我们可以再加一层拦截器，只用来刷新有效期、存用户信息。
-
-第一层拦截器
-public class RefreshTokenInterceptor implements HandlerInterceptor &#123;    private StringRedisTemplate redisTemplate;    public RefreshTokenInterceptor(StringRedisTemplate redisTemplate) &#123;        this.redisTemplate = redisTemplate;    &#125;    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;        // 获取 请求头中的 token        String token = request.getHeader(&quot;Authorization&quot;);        if (StrUtil.isBlank(token)) &#123;            return true; // 为空就放行，因为用户可能在请求不需要登录的功能，比如首页浏览        &#125;        String key = LOGIN_USER_KEY + token;        // 获取 redis 中的用户        Map&lt;Object, Object&gt; userMap = redisTemplate.opsForHash().entries(key);        if (userMap.isEmpty()) &#123;            // 说明过期了或者 token 不对，token 即使过期了，用户也可能在请求不需要登录的功能，继续放行            return true;        &#125;        UserDTO userDTO = BeanUtil.fillBeanWithMap(userMap, new UserDTO(), false);        // 设置有效期        redisTemplate.expire(key, LOGIN_USER_TTL, TimeUnit.MINUTES);        // 存在，保存用户信息到 ThreadLocal        UserHolder.saveUser(userDTO);        // 放行        return true;    &#125;    @Override    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception &#123;        // 移除用户        UserHolder.removeUser();    &#125;&#125;
-
-
-它来获取 token，没有就放行（因为可能没有登录，但是也能访问首页什么的），如果有，获取用户信息，然后设置有效期、保存用户信息等。这里相当于做了通用的操作，这里只放行，不拦截，是因为这个拦截器功能是刷新 Token 有效期
-
-第二个登录拦截器，拦截部分需要登录才能访问的请求，第一个拦截器里面已经把用户信息拿到了，所以这里只要做个判断就可以了。
-public class LoginInterceptor implements HandlerInterceptor &#123;    @Override    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;        if(UserHolder.getUser() == null) &#123;            response.setStatus(401);            return false;        &#125;        // 放行        return true;    &#125;&#125;
-
-然后我们需要修改配置类
-@Configurationpublic class MvcConfig implements WebMvcConfigurer &#123;    @Resource    private StringRedisTemplate stringRedisTemplate;    @Override    public void addInterceptors(InterceptorRegistry registry) &#123;        registry.addInterceptor(new LoginInterceptor()) // 不需要 stringRedisTemplate 了                .excludePathPatterns(                        &quot;/user/login&quot;,                        &quot;/user/code&quot;,                        &quot;/shop/**&quot;,                        &quot;/blog/hot&quot;,                        &quot;/shop-type/**&quot;,                        &quot;/voucher/**&quot;,                        &quot;/upload/**&quot;)                .order(1);        registry.addInterceptor(new RefreshTokenInterceptor(stringRedisTemplate))                .addPathPatterns(&quot;/**&quot;) // 默认就是全部拦截                .order(0); ；// 设置执行顺序，越小优先级越高    &#125;&#125;
-
-如果不设置优先级，默认拦截器的 order 都是 0，那就看定义的时候谁先定义的，先定义的优先级高。
-运行，如果是在首页、个人页都能实现进行请求时就刷新 token 有效期，那么就成功了
-3 商户查询缓存3.1 缓存介绍缓存 就是数据交换的缓冲区，是存储数据的临时地方，一般读写性能较高。缓存数据存储于代码中，而代码运行在内存中，内存的读写性能远高于磁盘，缓存可以大大降低用户访问并发量带来的服务器读写压力，但是缓存也会增加代码复杂度和运营成本
-
-如何使用缓存实际开发中，会构筑多级缓存来时系统运行速度进一步提升，例如：本地缓存与 Redis 中的缓存并发使用
-
-浏览器缓存：主要是存在于浏览器端的缓存
-应用层缓存：可以分为 tomcat 本地缓存，例如之前提到的 map 或者是使用 Redis 作为缓存
-数据库缓存：在数据库中有一片空间是 buffer pool，增改查数据都会先加载到 mysql 的缓存中
-CPU 缓存：当代计算机最大的问题就是 CPU 性能提升了，但是内存读写速度没有跟上，所以为了适应当下的情况，增加了 CPU 的 L1，L2，L3 级的缓存
-
-缓存的作用
-降低后端负载（减少查数据库的次数，也就是磁盘读写次数）
-提高读写效率，降低响应时间
-
-缓存的成本
-数据一致性成本
-代码维护成本
-运维成本（一般采用服务器集群，需要多加机器，机器就是钱，还需要人维护）
-
-3.2 添加商户缓存
-
-原本的逻辑是，比如查询，直接查询数据库，然后返回结果，逻辑代码如下（Mybatis-plus 提供的方法）
-// 根据 id 查询商户信息@GetMapping(&quot;/&#123;id&#125;&quot;)public Result queryShopById(@PathVariable(&quot;id&quot;) Long id) &#123;    return Result.ok(shopService.getById(id));&#125;
-
-优化的思路是在客户端与数据库之间加上一个 Redis 缓存，先从 Redis 中查询，如果没有查到，再去 MySQL 中查询，同时查询完毕之后，将查询到的数据也存入 Redis，这样当下一个用户来进行查询的时候，就可以直接从 Redis 中获取到数据
-
-
-代码流程如下
-
-
-实现如下
-@Overridepublic Result queryById(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否存在    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 存在，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return Result.ok(shop);    &#125;    // 4 不存在，根据 id 查询数据库    Shop shop = this.getById(id);    // 5 不存在，返回错误    if (shop == null) &#123;        return Result.fail(&quot;店铺不存在!&quot;);    &#125;    // 6 存在，写入 Redis    stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop));    // 7 返回    return Result.ok(shop);&#125;
-
-这里应该用 Hash 的，只不过这里用 JSON 来练练手
-我们比较一下带缓存和不带缓存的查询时间，第一个不带缓存，也就是第一次请求
-
-
-
-数据确实被缓存了，然后再次请求
-
-速度很快了。
-并且控制台打印没有输出查询商户的SQL，说明这次查询没有走MySQL。
-
-[!Caution]
-其实这里教程说的有问题，上面这个内容没问题，结果的解释有问题。这个加速并不是 Redis 缓存起到的加速。因为视频里面是重启了 SpringBoot，然后再发起的请求，第一次请求时间长是因为 mvc 组建懒加载导致的，并不是因为 MySQL 查的慢。你第二次请求、第三次、第四次请求其实速度就一样了，并且你试一下，用 MySQL 和用 Redis 基本上没差别，我多试了几下，基本上平均 Redis 比 MySQL 能快 1ms 左右吧，偶尔有的时候比 MySQL 慢，优化很小。其实也是因为查询的数据太少了，只有一条数据，优化不明显，并且咱们做的时候还是本地查询，没有进行网络请求。
-类似Redis 可能 6~10 ms 左右，MySQL 7-11 ms 左右，平均来说提高了，但是偶尔 MySQL 可能还会快一点。比如 MySQL 查下有时候 7ms，Redis 可能 10ms呢。
-
-3.3 添加商铺类型缓存
-
-也就是这一块的缓存，原来对应代码如下
-@RestController@RequestMapping(&quot;/shop-type&quot;)public class ShopTypeController &#123;    @Resource    private IShopTypeService typeService;    @GetMapping(&quot;list&quot;)    public Result queryTypeList() &#123;        List&lt;ShopType&gt; typeList = typeService                .query().orderByAsc(&quot;sort&quot;).list();        return Result.ok(typeList);    &#125;&#125;
-
-然后我们进行改造
-ControllerServiceServiceImpl@GetMapping(&quot;list&quot;)public Result queryTypeList() &#123;    return typeService.queryTypeList();&#125;Result queryTypeList();@Overridepublic Result queryTypeList() &#123;    String key = &quot;cache:shopType:list&quot;;    // 1 从 Redis 查询缓存    List&lt;String&gt; shopTypes = stringRedisTemplate.opsForList().range(key, 0, -1);    // 2 缓存存在则返回, 存在且不为空    if (CollUtil.isNotEmpty(shopTypes)) &#123;        ArrayList&lt;ShopType&gt; temp = new ArrayList&lt;&gt;();        for (String shopType : shopTypes) &#123;            temp.add(JSONUtil.toBean(shopType, ShopType.class));        &#125;        return Result.ok(temp);    &#125;    // 3 缓存不存在从数据库中查询    List&lt;ShopType&gt; temp = query().orderByAsc(&quot;sort&quot;).list();    // 4 转为 JSON 字符串    if (CollUtil.isNotEmpty(temp)) &#123;        for (ShopType shopType : temp) &#123;            String json = JSONUtil.toJsonStr(shopType);            shopTypes.add(json);        &#125;    &#125;    // 5 存入缓存    stringRedisTemplate.opsForList().leftPushAll(key, shopTypes);    // 6 返回    return Result.ok(temp);&#125;
-
-也可以用流来实现一下
-@Overridepublic Result queryTypeList() &#123;    String key = &quot;cache:shopType:list&quot;;    // 1 从 Redis 查询缓存    List&lt;String&gt; shopTypes = stringRedisTemplate.opsForList().range(key, 0, -1);    // 2 缓存存在则返回, 存在且不为空    if (CollUtil.isNotEmpty(shopTypes)) &#123;        List&lt;ShopType&gt; temp = shopTypes                .stream()                .map(i -&gt; JSONUtil.toBean(i, ShopType.class))                .toList();        return Result.ok(temp);    &#125;    // 3 缓存不存在从数据库中查询    List&lt;ShopType&gt; temp = query().orderByAsc(&quot;sort&quot;).list();    // 4 转为 JSON 字符串    if (CollUtil.isNotEmpty(temp)) &#123;        shopTypes = temp.stream().map(JSONUtil::toJsonStr).toList();    &#125;    // 5 存入缓存    stringRedisTemplate.opsForList().leftPushAll(key, shopTypes);    // 6 返回    return Result.ok(temp);&#125;
-
-缓存更新策略
-内存淘汰：Redis 自动进行，当 Redis 内存使用达到我们设定的 max-memery 时，会自动触发淘汰机制，淘汰掉一些不重要的数据。这个原来是 Redis 来解决数据越来越多内存不足的方式。（有好多种策略），默认是开启的。一致性比较差，不是我们能控制的，淘汰什么数据、什么时候淘汰我们都不知道，但是不用我们管，没有维护成本。
-超时剔除：当我们给 Redis 设置了过期时间 TTL 之后，Redis 会将超时的数据进行删除，这样再次查询的时候会把数据库的数据同步过来，根据这个方式来进行维护一致性。所以一致性的情况跟 TTL 设置的时长也有关系（比如 TTL 30 分钟，但是这个期间数据库发生变化了，就出现不一致了）。维护成本也不高，只要加一个过期时间就可以了，一行代码。
-主动更新：我们可以手动调用方法把缓存删除掉，通常用于解决缓存和数据库不一致问题。
-
-
-
-
-
-内存淘汰
-超时剔除
-主动更新
-
-
-
-说明
-不用自己维护，利用 Redis 的内存淘汰机制，当内存不足时自动淘汰部分数据。下次查询时更新缓存。
-给缓存数据添加 TTL 时间，到期后自动删除缓存。下次查询时更新缓存。
-编写业务逻辑，在修改数据库的同时，更新缓存。
-
-
-一致性
-差
-一般
-好
-
-
-维护成本
-无
-低
-高
-
-
-业务场景：
-
-低一致性需求：使用内存淘汰机制。例如商铺类型的查询缓存（很久都不更新一次）
-高一致性需求：主动更新，并用超时剔除作为兜底方案。例如商铺详情查询的缓存
-
-不一致性解决方案由于我们的缓存数据源来自数据库，而数据库的数据是会发生变化的，因此，如果当数据库中数据发生变化，而缓存却没有同步，此时就会有一致性问题存在，用户就会使用缓存中的过时数据，就会产生类似多线程数据安全问题
-主动更新目前有如下三种主流方式
-
-Cache Aside Pattern 人工编码方式：缓存调用者在更新完数据库之后再去更新缓存，也称之为双写方案
-
-Read&#x2F;Write Through Pattern：缓存与数据库整合为一个服务，由服务来维护一致性。调用者调用该服务，无需关心缓存一致性问题，由它来管理缓存和数据库的一致性。但是维护这样一个服务很复杂，市面上也不容易找到这样的一个现成的服务，开发成本高
-
-Write Behind Caching Pattern：调用者&#x3D;&#x3D;只操作缓存&#x3D;&#x3D;，其他线程去异步处理数据库，最终实现一致性。但是维护这样的一个异步的任务很复杂，需要实时监控缓存中的数据更新，其他线程去异步更新数据库也可能不太及时，一致性不能完全保证，而且缓存服务器如果宕机，那么缓存的数据也就丢失了
-好处
-
-比如十次写操作，先放到缓存，然后线程再执行一次批处理，把内容同步到数据库，只操作一次数据库
-比如对某个数据进行了多次修改，只需要同步最后一次的结果就可以，效率高
-
-
-
-不一致性解决方法在企业的实际应用中，方案一是主流的，而且比较可靠的，那么就需要考虑三个问题
-
-删除缓存还是更新缓存？更新缓存：每次更新数据库都更新缓存，无效写操作较多。比如连续更新了100次数据，但是没有人读，更新缓存其实没什么用。❌删除缓存：更新数据库时让缓存失效，查询时再更新缓存，避免了无效写操作，减少更新次数。✅
-
-如何保证缓存与数据库的操作同时成功或失败？需要保证缓存与数据库操作的原子性，比如更新数据库成功了，但是删除缓存失败了，那就没意义了单体系统：将缓存与数据库操作放在一个事务分布式系统：利用 TTC 等分布式事务方案
-
-先操作缓存还是先操作数据库？
-在并发情况下，删除缓存和更新数据库操作不同线程之间可能会交叉，不可避免出现问题。
-
-先删除缓存，再操作数据库
-
-正常情况异常情况正常情况如下，比如先操作数据库再删除缓存，刚开始缓存和数据库都有数据 10，线程 1 执行的时候先删除缓存，然后更新数据库为 20，然后线程 2 查询的时候缓存未命中，就从数据库查询并且写入缓存，此时缓存和数据库都是数据 20。
-还是刚开始初始值都是 10，线程 1 先删除缓存，然后去更新，业务比较复杂比较慢，这个时候线程 2 也来更新，查询缓存，没查到，就去查询数据库并且写入缓存，因为更新操作还没完成，所以读取的是之前的值 10，然后写入了缓存，之后线程 1 更新数据库完成，最终缓存值为 10，数据库值为 20，出现不一致，出现线程安全性。
-这种情况出现的概率还是很高的！！因为是先删缓存，再操作数据库，删缓存快，写入数据库慢，查缓存、查数据库、写缓存都快。所以这个线程 1 的空隙很大，很容易被线程 2 这种查询的捕捉到。
-
-
-
-先操作数据库，再删除缓存
-
-正常情况异常情况这没啥问题，不多说
-这里刚开始缓存和数据库数据都是 10，假如说线程 1 来查询缓存的时候，缓存刚好失效了，没查到（查到不就直接返回了吗），然后去查询了数据库，得到值 10，在它拿值写入缓存的空隙，线程 2 更新了数据库为 20，并且删除了缓存（缓存本来就没数据，删了没影响），然后线程 1 把值 10 写入了缓存，出现了不一致。但是这种情况出现概率很低
-
-出现并发情况
-
-需要线程 1 操作的时候缓存失效
-
-需要在写入缓存这个极短的间隙中（微秒）完成更新数据库这个比较耗时的操作
-
-
-
-
-所以方案 2 胜出，我们先写数据库，再写缓存
-
-
-最终整体方案就为
-
-低一致性需求：使用 Redis 自带的内存淘汰机制。
-高一致性需求：主动更新，并以超时剔除作为兜底方案。
-读操作：
-缓存命中则直接返回
-缓存未命中则查询数据库，并写入缓存，设定超时时间
-
-
-写操作：
-先写数据库，然后再删除缓存（尽可能保证线程安全性）
-要确保数据库与缓存操作的原子性（单体系统用事务，分布式系统用 TTC 等分布式事务）
-
-
-
-
-
-:question: 新增数据、删除数据怎么处理缓存，比如商铺分类列表之类的？
-实现商铺缓存与数据库的双写一致性分为查询和更新操作两部分
-查询原来缓存未命中去查询数据库并写入缓存的逻辑已经实现了，再加上设置超时时间就可以了。
-@Overridepublic Result queryById(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否存在    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 存在，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return Result.ok(shop);    &#125;    // 4 不存在，根据 id 查询数据库    Shop shop = this.getById(id);    // 5 不存在，返回错误    if (shop == null) &#123;        return Result.fail(&quot;店铺不存在!&quot;);    &#125;    // 6 存在，写入 Redis-   stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop));+   stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop), CACHE_SHOP_TTL, TimeUnit.MINUTES);    // 7 返回    return Result.ok(shop);&#125;
-
-
-
-更新@Override@Transactional // 控制更新数据库、更新缓存两个操作的原子性public Result update(Shop shop) &#123;    Long id = shop.getId();    if (id == null) &#123;        return Result.fail(&quot;店铺id不能为空&quot;);    &#125;    // 1. 更新数据库    updateById(shop);    // 2. 删除缓存    stringRedisTemplate.delete(CACHE_SHOP_KEY + shop.getId());    return Result.ok();&#125;
-
-结果就不啰嗦了，大致说一下。首先是查询，第一次查询把数据写入缓存，然后第二次再查看这个餐厅的时候就直接从缓存读了。因为这个没有管理端页面，没法发起请求，所以就用 Postman 来发起请求，修改名字，发起请求后，可以看到数据库被修改，缓存里没有这个数据了，直到再次请求这个商铺的信息的时候才会写入缓存。
-注意 JSON 格式的数据最后一行不能有逗号，否则会报错。
-
-
-  注解 Transactional 的作用是什么？怎么保证了操作的原子性？这里 @Transactional 并不是说把操作 MySQL 和操作 Redis 封装成一个事务了，而是假装封装成一个事务。
-
-假如先删除缓存，再更新数据库缓存删除成功，但是数据库更新失败，这个时候会出发回滚。但是删缓存不会导致有不一致性问题，但是这个时候会导致大量请求从缓存转移到数据库，也就是出现缓存击穿
-如果是先更新库，再删缓存那么如果更新成功，但是删缓存报错，函数报错，触发回滚，这个时候就保证了一致性。
-
-
-  注解 Transactional 到底管谁呢？底层怎么做呢？@Transactional 直接作用于数据库连接，只要支持 ACID 事务且提供了标准 JDBC 驱动的数据库都可以，比如 MySQL（InnoDB引擎，因为这个引擎支持事务）、Oracle、PostgreSQL、SQL Server 都能用。
-当给一个方法加上 @Transactional 时，到底做了什么呢？
-
-创建代理对象Spring 启动的时候，发现你这个方法 update 有这个注解，那就会给这个类 ShopServiceImpl 生成一个代理类
-
-环绕增强
-当你调用 service.update(shop) 时，实际上执行的是代理对象的方法：
-
-开启事务： 代理对象先通过 DataSource 拿到一个数据库连接，执行 connection.setAutoCommit(false)（关掉自动提交，这是核心！）。
-执行业务： 调用你真正的 updateById(shop) 和 redis.delete()。
-判断结果：
-成功： 如果整个方法没报错，代理对象执行 connection.commit()，数据正式写入磁盘。
-异常： 如果抛出了 RuntimeException，代理对象立刻执行 connection.rollback()。
-
-
-释放连接： 把连接还给连接池。
-
-
-
-所以这里真正进行撤回操作的只有数据库。
-
-
-缓存穿透缓存穿透是指客户端请求的数据在缓存中和数据库中都不存在，这样缓存永远不会生效，这些请求都会打到数据库。（有些人可能恶意请求某些不存在的数据，导致频繁访问数据库）
-解决方案常见的解决方案有两种
-
-缓存空对象：当数据库不存在这个数据的时候，把这个数据也写入缓存，只不过值为空
-当客户端访问不存在的数据时，会先请求 redis，但是此时 redis 中也没有数据，就会直接访问数据库，但是数据库里也没有数据，那么这个数据就穿透了缓存，直击数据库。但是数据库能承载的并发不如 redis 这么高，所以如果大量的请求同时都来访问这个不存在的数据，那么这些请求就会访问到数据库，所以如果这个数据在数据库里不存在，我们也把这个这个数据存在 redis 中去（额外的内存消耗），这样下次请求这个不存在的数据时，redis 缓存中也能找到这个数据，不用去查数据库。
-
-
-
-优点：实现简单，维护方便
-缺点：额外的内存消耗；可能造成短期的不一致（我们通过设置 TTL 过期时间，不过在这个过期时间内可能会出现不一致，如果一致性要求高，可以在数据写入的时候把缓存更新一下）
-
-
-布隆过滤布隆过滤器是采用哈希思想来解决这个问题，通过一个庞大的二进制数组，根据哈希思想去判断当前这个要查询的数据是否存在，如果布隆过滤器判断存在，则放行，后续操作就和前面一样了。如果布隆过滤器判断这个数据不存在，则直接返回。
-
-
-
-优点：内存占用较少，没有多余 key
-缺点：实现复杂（不过 Redis 提供了 bitmap 帮我们做了）；存在误判可能（因为底层是用的哈希原理，就可能会出现哈希冲突，所以如果这个里面判断不存在，那就一定不存在，判断存在也可能不存在，也会出现缓存穿透）
-
-
-
-解决商铺查询缓存穿透问题
-
-原来的流程是查询的时候根据商铺 id 来从 Redis 查，如果不存在则去数据库查，查到了就写入缓存并且返回商铺信息，查不到就返回 404，说明商铺页面没找到。
-解决缓存穿透问题，需要修改的地方是数据库查不到之后，把空值也写入 redis，并且返回错误信息，不过这样之后呢，取到缓存之后需要多一步操作，先判断一下是不是空值，是空值就 404，不是再返回商铺信息。
-然后，我们去实现一下代码
-@Overridepublic Result queryById(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否存在    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 存在，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return Result.ok(shop);    &#125;+   if (shopJson != null) &#123;+       return Result.fail(&quot;店铺不存在&quot;);+   &#125;    // 4 不存在，根据 id 查询数据库    Shop shop = this.getById(id);    // 5 不存在，空值写入缓存，返回错误    if (shop == null) &#123;+       stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);        return Result.fail(&quot;店铺不存在!&quot;);    &#125;    // 6 存在，写入 Redis    stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop), CACHE_SHOP_TTL, TimeUnit.MINUTES);    // 7 返回    return Result.ok(shop);&#125;
-
-
-查询数据库的时候，如果店铺不存在，也要存一份空值到缓存，注意这里是 &quot;&quot;，不是 null，并且这个 TTL 一般短一点，可以一分钟、两分钟
-在查询用户缓存的时候，第 2 步结束后，如果没有返回，说明商铺信息为 null（说明缓存里面真的没有） 或者 &quot;&quot;（说明是自己设置的空值），所以需要再判断一下。
-
- 写入缓存的时候可以存 null 吗这个代码里面写的是 &quot;&quot;，存 null 是不可以的，会直接报错，因为 Spring Data Redis 底层在执行 set 操作前，会进行严格的非空检查。Redis 设计意图是： SET 命令本身就是在存值，如果你想表达没有值，应该删除它而不是存入 null。
-
-缓存穿透的解决方案有哪些？
-
-缓存 null 值
-布隆过滤
-增强 id 的复杂度，避免被猜测 id 规律
-做好数据的基础格式校验（比如规定id长度必须为10，那不是10位的id请求直接pass）
-加强用户权限校验（比如必须登录、访问的频率限制）
-做好热点参数的限流（比如统计 id 被访问的次数，比如正常是每秒访问 50 次，但是某个时刻被访问了每秒 500 次，我们可以设置一个规则进行限流，只能每秒访问100次，超过直接拒绝）这里不介绍，比如阿里巴巴开源的 Sentinel 可以来做这件事。
-
-
-
-
-缓存雪崩缓存雪崩是指在同一时段大量的缓存 key 同时失效或者 Redis 服务宕机，导致大量请求到达数据库，带来巨大压力。
-
-
-
-解决方案
-解决大量的缓存 key 同时失效问题：给不同的 Key 的 TTL 添加随机值，让其在不同时间段分批失效比如平时做缓存的时候，有些数据是批量导入的，设置的相同的过期时间，比如30分钟，我们可以在这个基础上加一个 1～5 分钟的随机值，避免同时过期
-解决宕机问题：利用Redis集群提高服务的可用性使用一个或者多个哨兵(Sentinel)实例组成的系统，对redis节点进行监控，在主节点出现故障的情况下，能将从节点中的一个升级为主节点，进行故障转移，保证系统的可用性。
-给缓存业务添加降级限流策略发现 Redis 宕机了，对于请求进行限流、拒绝，避免将压力给到数据库
-给业务添加多级缓存浏览器访问静态资源时，优先读取浏览器本地缓存；访问非静态资源（ajax查询数据）时，访问服务端；请求到达Nginx后，优先读取Nginx本地缓存；如果Nginx本地缓存未命中，则去直接查询Redis（不经过Tomcat）；如果Redis查询未命中，则查询Tomcat；请求进入Tomcat后，优先查询JVM进程缓存；如果JVM进程缓存未命中，则查询数据库
-
-
-
-缓存击穿缓存击穿也叫热点 Key 问题，就是一个被高并发访问并且缓存重建业务较复杂的 key 突然失效了，那么无数请求访问就会在瞬间给数据库带来巨大的冲击
-比如某个 key 失效了，但是重建这个 key 要从数据库查询，然后构建存入 Redis，但是这个构建过程复杂，耗时长，就会出现缓存击穿。
-如图，假设线程1在查询缓存之后，本来应该去查询数据库，然后把这个数据重新加载到缓存的，此时只要线程1走完这个逻辑，其他线程就都能从缓存中加载这些数据了，但是假设在线程1没有走完的时候，后续的线程2，线程3，线程4同时过来访问当前这个方法， 那么这些线程都不能从缓存中查询到数据，那么他们就会同一时刻来访问查询缓存，都没查到，接着同一时间去访问数据库，同时的去执行数据库代码，对数据库访问压力过大
-
-
-解决方案互斥锁利用锁的互斥性
-
-
-假设现在线程1过来访问，他查询缓存没有命中，但是此时他获得到了锁的资源，那么线程1就会一个人去执行逻辑，假设现在线程2过来，线程2在执行过程中，并没有获得到锁，那么线程2就可以休眠一会，然后去重试，直到线程1把锁释放后，线程2获得到锁，然后再来执行逻辑，此时就能够从缓存中拿到数据了。
-问题：如果重建缓存数据时间比较久，那在这个期间所有进来的请求线程都在等待，性能比较差。
-逻辑过期分析：之所以会出现缓存击穿问题，主要原因是在于我们对 key 设置了 TTL，如果我们不设置 TTL，那么就不会有缓存击穿问题，但是不设置 TTL，数据又会一直占用我们的内存，所以我们可以采用逻辑过期方案
-
-
-解决方案是将 TTL 设置在 redis 的 value 中，注意：这个过期时间并不会直接作用于 Redis，而是我们后续通过逻辑去处理。假设线程1去查询缓存，然后从 value 中判断当前数据已经过期了，此时线程1去获得互斥锁，获得了锁的进程会开启一个新线程去进行之前的重建缓存数据的逻辑，直到新开的线程完成重建缓存数据逻辑之后，才会释放锁，而线程1不进行等待，直接获取过期数据然后返回，假设现在线程3过来访问，由于线程2拿着锁，所以线程3无法获得锁，线程3也直接返回数据（但只能返回旧数据，牺牲了数据一致性，换取性能上的提高），只有等待线程2重建缓存数据之后，其他线程才能返回新的数据
-这种方案是在异步构建缓存数据，缺点是在重建完缓存数据之前，返回的都是旧数据
-对比
-
-
-解决方案
-优点
-缺点
-
-
-
-互斥锁
-没有额外的内存消耗 保证一致性 实现简单
-线程需要等待，性能受影响 可能有死锁风险
-
-
-逻辑过期
-线程无需等待，性能较好
-不保证一致性 有额外内存消耗 实现复杂
-
-
-
-互斥锁方案：由于保证了互斥性，所以数据一致，且实现简单，只是加了一把锁而已，也没有其他的事情需要操心，所以没有额外的内存消耗（不用 expire 字段了），缺点在于有锁的情况，就可能死锁，所以只能串行执行，性能会受到影响
-逻辑过期方案：线程读取过程中不需要等待，性能好，有一个额外的线程持有锁去进行重构缓存数据，但是在重构数据完成之前，其他线程只能返回脏数据，出现数据不一致性问题，且实现起来比较麻烦
-
-基于互斥锁方式解决缓存击穿问题核心思路：相较于原来从缓存中查询不到数据后直接查询数据库而言，现在的方案是，进行查询之后，如果没有从缓存中查询到数据，则进行互斥锁的获取，获取互斥锁之后，判断是否获取到了锁，如果没获取到，则休眠一段时间，过一会儿再去尝试，直到获取到锁进行下一步或者从缓存中拿到数据为止。如果获取到了锁的线程，则进行查询，将查询到的数据写入 Redis，再释放锁，返回数据，利用互斥锁就能保证只有一个线程去执行数据库的逻辑，防止缓存击穿。
-
-&#x3D;&#x3D;redis本身就是单线程写入，所以不用担心并发问题&#x3D;&#x3D;
-核心思路就是利用 redis 的 setnx 方法来表示获取锁，如果 redis 没有这个 key，则插入成功，返回 1，如果已经存在这个 key，则插入失败，返回 0。在StringRedisTemplate 中返回 true&#x2F;false，我们可以根据返回值来判断是否有线程成功获取到了锁
-为了防止系统出现故障，在加锁后未能解锁，对加锁过程设置一个有效期。有效期的时长一般根据该锁对应的业务时长确定 
-
-
-
-加锁释放锁private boolean tryLock(String key) &#123;    Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(key, &quot;1&quot;, 10, TimeUnit.SECONDS);    return BooleanUtil.isTrue(flag); // 防止 flag 为 null&#125;private void unlock(String key) &#123;    stringRedisTemplate.delete(key);&#125;
-
-
-  为什么 tryLock 函数不直接返回 flag 假如说在操作 Redis 的时候连接超时或出错，flag 可能是 null，当把 null 值赋值给 boolean 时，JVM 的自动拆箱（调用 flag.booleanValue()），直接报 NullPointerException。所以在返回的时候使用了 BooleanUtil.isTrue(flag);
-public static boolean isTrue(Boolean bool) &#123;  return Boolean.TRUE.equals(bool);&#125;
-
-现在我们要改动 queryById 方法了，原来咱们演示解决缓存穿透的代码就单独领出来吧（和本章节无关）
-public Shop queryWithPassThrough(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否存在    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 存在，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return shop;    &#125;    if (shopJson != null) &#123;        return null;    &#125;    // 4 不存在，根据 id 查询数据库    Shop shop = this.getById(id);    // 5 不存在，空值写入缓存，返回错误    if (shop == null) &#123;        stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);        return null;    &#125;    // 6 存在，写入 Redis    stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop), CACHE_SHOP_TTL, TimeUnit.MINUTES);    return shop;&#125;
-
-
-然后咱们开始编写用互斥锁解决缓存击穿的代码
-互斥锁解决缓存击穿queryByIdpublic Shop queryWithMutex(Long id) &#123;    String key = CACHE_SHOP_KEY + id; // cache:shop:id    // 1 从 Redis 查询商户缓存    String shopJson = stringRedisTemplate.opsForValue().get(key);    // 2 判断是否命中    if (StrUtil.isNotBlank(shopJson)) &#123;        // 3 命中，直接返回        Shop shop = JSONUtil.toBean(shopJson, Shop.class);        return shop;    &#125;    // 判断命中的是否是空值    if (shopJson != null) &#123;        // 返回一个错误信息        return null;    &#125;    String lockKey = &quot;lock:shop:&quot; + id;    Shop shop = null;    // 4 实现缓存重建    // 4.1 获取互斥锁    try &#123;        boolean isLock = tryLock(lockKey);        // 4.2 判断是否成功        if (!isLock) &#123;            // 4.3 失败则休眠并重试            Thread.sleep(50); // 模拟重建的延时，50ms            return queryWithMutex(id); // 递归        &#125;        // 4.4 成功，根据 id 查询数据库        // 注意：获取锁成功应该再次检查 redis 缓存是否存在，做 DoubleCheck。如果存在则无需重建缓存        shop = this.getById(id);        // 5 不存在，空值写入缓存，返回错误        if (shop == null) &#123;            stringRedisTemplate.opsForValue().set(key, &quot;&quot;, CACHE_NULL_TTL, TimeUnit.MINUTES);            return null;        &#125;        // 6 存在，写入 Redis        stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(shop), CACHE_SHOP_TTL, TimeUnit.MINUTES);    &#125; catch (InterruptedException e) &#123;        throw new RuntimeException(e);    &#125; finally &#123; // 无论是否成功都要释放        // 7 释放互斥锁        unlock(lockKey);    &#125;    // 8 返回    return shop;&#125;
-
-这里我们 key 定义为 &quot;lock:shop:&quot; + id 的形式，因为是查询的一个商铺信息，所以对这一个加锁。
-这里获取锁失败，我们是使用的递归方法来重复执行前面查询缓存、判断是否命中、获取锁的逻辑
-获取锁成功应该再次检查 redis 缓存是否存在，做 DoubleCheck。如果存在则无需重建缓存
-在 finally 中写释放锁的代码，因为无论是否出现异常最后都得把锁释放掉
-@Overridepublic Result queryById(Long id) &#123;    // 缓存击穿    Shop shop = queryWithMutex(id);    if (shop == null) &#123;        return Result.fail(&quot;店铺不存在！&quot;);    &#125;    // 返回    return Result.ok(shop);&#125;
-
-
-这里我们用 JMeter 进行测试，用 homebrew 安装并且终端输入 jmeter 就可以打开 GUI 界面了。我们模拟缓存击穿的情景，缓存击穿是指在某时刻，一个热点数据的 TTL 到期了，此时用户不能从 Redis 中获取热点商品数据，然后就都得去数据库里查询，造成数据库压力过大。我们首先将 Redis 中的热点商品数据删除，模拟 TTL 到期，然后用 Jmeter 进行压力测试，开 1000 个线程来访问这个没有缓存的热点数据配置如下（5秒1000次，qps大约在 200&#x2F;s）
-然后我清空 Java 程序控制台，启动并发请求，查看控制台只输出了一次数据库查询！！！没有发生缓存击穿
 ]]></content>
   </entry>
 </search>
