@@ -16910,7 +16910,7 @@ applicationHome.getDir() 是 target 下的 classes
 &lt;dependency&gt;    &lt;groupId&gt;com.aliyun.oss&lt;/groupId&gt;    &lt;artifactId&gt;aliyun-sdk-oss&lt;/artifactId&gt;    &lt;version&gt;3.5.0&lt;/version&gt;&lt;/dependency&gt;&lt;!-- 下面两个主要用一个工具类的方法, 不导入自己写也可以 --&gt;&lt;dependency&gt;    &lt;groupId&gt;commons-io&lt;/groupId&gt;    &lt;artifactId&gt;commons-io&lt;/artifactId&gt;    &lt;version&gt;2.13.0&lt;/version&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;commons-beanutils&lt;/groupId&gt;    &lt;artifactId&gt;commons-beanutils&lt;/artifactId&gt;    &lt;version&gt;1.9.3&lt;/version&gt;&lt;/dependency&gt;
 
 咱也整点骚的, 使用 yaml 配置
-# 自定义名字aliyun:  access-id: LTAI5tKpLpiXeRoymsKcN672  access-key: wxsckY98x1sud5YEQbxkZe0nQ7Jef4  bucket: typora-picture-0 # 自己使用的名字  endpoint: oss-cn-beijing.aliyuncs.com
+# 自定义名字aliyun:  access-id: xxx  access-key: xxx  bucket: typora-picture-0 # 自己使用的名字  endpoint: oss-cn-beijing.aliyuncs.com
 
 配置 OSSProperties
 @Component@Data@ConfigurationProperties(prefix = &quot;aliyun&quot;)public class OSSProperties implements InitializingBean &#123;    private String endpoint;    private String accessId;    private String accessKey;    private String bucket;    // 声明静态变量    public static String ALI_ENDPOINT;    public static String ALI_ACCESS_ID;    public static String ALI_ACCESS_KEY;    public static String ALI_BUCKET;    @Override    public void afterPropertiesSet() &#123; // 当 bean 初始化完成后, 值存一份在静态变量中        ALI_ENDPOINT = endpoint;        ALI_ACCESS_ID = accessId;        ALI_ACCESS_KEY = accessKey;        ALI_BUCKET = bucket;    &#125;&#125;
