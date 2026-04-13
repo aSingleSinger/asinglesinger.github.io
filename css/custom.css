@@ -1,0 +1,19 @@
+@keyframes butterfly-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#article-container h1::before,
+#article-container h2::before,
+#article-container h3::before,
+#article-container h4::before,
+#article-container h5::before,
+#article-container h6::before {
+  display: inline-block;
+  animation: butterfly-rotate 4s linear infinite;
+  transform-origin: center center;
+}
