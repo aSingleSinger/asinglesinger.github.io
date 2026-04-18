@@ -1,3 +1,4 @@
+/* 设置标题前的小风车 */
 @keyframes butterfly-rotate {
   from {
     transform: rotate(0deg);
@@ -17,3 +18,103 @@
   animation: butterfly-rotate 4s linear infinite;
   transform-origin: center center;
 }
+
+/* 图标简洁化 */
+.tag-q,
+.tag-idea,
+.tag-tip,
+.tag-warn,
+.tag-hot,
+.tag-book,
+.tag-apple,
+.tag-fruit,
+.tag-leaf,
+.tag-coffee,
+.tag-music,
+.tag-moon,
+.tag-flower {
+  display: inline-block;
+  font-weight: 700;
+  margin: 0 2px;
+  color: #222;
+  transition: color 0.3s ease;
+}
+
+/* 图标基础 */
+.tag-q::before,
+.tag-idea::before,
+.tag-tip::before,
+.tag-warn::before,
+.tag-hot::before,
+.tag-book::before,
+.tag-apple::before,
+.tag-fruit::before,
+.tag-leaf::before,
+.tag-coffee::before,
+.tag-music::before,
+.tag-moon::before,
+.tag-flower::before {
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.5s ease, filter 0.3s ease;
+  transform-origin: center center;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* 只让图标动 */
+.tag-q:hover::before,
+.tag-idea:hover::before,
+.tag-tip:hover::before,
+.tag-warn:hover::before,
+.tag-hot:hover::before,
+.tag-book:hover::before,
+.tag-apple:hover::before,
+.tag-fruit:hover::before,
+.tag-leaf:hover::before,
+.tag-coffee:hover::before,
+.tag-music:hover::before,
+.tag-moon:hover::before,
+.tag-flower:hover::before {
+  transform: rotateY(180deg);
+}
+
+/* 图标内容 + 悬停文字颜色 */
+.tag-q::before { content: "❓"; }
+.tag-q:hover { color: #4dabf7; }
+
+.tag-idea::before { content: "💡"; }
+.tag-idea:hover { color: #ffd43b; }
+
+.tag-tip::before { content: "🔹"; }
+.tag-tip:hover { color: #51cf66; }
+
+.tag-warn::before { content: "⚠️"; }
+.tag-warn:hover { color: #ff922b; }
+
+.tag-hot::before { content: "⭐"; }
+.tag-hot:hover { color: #ff6b81; }
+
+.tag-book::before { content: "📌"; }
+.tag-book:hover { color: #845ef7; }
+
+.tag-apple::before { content: "🍎"; }
+.tag-apple:hover { color: #e03131; }
+
+.tag-fruit::before { content: "🍌"; }
+.tag-fruit:hover { color: #fab005; }
+
+.tag-leaf::before { content: "🍃"; }
+.tag-leaf:hover { color: #2f9e44; }
+
+.tag-coffee::before { content: "☕"; }
+.tag-coffee:hover { color: #6f4e37; }
+
+.tag-music::before { content: "🎵"; }
+.tag-music:hover { color: #e64980; }
+
+.tag-moon::before { content: "🌙"; }
+.tag-moon:hover { color: #5f6caf; }
+
+.tag-flower::before { content: "🌸"; }
+.tag-flower:hover { color: #d63384; }

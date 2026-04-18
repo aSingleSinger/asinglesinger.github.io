@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Agent学习 | 一个人的升级日志</title><meta name="author" content="寂寞的冰可乐"><meta name="copyright" content="寂寞的冰可乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="flowgpt 可以看不同Agent角色的 prompt 代码练习 a Agent实现搜索 配置key导入ADK组件配置重试选项定义智能体使用智能体WebUI配置环境，先去搞一下 API Keys Google API Keys import os from dotenv import load_dotenv  load_dotenv()  GOOGLE_API_KEY &#x3D; os.getenv(&quot;">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Agent学习 | 一个人的升级日志</title><meta name="author" content="寂寞的冰可乐"><meta name="copyright" content="寂寞的冰可乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="flowgpt 可以看不同Agent角色的 prompt 代码练习 Agent实现搜索 配置key导入ADK组件配置重试选项定义智能体使用智能体WebUI配置环境，先去搞一下 API Keys Google API Keys import os from dotenv import load_dotenv  load_dotenv()  GOOGLE_API_KEY &#x3D; os.getenv(&quot;GO">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Agent学习">
 <meta property="og:url" content="https://asinglesinger.github.io/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/">
 <meta property="og:site_name" content="一个人的升级日志">
-<meta property="og:description" content="flowgpt 可以看不同Agent角色的 prompt 代码练习 a Agent实现搜索 配置key导入ADK组件配置重试选项定义智能体使用智能体WebUI配置环境，先去搞一下 API Keys Google API Keys import os from dotenv import load_dotenv  load_dotenv()  GOOGLE_API_KEY &#x3D; os.getenv(&quot;">
+<meta property="og:description" content="flowgpt 可以看不同Agent角色的 prompt 代码练习 Agent实现搜索 配置key导入ADK组件配置重试选项定义智能体使用智能体WebUI配置环境，先去搞一下 API Keys Google API Keys import os from dotenv import load_dotenv  load_dotenv()  GOOGLE_API_KEY &#x3D; os.getenv(&quot;GO">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260329183127273.jpg">
 <meta property="article:published_time" content="2026-04-15T09:07:44.000Z">
-<meta property="article:modified_time" content="2026-04-17T05:02:19.855Z">
+<meta property="article:modified_time" content="2026-04-18T07:47:29.351Z">
 <meta property="article:author" content="寂寞的冰可乐">
 <meta property="article:tag" content="大模型应用开发">
 <meta name="twitter:card" content="summary">
@@ -18,7 +18,7 @@
   "url": "https://asinglesinger.github.io/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/",
   "image": "https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260329183127273.jpg",
   "datePublished": "2026-04-15T09:07:44.000Z",
-  "dateModified": "2026-04-17T05:02:19.855Z",
+  "dateModified": "2026-04-18T07:47:29.351Z",
   "author": [
     {
       "@type": "Person",
@@ -178,9 +178,9 @@ btf.addGlobalFn('pjaxSend', () => {
   Pace.restart()
 }, 'pace_restart')
 
-</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div class="bg-animation" id="web_bg" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260329183127273.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">一个人的升级日志</span></a><a class="nav-page-title" href="/"><span class="site-name">Agent学习</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Agent学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-15T09:07:44.000Z" title="发表于 2026-04-15 17:07:44">2026-04-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-17T05:02:19.855Z" title="更新于 2026-04-17 13:02:19">2026-04-17</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>17分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><a target="_blank" rel="noopener" href="https://flowgpt.com/">flowgpt</a> 可以看不同Agent角色的 prompt</p>
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div class="bg-animation" id="web_bg" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260329183127273.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">一个人的升级日志</span></a><a class="nav-page-title" href="/"><span class="site-name">Agent学习</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Agent学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-15T09:07:44.000Z" title="发表于 2026-04-15 17:07:44">2026-04-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-18T07:47:29.351Z" title="更新于 2026-04-18 15:47:29">2026-04-18</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">9.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>39分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><a target="_blank" rel="noopener" href="https://flowgpt.com/">flowgpt</a> 可以看不同Agent角色的 prompt</p>
 <h1>代码练习</h1>
-<h2 id="a-Agent实现搜索">a Agent实现搜索</h2>
+<h2 id="Agent实现搜索">Agent实现搜索</h2>
 <div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">配置key</button><button type="button" class="tab">导入ADK组件</button><button type="button" class="tab">配置重试选项</button><button type="button" class="tab">定义智能体</button><button type="button" class="tab">使用智能体</button><button type="button" class="tab">WebUI</button></div><div class="tab-contents"><div class="tab-item-content active"><p>配置环境，先去搞一下 API Keys</p>
 <p><a target="_blank" rel="noopener" href="https://aistudio.google.com/app/api-keys">Google API Keys</a></p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
@@ -269,7 +269,7 @@ root_agent <span class="token operator">=</span> Agent<span class="token punctua
 <p>界面如下</p>
 <p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260415220801711.png" alt=""></p>
 <p>这就是在WebUI上跟智能体交互，选择了某个智能体，就相当于 <code>run</code> 了智能体，发送消息就代表在交互了</p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
-<h2 id="b-智能体架构">b 智能体架构</h2>
+<h2 id="智能体架构-多智能体">智能体架构(多智能体)</h2>
 <h3 id="Multi-Agent-System">Multi-Agent System</h3>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
 <span class="token keyword">from</span> dotenv <span class="token keyword">import</span> load_dotenv
@@ -560,7 +560,7 @@ response <span class="token operator">=</span> <span class="token keyword">await
 当任务需要通过反馈和修订循环来改进时，可以使用 <code>LoopAgent</code>。<code>LoopAgent </code>会重复运行一组子智能体，直到满足特定条件或达到最大迭代次数为止。这创建了一个优化循环，允许智能体系统不断改进自身的工作结果。</p>
 </div>
 <p>架构：故事创作与批评循环</p>
-<p><a target="_blank" rel="noopener" href="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417122820321.png">https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417122820321.png</a></p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417122820321.png" alt=""></p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># This agent runs ONCE at the beginning to create the first draft.</span>
 initial_writer_agent <span class="token operator">=</span> Agent<span class="token punctuation">(</span>
     name<span class="token operator">=</span><span class="token string">"InitialWriterAgent"</span><span class="token punctuation">,</span>
@@ -651,7 +651,690 @@ root_agent <span class="token operator">=</span> SequentialAgent<span class="tok
 response <span class="token operator">=</span> <span class="token keyword">await</span> runner<span class="token punctuation">.</span>run_debug<span class="token punctuation">(</span>
     <span class="token string">"Write a short story about a lighthouse keeper who discovers a mysterious, glowing map"</span>
 <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io">寂寞的冰可乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/">https://asinglesinger.github.io/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://asinglesinger.github.io" target="_blank">一个人的升级日志</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">大模型应用开发</a></div><div class="post-share"><div class="social-share" data-image="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260329183127273.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width no-desc" href="/2026/04/11/RAG%E5%AD%A6%E4%B9%A0/" title="RAG学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">RAG学习</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260329183127273.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">寂寞的冰可乐</div><div class="author-info-description">去码头搞点薯条</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/aSingleSinger"><i class="fab fa-github"></i><span>We need to talk</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">随便逛逛吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">代码练习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#a-Agent%E5%AE%9E%E7%8E%B0%E6%90%9C%E7%B4%A2"><span class="toc-number">1.1.</span> <span class="toc-text">a Agent实现搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#b-%E6%99%BA%E8%83%BD%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">b 智能体架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Multi-Agent-System"><span class="toc-number">1.2.1.</span> <span class="toc-text">Multi-Agent System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sequential-Workflows"><span class="toc-number">1.2.2.</span> <span class="toc-text">Sequential Workflows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel-Workflows-Independent-Researchers"><span class="toc-number">1.2.3.</span> <span class="toc-text">Parallel Workflows - Independent Researchers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Loop-Workflows-The-Refinement-Cycle"><span class="toc-number">1.2.4.</span> <span class="toc-text">Loop Workflows - The Refinement Cycle</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习">Agent学习</a><time datetime="2026-04-15T09:07:44.000Z" title="发表于 2026-04-15 17:07:44">2026-04-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/11/RAG%E5%AD%A6%E4%B9%A0/" title="RAG学习">RAG学习</a><time datetime="2026-04-11T06:04:13.000Z" title="发表于 2026-04-11 14:04:13">2026-04-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/Canvas%E7%94%BB%E5%B8%83/" title="Canvas画布">Canvas画布</a><time datetime="2026-04-08T01:43:16.000Z" title="发表于 2026-04-08 09:43:16">2026-04-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/SSM%E6%95%B4%E5%90%88/" title="SSM整合">SSM整合</a><time datetime="2026-04-08T01:42:27.000Z" title="发表于 2026-04-08 09:42:27">2026-04-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/SpringMVC%E5%AD%A6%E4%B9%A0/" title="SpringMVC学习">SpringMVC学习</a><time datetime="2026-04-08T01:41:48.000Z" title="发表于 2026-04-08 09:41:48">2026-04-08</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 寂寞的冰可乐</span></div><div class="footer_custom_text">只写不背，未完待续</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+<h3 id="总结">总结</h3>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417133224300.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">模式</th>
+<th style="text-align:left">何时使用</th>
+<th style="text-align:left">示例</th>
+<th style="text-align:left">核心特性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">基于 LLM (sub_agents)</td>
+<td style="text-align:left">需要动态编排时</td>
+<td style="text-align:left">研究 + 总结</td>
+<td style="text-align:left">由 LLM 决定调用内容</td>
+</tr>
+<tr>
+<td style="text-align:left">顺序 (Sequential)</td>
+<td style="text-align:left">顺序很重要，线性管道</td>
+<td style="text-align:left">大纲 → 写作 → 编辑</td>
+<td style="text-align:left">确定性的顺序</td>
+</tr>
+<tr>
+<td style="text-align:left">并行 (Parallel)</td>
+<td style="text-align:left">任务相互独立，速度至关重要</td>
+<td style="text-align:left">多主题研究</td>
+<td style="text-align:left">并发执行</td>
+</tr>
+<tr>
+<td style="text-align:left">循环 (Loop)</td>
+<td style="text-align:left">需要迭代改进时</td>
+<td style="text-align:left">作者 + 评论家精炼</td>
+<td style="text-align:left">重复循环</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>基于 LLM(sub_agents)：比如上面的 <code>refiner_agent</code></li>
+</ul>
+<h2 id="智能体工具">智能体工具</h2>
+<p>🤔 智能体为何需要工具？</p>
+<div class="note red icon-padding simple"><i class="note-icon fas fa-question-circle"></i><p>问题所在：若没有工具，智能体的知识便会停滞不前 —— 无法获取当日新闻或你公司的库存信息。它与外部世界毫无联结，因此无法为你执行任何操作。</p>
+</div>
+<div class="note success flat"><p>解决方案：工具能将孤立的大语言模型转变为实用的智能体，切实帮你完成各类事务。</p>
+</div>
+<p>下面我们将做</p>
+<ul>
+<li>将 Python 函数转化为智能体工具</li>
+<li>构建一个智能体，并将其作为工具供另一个智能体使用</li>
+<li>打造你的首个多工具智能体</li>
+<li>探究智能体开发工具包（ADK）中的各类工具类型</li>
+</ul>
+<h3 id="自定义工具">自定义工具</h3>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">前置准备</button><button type="button" class="tab">自定义工具类</button><button type="button" class="tab">定义智能体</button><button type="button" class="tab">发起请求</button></div><div class="tab-contents"><div class="tab-item-content active"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token keyword">from</span> dotenv <span class="token keyword">import</span> load_dotenv
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>genai <span class="token keyword">import</span> types
+
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>agents <span class="token keyword">import</span> LlmAgent
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>models<span class="token punctuation">.</span>google_llm <span class="token keyword">import</span> Gemini
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>runners <span class="token keyword">import</span> InMemoryRunner
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>sessions <span class="token keyword">import</span> InMemorySessionService
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>tools <span class="token keyword">import</span> google_search<span class="token punctuation">,</span> AgentTool<span class="token punctuation">,</span> ToolContext
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>code_executors <span class="token keyword">import</span> BuiltInCodeExecutor
+
+load_dotenv<span class="token punctuation">(</span>override<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+GOOGLE_API_KEY <span class="token operator">=</span> os<span class="token punctuation">.</span>getenv<span class="token punctuation">(</span><span class="token string">"GOOGLE_API_KEY"</span><span class="token punctuation">)</span>
+os<span class="token punctuation">.</span>environ<span class="token punctuation">[</span><span class="token string">"GOOGLE_API_KEY"</span><span class="token punctuation">]</span> <span class="token operator">=</span> GOOGLE_API_KEY
+
+retry_config <span class="token operator">=</span> types<span class="token punctuation">.</span>HttpRetryOptions<span class="token punctuation">(</span>
+    attempts<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span>  <span class="token comment"># Maximum retry attempts</span>
+    exp_base<span class="token operator">=</span><span class="token number">7</span><span class="token punctuation">,</span>  <span class="token comment"># Delay multiplier</span>
+    initial_delay<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>
+    http_status_codes<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">429</span><span class="token punctuation">,</span> <span class="token number">500</span><span class="token punctuation">,</span> <span class="token number">503</span><span class="token punctuation">,</span> <span class="token number">504</span><span class="token punctuation">]</span><span class="token punctuation">,</span>  <span class="token comment"># Retry on these HTTP errors</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>辅助函数，用于输出生成的 Python 代码以及代码执行工具返回的结果：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">show_python_code_and_result</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># Check if the response contains a valid function call result from the code executor</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>
+            <span class="token punctuation">(</span>response<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>content<span class="token punctuation">.</span>parts<span class="token punctuation">)</span>
+            <span class="token keyword">and</span> <span class="token punctuation">(</span>response<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>content<span class="token punctuation">.</span>parts<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token keyword">and</span> <span class="token punctuation">(</span>response<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>content<span class="token punctuation">.</span>parts<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>function_response<span class="token punctuation">)</span>
+            <span class="token keyword">and</span> <span class="token punctuation">(</span>response<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>content<span class="token punctuation">.</span>parts<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>function_response<span class="token punctuation">.</span>response<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">:</span>
+            response_code <span class="token operator">=</span> response<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>content<span class="token punctuation">.</span>parts<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>function_response<span class="token punctuation">.</span>response
+            <span class="token keyword">if</span> <span class="token string">"result"</span> <span class="token keyword">in</span> response_code <span class="token keyword">and</span> response_code<span class="token punctuation">[</span><span class="token string">"result"</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token string">"```"</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token string">"tool_code"</span> <span class="token keyword">in</span> response_code<span class="token punctuation">[</span><span class="token string">"result"</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                    <span class="token keyword">print</span><span class="token punctuation">(</span>
+                        <span class="token string">"Generated Python Code >> "</span><span class="token punctuation">,</span>
+                        response_code<span class="token punctuation">[</span><span class="token string">"result"</span><span class="token punctuation">]</span><span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">"tool_code"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    <span class="token punctuation">)</span>
+                <span class="token keyword">else</span><span class="token punctuation">:</span>
+                    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Generated Python Response >> "</span><span class="token punctuation">,</span> response_code<span class="token punctuation">[</span><span class="token string">"result"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"✅ Helper functions defined."</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div><div class="tab-item-content"><div class="note red icon-padding simple"><i class="note-icon fas fa-question-circle"></i><p>什么是自定义工具？<br>
+自定义工具是指利用自有代码和业务逻辑自行构建的工具。与 ADK 自带的预制内置工具不同，自定义工具能让你完全掌控功能实现。</p>
+</div>
+<div class="note red icon-padding simple"><i class="note-icon fas fa-question-circle"></i><p>何时使用自定义工具？<br>
+谷歌搜索这类内置工具功能强大，但每家企业都有通用工具无法满足的独特需求。自定义工具可用于实现专属业务逻辑、对接自有系统，并解决特定领域的问题。ADK 提供多种自定义工具类型以应对这类场景。</p>
+</div>
+<blockquote>
+<p>示例：构建自定义功能工具 --&gt; 货币兑换智能体<br>
+该智能体可实现不同币种间的兑换，并计算兑换所需手续费。智能体包含两个自定义工具，执行流程如下：</p>
+</blockquote>
+<ol>
+<li>手续费查询工具 —— 查询兑换交易手续费（模拟数据）</li>
+<li>汇率工具 —— 获取货币兑换汇率（模拟数据）</li>
+<li>计算步骤 —— 核算包含手续费在内的总兑换成本</li>
+</ol>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417154053622.png" alt=""></p>
+<div class="note red icon-padding simple"><i class="note-icon fas fa-question-circle"></i><p>如何定义一个工具？<br>
+只需遵循以下简单准则，任意 Python 函数都能成为智能体工具：</p>
+<ol>
+<li>创建一个 Python 函数</li>
+<li>遵循下方列出的最佳实践</li>
+<li>将你的函数添加到智能体的 tools=[] 列表中，其余工作将由 ADK 自动处理。</li>
+</ol>
+<p>实践中的 ADK 最佳实践</p>
+<ol>
+<li>字典返回值：工具返回 {“status”: “success”, “data”: …} 或 {“status”: “error”, “error_message”: …}</li>
+<li>清晰的文档字符串：大语言模型通过文档字符串判断何时以及如何使用工具</li>
+<li>类型注解：使 ADK 能够生成规范的模式结构（字符串、字典等）</li>
+<li>错误处理：结构化的错误响应有助于大语言模型妥善处理执行失败情况</li>
+</ol>
+<p>这些模式能让你的工具更可靠，也便于大语言模型正确使用。</p>
+</div>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Pay attention to the docstring, type hints, and return value.</span>
+<span class="token keyword">def</span> <span class="token function">get_fee_for_payment_method</span><span class="token punctuation">(</span>method<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Looks up the transaction fee percentage for a given payment method.
+
+    This tool simulates looking up a company's internal fee structure based on
+    the name of the payment method provided by the user.
+
+    Args:
+        method: The name of the payment method. It should be descriptive,
+                e.g., "platinum credit card" or "bank transfer".
+
+    Returns:
+        Dictionary with status and fee information.
+        Success: &#123;"status": "success", "fee_percentage": 0.02&#125;
+        Error: &#123;"status": "error", "error_message": "Payment method not found"&#125;
+    """</span>
+    <span class="token comment"># This simulates looking up a company's internal fee structure.</span>
+    fee_database <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"platinum credit card"</span><span class="token punctuation">:</span> <span class="token number">0.02</span><span class="token punctuation">,</span>  <span class="token comment"># 2%</span>
+        <span class="token string">"gold debit card"</span><span class="token punctuation">:</span> <span class="token number">0.035</span><span class="token punctuation">,</span>  <span class="token comment"># 3.5%</span>
+        <span class="token string">"bank transfer"</span><span class="token punctuation">:</span> <span class="token number">0.01</span><span class="token punctuation">,</span>  <span class="token comment"># 1%</span>
+    <span class="token punctuation">&#125;</span>
+
+    fee <span class="token operator">=</span> fee_database<span class="token punctuation">.</span>get<span class="token punctuation">(</span>method<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> fee <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span><span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span> <span class="token string">"fee_percentage"</span><span class="token punctuation">:</span> fee<span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"error"</span><span class="token punctuation">,</span>
+            <span class="token string">"error_message"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"Payment method '</span><span class="token interpolation"><span class="token punctuation">&#123;</span>method<span class="token punctuation">&#125;</span></span><span class="token string">' not found"</span></span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span>
+
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"✅ Fee lookup function created"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"💳 Test: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>get_fee_for_payment_method<span class="token punctuation">(</span><span class="token string">'platinum credit card'</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>然后我们遵循同样的最佳实践来定义第二个工具 <code>get_exchange_rate</code></p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">get_exchange_rate</span><span class="token punctuation">(</span>base_currency<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> target_currency<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Looks up and returns the exchange rate between two currencies.
+
+    Args:
+        base_currency: The ISO 4217 currency code of the currency you
+                       are converting from (e.g., "USD").
+        target_currency: The ISO 4217 currency code of the currency you
+                         are converting to (e.g., "EUR").
+
+    Returns:
+        Dictionary with status and rate information.
+        Success: &#123;"status": "success", "rate": 0.93&#125;
+        Error: &#123;"status": "error", "error_message": "Unsupported currency pair"&#125;
+    """</span>
+
+    <span class="token comment"># Static data simulating a live exchange rate API</span>
+    <span class="token comment"># In production, this would call something like: requests.get("api.exchangerates.com")</span>
+    rate_database <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"usd"</span><span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"eur"</span><span class="token punctuation">:</span> <span class="token number">0.93</span><span class="token punctuation">,</span>  <span class="token comment"># Euro</span>
+            <span class="token string">"jpy"</span><span class="token punctuation">:</span> <span class="token number">157.50</span><span class="token punctuation">,</span>  <span class="token comment"># Japanese Yen</span>
+            <span class="token string">"inr"</span><span class="token punctuation">:</span> <span class="token number">83.58</span><span class="token punctuation">,</span>  <span class="token comment"># Indian Rupee</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment"># Input validation and processing</span>
+    base <span class="token operator">=</span> base_currency<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    target <span class="token operator">=</span> target_currency<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># Return structured result with status</span>
+    rate <span class="token operator">=</span> rate_database<span class="token punctuation">.</span>get<span class="token punctuation">(</span>base<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>get<span class="token punctuation">(</span>target<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> rate <span class="token keyword">is</span> <span class="token keyword">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span><span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span> <span class="token string">"rate"</span><span class="token punctuation">:</span> rate<span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"error"</span><span class="token punctuation">,</span>
+            <span class="token string">"error_message"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"Unsupported currency pair: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>base_currency<span class="token punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token punctuation">&#123;</span>target_currency<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span>
+
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"✅ Exchange rate function created"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"💱 Test: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>get_exchange_rate<span class="token punctuation">(</span><span class="token string">'USD'</span><span class="token punctuation">,</span> <span class="token string">'EUR'</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div><div class="tab-item-content"><p>现在我们来创建货币代理。注意：代理的指令 <code>instruction</code> 是如何引用这些工具的<br>
+要点：</p>
+<ul>
+<li><code>tools=[]</code> 列表用于告知代理可以使用哪些函数</li>
+<li>指令通过工具确切的函数名来引用它们（例如 <code>get_fee_for_payment_method()</code>）</li>
+<li>代理会依据这些名称来决定何时以及如何调用各个工具</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Currency agent with custom function tools</span>
+currency_agent <span class="token operator">=</span> LlmAgent<span class="token punctuation">(</span>
+    name<span class="token operator">=</span><span class="token string">"currency_agent"</span><span class="token punctuation">,</span>
+    model<span class="token operator">=</span>Gemini<span class="token punctuation">(</span>model<span class="token operator">=</span><span class="token string">"gemini-2.5-flash-lite"</span><span class="token punctuation">,</span> retry_options<span class="token operator">=</span>retry_config<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    instruction<span class="token operator">=</span><span class="token triple-quoted-string string">"""You are a smart currency conversion assistant.
+
+    For currency conversion requests:
+    1. Use `get_fee_for_payment_method()` to find transaction fees
+    2. Use `get_exchange_rate()` to get currency conversion rates
+    3. Check the "status" field in each tool's response for errors
+    4. Calculate the final amount after fees based on the output from `get_fee_for_payment_method` and `get_exchange_rate` methods and provide a clear breakdown.
+    5. First, state the final converted amount.
+        Then, explain how you got that result by showing the intermediate amounts. Your explanation must include: the fee percentage and its
+        value in the original currency, the amount remaining after the fee, and the exchange rate used for the final conversion.
+
+    If any tool returns status "error", explain the issue to the user clearly.
+    """</span><span class="token punctuation">,</span>
+    tools<span class="token operator">=</span><span class="token punctuation">[</span>get_fee_for_payment_method<span class="token punctuation">,</span> get_exchange_rate<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"✅ Currency agent created with custom function tools"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"🔧 Available tools:"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"  • get_fee_for_payment_method - Looks up company fee structure"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"  • get_exchange_rate - Gets current exchange rates"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div><div class="tab-item-content"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Test the currency agent</span>
+currency_runner <span class="token operator">=</span> InMemoryRunner<span class="token punctuation">(</span>agent<span class="token operator">=</span>currency_agent<span class="token punctuation">)</span>
+_ <span class="token operator">=</span> <span class="token keyword">await</span> currency_runner<span class="token punctuation">.</span>run_debug<span class="token punctuation">(</span>
+    <span class="token string">"I want to convert 500 US Dollars to Euros using my Platinum Credit Card. How much will I receive?"</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417155709899.png" alt=""></p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="通过代码提升智能体可靠性">通过代码提升智能体可靠性</h3>
+<p>智能体的指令要求 “计算扣除费用后的最终金额”，但大语言模型在数学计算方面并非始终可靠。它们可能出现计算错误，或是使用不一致的计算公式。</p>
+<div class="note success flat"><p>解决方案：让智能体生成一段 Python 代码来完成数学运算，并运行代码得出最终结果！代码执行远比让大语言模型直接心算数学问题更加可靠！</p>
+</div>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417160012928.png" alt=""></p>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">内置代码执行器</button><button type="button" class="tab">更新智能体的指令与工具集</button><button type="button" class="tab">执行</button></div><div class="tab-contents"><div class="tab-item-content active"><p>ADK 内置了一款可在沙箱环境中运行代码的代码执行器。注意：该功能依托 Gemini 的代码执行能力实现。下面我们创建一个 <code>calculation_agent</code>，它接收计算请求并翻译为 Python 代码，然后通过 <code>BuiltInCodeExecutor</code> 运行该代码。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">calculation_agent <span class="token operator">=</span> LlmAgent<span class="token punctuation">(</span>
+    name<span class="token operator">=</span><span class="token string">"CalculationAgent"</span><span class="token punctuation">,</span>
+    model<span class="token operator">=</span>Gemini<span class="token punctuation">(</span>model<span class="token operator">=</span><span class="token string">"gemini-2.5-flash-lite"</span><span class="token punctuation">,</span> retry_options<span class="token operator">=</span>retry_config<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    instruction<span class="token operator">=</span><span class="token triple-quoted-string string">"""You are a specialized calculator that ONLY responds with Python code. You are forbidden from providing any text, explanations, or conversational responses.
+ 
+     Your task is to take a request for a calculation and translate it into a single block of Python code that calculates the answer.
+     
+     **RULES:**
+    1.  Your output MUST be ONLY a Python code block.
+    2.  Do NOT write any text before or after the code block.
+    3.  The Python code MUST calculate the result.
+    4.  The Python code MUST print the final result to stdout.
+    5.  You are PROHIBITED from performing the calculation yourself. Your only job is to generate the code that will perform the calculation.
+   
+    Failure to follow these rules will result in an error.
+       """</span><span class="token punctuation">,</span>
+    code_executor<span class="token operator">=</span>BuiltInCodeExecutor<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token comment"># Use the built-in Code Executor Tool. This gives the agent code execution capabilities</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div><div class="tab-item-content"><div class="note danger flat"><p>官方文档描述有严重错误，官方描述是货币智能体来生成代码给计算智能体，但实际上是货币智能体只传入了信息，计算智能体在生成代码并执行得到结果。</p>
+</div>
+<p>执行两项关键操作：</p>
+<ol>
+<li>更新 <code>currency_agent</code> 的指令，使其调用工具计算金额</li>
+</ol>
+<ul>
+<li>原指令：“计算扣除手续费后的最终金额”（模糊的数学计算指令）</li>
+<li>优化后：调用 <code>calculation_agent</code> 生成一段 Python 代码以计算最终金额 并运行该代码得到计算结果</li>
+</ul>
+<ol start="2">
+<li>将 <code>calculation_agent</code> 添加至工具集<br>
+ADK 支持通过 <code>AgentTool</code> 将任意智能体作为工具使用。</li>
+</ol>
+<ul>
+<li>将 <code>AgentTool(agent=calculation_agent)</code> 添加到工具列表中</li>
+<li>该专业智能体将作为可调用工具，供根智能体使用</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">enhanced_currency_agent <span class="token operator">=</span> LlmAgent<span class="token punctuation">(</span>
+    name<span class="token operator">=</span><span class="token string">"enhanced_currency_agent"</span><span class="token punctuation">,</span>
+    model<span class="token operator">=</span>Gemini<span class="token punctuation">(</span>model<span class="token operator">=</span><span class="token string">"gemini-2.5-flash-lite"</span><span class="token punctuation">,</span> retry_options<span class="token operator">=</span>retry_config<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token comment"># Updated instruction</span>
+    instruction<span class="token operator">=</span><span class="token triple-quoted-string string">"""You are a smart currency conversion assistant. You must strictly follow these steps and use the available tools.
+
+  For any currency conversion request:
+
+   1. Get Transaction Fee: Use the get_fee_for_payment_method() tool to determine the transaction fee.
+   2. Get Exchange Rate: Use the get_exchange_rate() tool to get the currency conversion rate.
+   3. Error Check: After each tool call, you must check the "status" field in the response. If the status is "error", you must stop and clearly explain the issue to the user.
+   4. Calculate Final Amount (CRITICAL): You are strictly prohibited from performing any arithmetic calculations yourself. You must use the calculation_agent tool to generate Python code that calculates the final converted amount. This 
+      code will use the fee information from step 1 and the exchange rate from step 2.
+   5. Provide Detailed Breakdown: In your summary, you must:
+       * State the final converted amount.
+       * Explain how the result was calculated, including:
+           * The fee percentage and the fee amount in the original currency.
+           * The amount remaining after deducting the fee.
+           * The exchange rate applied.
+    """</span><span class="token punctuation">,</span>
+    tools<span class="token operator">=</span><span class="token punctuation">[</span>
+        get_fee_for_payment_method<span class="token punctuation">,</span>
+        get_exchange_rate<span class="token punctuation">,</span>
+        AgentTool<span class="token punctuation">(</span>agent<span class="token operator">=</span>calculation_agent<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token comment"># Using another agent as a tool!</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"✅ Enhanced currency agent created"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"🎯 New capability: Delegates calculations to specialist agent"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"🔧 Tool types used:"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"  • Function Tools (fees, rates)"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"  • Agent Tool (calculation specialist)"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div><div class="tab-item-content"><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Define a runner</span>
+enhanced_runner <span class="token operator">=</span> InMemoryRunner<span class="token punctuation">(</span>agent<span class="token operator">=</span>enhanced_currency_agent<span class="token punctuation">)</span>
+
+<span class="token comment"># Test the enhanced agent</span>
+response <span class="token operator">=</span> <span class="token keyword">await</span> enhanced_runner<span class="token punctuation">.</span>run_debug<span class="token punctuation">(</span>
+    <span class="token string">"Convert 1,250 USD to INR using a Bank Transfer. Show me the precise calculation."</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417161555523.png" alt=""></p>
+<p>请注意所发生的情况：</p>
+<ol>
+<li>当货币智能体调用 <code>CalculationAgent</code> 时，它会传入信息让 <code>CalculationAgent</code> 生成计算 Python 代码</li>
+<li>而 <code>CalculationAgent</code> 继而使用 <code>BuiltInCodeExecutor</code> 运行该代码，并为我们提供了精确的计算结果，而非大语言模型的推测结果！</li>
+</ol>
+<p>现在，可以使用开头附近定义的辅助函数，查看响应中生成 Python 代码或包含 Python 代码运行结果的部分。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">show_python_code_and_result<span class="token punctuation">(</span>response<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417161622076.png" alt=""></p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h3 id="ADK-工具类型完整指南">ADK 工具类型完整指南</h3>
+<p>接下来我们完整了解一下 ADK 工具包：<br>
+它大致分为两大类：自定义工具与内置工具</p>
+<h4 id="自定义工具-2">自定义工具</h4>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417162326394.png" alt=""></p>
+<p>定义：为满足特定需求而自行构建的工具<br>
+优势：对功能拥有完全控制权 —— 你可以精准打造智能体所需的工具</p>
+<p>函数工具 ✅（已使用过）</p>
+<ul>
+<li>定义：由 Python 函数转换而来的智能体工具</li>
+<li>示例：获取支付方式手续费、获取汇率</li>
+<li>优势：可将任意 Python 函数即时转化为智能体可用工具</li>
+</ul>
+<p>长时间运行函数工具</p>
+<ul>
+<li>定义：适用于耗时较长操作的函数</li>
+<li>示例：人工介入审批、文件处理</li>
+<li>优势：智能体可启动任务后，在等待期间继续处理其他工作</li>
+</ul>
+<p>智能体工具 ✅（已使用过）</p>
+<ul>
+<li>定义：将其他智能体作为工具使用</li>
+<li>示例：AgentTool(agent=calculation_agent)</li>
+<li>优势：打造专业型智能体，并可在不同系统中复用</li>
+</ul>
+<p>MCP 工具</p>
+<ul>
+<li>定义：来自模型上下文协议服务器的工具</li>
+<li>示例：文件系统访问、谷歌地图、数据库</li>
+<li>优势：无需自定义集成，即可连接任意兼容 MCP 的服务</li>
+</ul>
+<p>OpenAPI 工具</p>
+<ul>
+<li>定义：根据 API 规范自动生成的工具</li>
+<li>示例：REST API 接口转化为可调用工具</li>
+<li>优势：无需手动编码 —— 只需提供 API 规范即可生成可用工具</li>
+</ul>
+<h4 id="内置工具">内置工具</h4>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417162522822.png" alt=""></p>
+<p>定义：ADK 提供的预制工具<br>
+优势：无需开发，零配置即可直接使用</p>
+<p>Gemini 工具 ✅（已使用过）</p>
+<ul>
+<li>定义：依托 Gemini 能力实现的工具</li>
+<li>示例：谷歌搜索、内置代码执行器</li>
+<li>优势：可靠且经过测试，开箱即用</li>
+</ul>
+<p>谷歌云工具 [需谷歌云访问权限]</p>
+<ul>
+<li>定义：用于谷歌云服务及企业级集成的工具</li>
+<li>示例：BigQuery 工具集、Spanner 工具集、APIHub 工具集</li>
+<li>优势：企业级数据库与 API 访问能力，内置安全保障</li>
+</ul>
+<p>第三方工具</p>
+<ul>
+<li>定义：现有工具生态的封装接口</li>
+<li>示例：Hugging Face、Firecrawl、GitHub 工具</li>
+<li>优势：复用现有工具资源，无需重新构建已有的成熟工具</li>
+</ul>
+<h2 id="智能体工具最佳实践">智能体工具最佳实践</h2>
+<p>本章学习调用外部 MCP 服务并处理耗时较长的操作。</p>
+<p>学习如何：</p>
+<ul>
+<li>连接至外部 MCP 服务器</li>
+<li>实现可暂停智能体执行以等待外部输入的耗时操作</li>
+<li>构建可恢复工作流，在对话中断期间保持状态</li>
+<li>理解何时以及如何使用这些模式</li>
+</ul>
+<p>前置工作</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token keyword">from</span> dotenv <span class="token keyword">import</span> load_dotenv
+<span class="token keyword">import</span> uuid
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>genai <span class="token keyword">import</span> types
+
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>agents <span class="token keyword">import</span> LlmAgent
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>models<span class="token punctuation">.</span>google_llm <span class="token keyword">import</span> Gemini
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>runners <span class="token keyword">import</span> Runner
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>sessions <span class="token keyword">import</span> InMemorySessionService
+
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>mcp_tool<span class="token punctuation">.</span>mcp_toolset <span class="token keyword">import</span> McpToolset
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>tool_context <span class="token keyword">import</span> ToolContext
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>mcp_tool<span class="token punctuation">.</span>mcp_session_manager <span class="token keyword">import</span> StdioConnectionParams
+<span class="token keyword">from</span> mcp <span class="token keyword">import</span> StdioServerParameters
+
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>apps<span class="token punctuation">.</span>app <span class="token keyword">import</span> App<span class="token punctuation">,</span> ResumabilityConfig
+<span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>tools<span class="token punctuation">.</span>function_tool <span class="token keyword">import</span> FunctionTool
+
+load_dotenv<span class="token punctuation">(</span>override<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+GOOGLE_API_KEY <span class="token operator">=</span> os<span class="token punctuation">.</span>getenv<span class="token punctuation">(</span><span class="token string">"GOOGLE_API_KEY"</span><span class="token punctuation">)</span>
+os<span class="token punctuation">.</span>environ<span class="token punctuation">[</span><span class="token string">"GOOGLE_API_KEY"</span><span class="token punctuation">]</span> <span class="token operator">=</span> GOOGLE_API_KEY
+
+retry_config <span class="token operator">=</span> types<span class="token punctuation">.</span>HttpRetryOptions<span class="token punctuation">(</span>
+    attempts<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span>  <span class="token comment"># Maximum retry attempts</span>
+    exp_base<span class="token operator">=</span><span class="token number">7</span><span class="token punctuation">,</span>  <span class="token comment"># Delay multiplier</span>
+    initial_delay<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">,</span>
+    http_status_codes<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">429</span><span class="token punctuation">,</span> <span class="token number">500</span><span class="token punctuation">,</span> <span class="token number">503</span><span class="token punctuation">,</span> <span class="token number">504</span><span class="token punctuation">]</span><span class="token punctuation">,</span>  <span class="token comment"># Retry on these HTTP errors</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="模型上下文协议-Model-Context-Protocol">模型上下文协议(Model Context Protocol)</h3>
+<p>之前学的是智能体使用自定义函数。但要连接外部系统（GitHub、数据库、Slack），需要编写并维护 API 客户端。</p>
+<p>模型上下文协议（MCP）是一项开放标准，可让智能体使用社区构建的集成组件。无需自行编写集成代码与 API 客户端，只需连接至现有的 MCP 服务器即可。</p>
+<p>MCP 可让智能体实现以下功能：</p>
+<ul>
+<li>无需编写自定义集成代码，即可从数据库、API 接口及各类服务中获取实时外部数据</li>
+<li>借助标准化接口使用社区构建的工具</li>
+<li>通过连接多个专用服务器实现能力扩展</li>
+</ul>
+<h4 id="MCP-工作原理">MCP 工作原理</h4>
+<p>MCP 将你的智能体（客户端）与提供各类工具的外部 MCP 服务器相连：</p>
+<ul>
+<li>MCP 服务器：提供特定工具（如图像生成、数据库访问）</li>
+<li>MCP 客户端：使用这些工具的智能体</li>
+<li>所有服务器均采用统一工作方式 —— 标准化接口</li>
+</ul>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260417164554197.png" alt=""></p>
+<h4 id="使用-MCP">使用 MCP</h4>
+<p>工作流程：</p>
+<ol>
+<li>选择一个 MCP 服务器与工具</li>
+<li>创建 MCP 工具集（配置连接）</li>
+<li>将其添加到智能体</li>
+<li>运行并测试该智能体</li>
+</ol>
+<blockquote>
+<p>选择 MCP 服务器</p>
+</blockquote>
+<p>这里使用 Everything MCP 服务器 —— 这是一款专为测试 MCP 集成而设计的 npm 软件包（<code>@modelcontextprotocol/server-everything</code>）。该服务器提供了一个 <code>getTinyImage</code> 工具，可返回一张简易测试图片（16×16 像素，采用 Base64 编码）。</p>
+<p>更多服务器可访问：<a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/examples">modelcontextprotocol</a></p>
+<div class="note info flat"><p>搞清楚 MCP</p>
+<p>MCP 是一种协议，用来把AI应用连接到外部数据源、工具和工作流。我们的 <code>agent</code> 就是MCP client，这个 <code>@modelcontextprotocol/server-everything</code> 就是一个 MCP server，用 <code>npx</code> 来运行。MCP Server 是一个具体跑起来的程序/服务。MPC server 把某个平台能力包装成 MCP 标准接口的适配器/服务。比如</p>
+<ul>
+<li>GitHub MCP Server：提供 GitHub 相关工具</li>
+<li>Slack MCP Server：提供 Slack 读写能力</li>
+<li>Maps MCP Server：提供地图查询能力</li>
+<li>server-everything：一个官方测试/演示 server</li>
+</ul>
+</div>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">创建 MCP 工具集</button><button type="button" class="tab">为智能体添加MCP工具</button><button type="button" class="tab">测试</button><button type="button" class="tab">扩展至其他MCP服务器</button></div><div class="tab-contents"><div class="tab-item-content active"><p><code>McpToolset</code> 用于将 ADK 智能体与 MCP 服务器进行集成。</p>
+<p>代码实现功能：</p>
+<ul>
+<li>使用 npx（Node 包运行器）运行 MCP 服务器</li>
+<li>连接至 <code>@modelcontextprotocol/server-everything</code></li>
+<li>筛选并仅使用 <code>getTinyImage</code> 工具（该服务器还包含其他工具，但本演示仅需此工具）</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># MCP integration with Everything Server</span>
+mcp_image_server <span class="token operator">=</span> McpToolset<span class="token punctuation">(</span>
+    connection_params<span class="token operator">=</span>StdioConnectionParams<span class="token punctuation">(</span>
+        server_params<span class="token operator">=</span>StdioServerParameters<span class="token punctuation">(</span>
+            command<span class="token operator">=</span><span class="token string">"npx"</span><span class="token punctuation">,</span>  <span class="token comment"># Run MCP server via npx</span>
+            args<span class="token operator">=</span><span class="token punctuation">[</span>
+                <span class="token string">"-y"</span><span class="token punctuation">,</span>  <span class="token comment"># Argument for npx to auto-confirm install</span>
+                <span class="token string">"@modelcontextprotocol/server-everything"</span><span class="token punctuation">,</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            tool_filter<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"getTinyImage"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span><span class="token punctuation">,</span>
+        timeout<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"✅ MCP Tool created"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>幕后原理:</p>
+<ol>
+<li>服务器启动： ADK 运行 <code>npx -y @modelcontextprotocol/server-everything</code></li>
+<li>握手： 建立标准输入输出（stdio）通信通道</li>
+<li>工具发现： 服务器告知 ADK：“我提供 <code>getTinyImage</code> 功能”</li>
+<li>集成： 工具自动出现在智能体的工具列表中</li>
+<li>执行： 当智能体调用 <code>getTinyImage()</code> 时，ADK 将其转发至 MCP 服务器</li>
+<li>响应： 服务器结果无缝返回给智能体</li>
+</ol>
+<p>为什么这很重要： 无需编写集成代码，即可立即获得工具访问权限！不需要和工具对接，只需要一个运行一个符合MCP协议的服务器，即插即用(像一个USB接口，MCP官网也这么形容MCP)</p></div><div class="tab-item-content"><p>将 <code>mcp_server</code> 添加至智能体的工具数组中，并更新智能体的指令，使其能够处理生成微型图像的请求。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># Create image agent with MCP integration</span>
+image_agent <span class="token operator">=</span> LlmAgent<span class="token punctuation">(</span>
+    model<span class="token operator">=</span>Gemini<span class="token punctuation">(</span>model<span class="token operator">=</span><span class="token string">"gemini-2.5-flash-lite"</span><span class="token punctuation">,</span> retry_options<span class="token operator">=</span>retry_config<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    name<span class="token operator">=</span><span class="token string">"image_agent"</span><span class="token punctuation">,</span>
+    instruction<span class="token operator">=</span><span class="token string">"Use the MCP Tool to generate images for user queries"</span><span class="token punctuation">,</span>
+    tools<span class="token operator">=</span><span class="token punctuation">[</span>mcp_image_server<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>创建运行器</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> google<span class="token punctuation">.</span>adk<span class="token punctuation">.</span>runners <span class="token keyword">import</span> InMemoryRunner
+
+runner <span class="token operator">=</span> InMemoryRunner<span class="token punctuation">(</span>agent<span class="token operator">=</span>image_agent<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div><div class="tab-item-content"><p>让智能体生成一张图片。观察它如何使用 MCP 工具</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">response <span class="token operator">=</span> <span class="token keyword">await</span> runner<span class="token punctuation">.</span>run_debug<span class="token punctuation">(</span><span class="token string">"Provide a sample tiny image"</span><span class="token punctuation">,</span> verbose<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260418123554476.png" alt=""></p>
+<ul>
+<li><code>run_bebug(...)</code> 用调试模型运行 agent，除了输出最终结果，尽可能把中间过程打印出来，比如 agent 收到什么问题、调用了什么工具、工具返回了什么、最后 agent 怎么组织回答。<code>verbose=True</code> 参数含义是把过程打印的更详细</li>
+<li>返回结果里面有 <code>'type': 'image'</code> 内容</li>
+</ul>
+<p>其实是看不到图片的，下面这个代码可以展示一下(这个图片数据是base64编码格式)</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> IPython<span class="token punctuation">.</span>display <span class="token keyword">import</span> display<span class="token punctuation">,</span> Image <span class="token keyword">as</span> IPImage
+<span class="token keyword">import</span> base64
+
+<span class="token keyword">for</span> event <span class="token keyword">in</span> response<span class="token punctuation">:</span>
+    <span class="token keyword">if</span> event<span class="token punctuation">.</span>content <span class="token keyword">and</span> event<span class="token punctuation">.</span>content<span class="token punctuation">.</span>parts<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> part <span class="token keyword">in</span> event<span class="token punctuation">.</span>content<span class="token punctuation">.</span>parts<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token builtin">hasattr</span><span class="token punctuation">(</span>part<span class="token punctuation">,</span> <span class="token string">"function_response"</span><span class="token punctuation">)</span> <span class="token keyword">and</span> part<span class="token punctuation">.</span>function_response<span class="token punctuation">:</span>
+                <span class="token keyword">for</span> item <span class="token keyword">in</span> part<span class="token punctuation">.</span>function_response<span class="token punctuation">.</span>response<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"content"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    <span class="token keyword">if</span> item<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"type"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"image"</span><span class="token punctuation">:</span>
+                        display<span class="token punctuation">(</span>IPImage<span class="token punctuation">(</span>data<span class="token operator">=</span>base64<span class="token punctuation">.</span>b64decode<span class="token punctuation">(</span>item<span class="token punctuation">[</span><span class="token string">"data"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260418125719836.png" alt=""></p>
+<p>这个小东西就是</p></div><div class="tab-item-content"><p>同样的模式适用于任意 MCP 服务器 —— 仅需修改连接参数。</p>
+<blockquote>
+<p>Kaggle MCP Server</p>
+</blockquote>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">McpToolset<span class="token punctuation">(</span>
+    connection_params<span class="token operator">=</span>StdioConnectionParams<span class="token punctuation">(</span>
+        server_params<span class="token operator">=</span>StdioServerParameters<span class="token punctuation">(</span>
+            command<span class="token operator">=</span><span class="token string">'npx'</span><span class="token punctuation">,</span>
+            args<span class="token operator">=</span><span class="token punctuation">[</span>
+                <span class="token string">'-y'</span><span class="token punctuation">,</span>
+                <span class="token string">'mcp-remote'</span><span class="token punctuation">,</span>
+                <span class="token string">'https://www.kaggle.com/mcp'</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span><span class="token punctuation">,</span>
+        timeout<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其提供的功能包括：</p>
+<ul>
+<li>📊 搜索并下载 Kaggle 数据集</li>
+<li>📓 获取笔记本元数据</li>
+<li>🏆 查询竞赛信息等</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.kaggle.com/docs/mcp">Kaggle MCP Documentation</a></p>
+<blockquote>
+<p>GitHub MCP Server</p>
+</blockquote>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">McpToolset<span class="token punctuation">(</span>
+    connection_params<span class="token operator">=</span>StreamableHTTPServerParams<span class="token punctuation">(</span>
+        url<span class="token operator">=</span><span class="token string">"https://api.githubcopilot.com/mcp/"</span><span class="token punctuation">,</span>
+        headers<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+            <span class="token string">"Authorization"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"Bearer </span><span class="token interpolation"><span class="token punctuation">&#123;</span>GITHUB_TOKEN<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">,</span>
+            <span class="token string">"X-MCP-Toolsets"</span><span class="token punctuation">:</span> <span class="token string">"all"</span><span class="token punctuation">,</span>
+            <span class="token string">"X-MCP-Readonly"</span><span class="token punctuation">:</span> <span class="token string">"true"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>相关的 Tools 文档都可以在这个连接里面找到，都会有连接方式的示例 <a target="_blank" rel="noopener" href="https://google.github.io/adk-docs/tools/third-party/">ADK Third-party Tools Documentation</a></p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h4 id="长时间运行操作（人工介入）">长时间运行操作（人工介入）</h4>
+<p>到目前为止，所有工具均会立即执行并返回结果：</p>
+<blockquote>
+<p>用户提出问题 → 智能体调用工具 → 工具返回结果 → 智能体作出应答</p>
+</blockquote>
+<p>但如果工具需要长时间运行，或者在完成某项操作前需要获得人工许可，该如何处理？利用货运智能体在下达大额订单前，应先请求审批。</p>
+<blockquote>
+<p>用户提出问题 → 智能体调用工具 → 工具暂停并征询人工意见 → 人工审批通过 → 工具执行完毕 → 智能体作出应答</p>
+</blockquote>
+<p>这种模式被称为长时间运行操作（LRO）—— 工具需要暂停运行，等待外部输入（人工审批），之后再恢复执行。</p>
+<p>长时间运行操作举例：</p>
+<ul>
+<li>💰 需要审批的金融交易（转账、采购）</li>
+<li>🗑️ 批量操作（删除 1000 条记录 —— 请先确认！）</li>
+<li>📋 合规检查节点（需监管部门批准）</li>
+<li>💸 高成本操作（启动 50 台服务器 —— 您确定吗？）</li>
+<li>⚠️ 不可逆操作（永久删除账户）</li>
+</ul>
+<p>下面实现一个功能，搭建一个物流协调智能体，其配套工具具备以下功能：</p>
+<ul>
+<li>自动审批小额订单（≤5 个集装箱）</li>
+<li>对大额订单（&gt;5 个集装箱）暂停并请求审批</li>
+<li>根据审批结果完成或取消操作</li>
+</ul>
+<p>这里包含了核心的长时间运行操作模式：暂停 → 等待人工输入 → 恢复执行。</p>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">带审批逻辑的物流工具</button></div><div class="tab-contents"><div class="tab-item-content active"><p><span class="tag-leaf">工具上下文参数</span></p>
+<p>注意函数签名中包含 <code>tool_context: ToolContext</code>。当工具运行时，应用开发工具包（ADK）会自动提供该对象。它具备两项核心能力：</p>
+<ol>
+<li>请求审批：调用 <code>tool_context.request_confirmation()</code></li>
+<li>检查审批状态：读取 <code>tool_context.tool_confirmation</code></li>
+</ol>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">LARGE_ORDER_THRESHOLD <span class="token operator">=</span> <span class="token number">5</span>
+
+
+<span class="token keyword">def</span> <span class="token function">place_shipping_order</span><span class="token punctuation">(</span>
+    num_containers<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span> destination<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> tool_context<span class="token punctuation">:</span> ToolContext
+<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""Places a shipping order. Requires approval if ordering more than 5 containers (LARGE_ORDER_THRESHOLD).
+
+    Args:
+        num_containers: Number of containers to ship
+        destination: Shipping destination
+
+    Returns:
+        Dictionary with order status
+    """</span>
+
+    <span class="token comment"># -----------------------------------------------------------------------------------------------</span>
+    <span class="token comment"># -----------------------------------------------------------------------------------------------</span>
+    <span class="token comment"># SCENARIO 1: Small orders (≤5 containers) auto-approve</span>
+    <span class="token keyword">if</span> num_containers <span class="token operator">&lt;=</span> LARGE_ORDER_THRESHOLD<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"approved"</span><span class="token punctuation">,</span>
+            <span class="token string">"order_id"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"ORD-</span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_containers<span class="token punctuation">&#125;</span></span><span class="token string">-AUTO"</span></span><span class="token punctuation">,</span>
+            <span class="token string">"num_containers"</span><span class="token punctuation">:</span> num_containers<span class="token punctuation">,</span>
+            <span class="token string">"destination"</span><span class="token punctuation">:</span> destination<span class="token punctuation">,</span>
+            <span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"Order auto-approved: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_containers<span class="token punctuation">&#125;</span></span><span class="token string"> containers to </span><span class="token interpolation"><span class="token punctuation">&#123;</span>destination<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span>
+
+    <span class="token comment"># -----------------------------------------------------------------------------------------------</span>
+    <span class="token comment"># -----------------------------------------------------------------------------------------------</span>
+    <span class="token comment"># SCENARIO 2: This is the first time this tool is called. Large orders need human approval - PAUSE here.</span>
+    <span class="token keyword">if</span> <span class="token keyword">not</span> tool_context<span class="token punctuation">.</span>tool_confirmation<span class="token punctuation">:</span>
+        tool_context<span class="token punctuation">.</span>request_confirmation<span class="token punctuation">(</span>
+            hint<span class="token operator">=</span><span class="token string-interpolation"><span class="token string">f"⚠️ Large order: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_containers<span class="token punctuation">&#125;</span></span><span class="token string"> containers to </span><span class="token interpolation"><span class="token punctuation">&#123;</span>destination<span class="token punctuation">&#125;</span></span><span class="token string">. Do you want to approve?"</span></span><span class="token punctuation">,</span>
+            payload<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"num_containers"</span><span class="token punctuation">:</span> num_containers<span class="token punctuation">,</span> <span class="token string">"destination"</span><span class="token punctuation">:</span> destination<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>  <span class="token comment"># This is sent to the Agent</span>
+            <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"pending"</span><span class="token punctuation">,</span>
+            <span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"Order for </span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_containers<span class="token punctuation">&#125;</span></span><span class="token string"> containers requires approval"</span></span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span>
+
+    <span class="token comment"># -----------------------------------------------------------------------------------------------</span>
+    <span class="token comment"># -----------------------------------------------------------------------------------------------</span>
+    <span class="token comment"># SCENARIO 3: The tool is called AGAIN and is now resuming. Handle approval response - RESUME here.</span>
+    <span class="token keyword">if</span> tool_context<span class="token punctuation">.</span>tool_confirmation<span class="token punctuation">.</span>confirmed<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"approved"</span><span class="token punctuation">,</span>
+            <span class="token string">"order_id"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"ORD-</span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_containers<span class="token punctuation">&#125;</span></span><span class="token string">-HUMAN"</span></span><span class="token punctuation">,</span>
+            <span class="token string">"num_containers"</span><span class="token punctuation">:</span> num_containers<span class="token punctuation">,</span>
+            <span class="token string">"destination"</span><span class="token punctuation">:</span> destination<span class="token punctuation">,</span>
+            <span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"Order approved: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_containers<span class="token punctuation">&#125;</span></span><span class="token string"> containers to </span><span class="token interpolation"><span class="token punctuation">&#123;</span>destination<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"rejected"</span><span class="token punctuation">,</span>
+            <span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"Order rejected: </span><span class="token interpolation"><span class="token punctuation">&#123;</span>num_containers<span class="token punctuation">&#125;</span></span><span class="token string"> containers to </span><span class="token interpolation"><span class="token punctuation">&#123;</span>destination<span class="token punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span>
+
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"✅ Long-running functions created!"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="tag-flower">代码解析</span></p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260418152219135.png" alt="工作流程"></p>
+<p>三种场景的运行机制<br>
+该工具通过检查 <code>tool_context.tool_confirmation</code> 来处理三种场景：<br>
+<span class="tag-coffee">场景 1：小额订单（≤5 个集装箱）</span> 立即返回自动审核通过状态。</p>
+<ul>
+<li>不会检查 <code>tool_context.tool_confirmation</code></li>
+</ul>
+<p><span class="tag-coffee">场景 2：大额订单</span> —— 首次调用</p>
+<ul>
+<li>工具判定为首次调用：若未设置 <code>tool_context.tool_confirmation</code></li>
+<li>调用 <code>request_confirmation()</code> 申请人工审核</li>
+<li>立即返回 <code>{'status': 'pending', …}</code></li>
+<li>ADK 自动生成 <code>adk_request_confirmation</code> 事件</li>
+<li>智能体执行暂停，等待人工决策</li>
+</ul>
+<p><span class="tag-coffee">场景 3：大额订单</span> —— 恢复调用</p>
+<ul>
+<li>工具判定为恢复执行：此时 <code>not tool_context.tool_confirmation</code> 判定为否</li>
+<li>核查人工审核结果：<code>tool_context.tool_confirmation.confirmed</code></li>
+<li>若为真 → 返回审核通过状态</li>
+<li>若为假 → 返回审核驳回状态</li>
+</ul>
+<p>核心要点：在两次调用之间，工作流代码（第 4 部分）必须检测到 <code>adk_request_confirmation</code> 事件，并根据审核结果恢复执行流程。</p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io">寂寞的冰可乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/">https://asinglesinger.github.io/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://asinglesinger.github.io" target="_blank">一个人的升级日志</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">大模型应用开发</a></div><div class="post-share"><div class="social-share" data-image="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260329183127273.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width no-desc" href="/2026/04/11/RAG%E5%AD%A6%E4%B9%A0/" title="RAG学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">RAG学习</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260329183127273.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">寂寞的冰可乐</div><div class="author-info-description">去码头搞点薯条</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/aSingleSinger"><i class="fab fa-github"></i><span>We need to talk</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">随便逛逛吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">代码练习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent%E5%AE%9E%E7%8E%B0%E6%90%9C%E7%B4%A2"><span class="toc-number">1.1.</span> <span class="toc-text">Agent实现搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E4%BD%93%E6%9E%B6%E6%9E%84-%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93"><span class="toc-number">1.2.</span> <span class="toc-text">智能体架构(多智能体)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Multi-Agent-System"><span class="toc-number">1.2.1.</span> <span class="toc-text">Multi-Agent System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sequential-Workflows"><span class="toc-number">1.2.2.</span> <span class="toc-text">Sequential Workflows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parallel-Workflows-Independent-Researchers"><span class="toc-number">1.2.3.</span> <span class="toc-text">Parallel Workflows - Independent Researchers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Loop-Workflows-The-Refinement-Cycle"><span class="toc-number">1.2.4.</span> <span class="toc-text">Loop Workflows - The Refinement Cycle</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.5.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E4%BD%93%E5%B7%A5%E5%85%B7"><span class="toc-number">1.3.</span> <span class="toc-text">智能体工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B7%A5%E5%85%B7"><span class="toc-number">1.3.1.</span> <span class="toc-text">自定义工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E6%8F%90%E5%8D%87%E6%99%BA%E8%83%BD%E4%BD%93%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-number">1.3.2.</span> <span class="toc-text">通过代码提升智能体可靠性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ADK-%E5%B7%A5%E5%85%B7%E7%B1%BB%E5%9E%8B%E5%AE%8C%E6%95%B4%E6%8C%87%E5%8D%97"><span class="toc-number">1.3.3.</span> <span class="toc-text">ADK 工具类型完整指南</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B7%A5%E5%85%B7-2"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">自定义工具</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E5%B7%A5%E5%85%B7"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">内置工具</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E4%BD%93%E5%B7%A5%E5%85%B7%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.4.</span> <span class="toc-text">智能体工具最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8D%8F%E8%AE%AE-Model-Context-Protocol"><span class="toc-number">1.4.1.</span> <span class="toc-text">模型上下文协议(Model Context Protocol)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MCP-%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">MCP 工作原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-MCP"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">使用 MCP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E6%93%8D%E4%BD%9C%EF%BC%88%E4%BA%BA%E5%B7%A5%E4%BB%8B%E5%85%A5%EF%BC%89"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">长时间运行操作（人工介入）</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习">Agent学习</a><time datetime="2026-04-15T09:07:44.000Z" title="发表于 2026-04-15 17:07:44">2026-04-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/11/RAG%E5%AD%A6%E4%B9%A0/" title="RAG学习">RAG学习</a><time datetime="2026-04-11T06:04:13.000Z" title="发表于 2026-04-11 14:04:13">2026-04-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/Canvas%E7%94%BB%E5%B8%83/" title="Canvas画布">Canvas画布</a><time datetime="2026-04-08T01:43:16.000Z" title="发表于 2026-04-08 09:43:16">2026-04-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/SSM%E6%95%B4%E5%90%88/" title="SSM整合">SSM整合</a><time datetime="2026-04-08T01:42:27.000Z" title="发表于 2026-04-08 09:42:27">2026-04-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/SpringMVC%E5%AD%A6%E4%B9%A0/" title="SpringMVC学习">SpringMVC学习</a><time datetime="2026-04-08T01:41:48.000Z" title="发表于 2026-04-08 09:41:48">2026-04-08</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 寂寞的冰可乐</span></div><div class="footer_custom_text">只写不背，未完待续</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
   const showKatex = () => {
     document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
   }
