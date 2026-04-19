@@ -76,7 +76,7 @@
 .tag-music:hover::before,
 .tag-moon:hover::before,
 .tag-flower:hover::before {
-  transform: rotateY(180deg);
+  transform: rotateY(360deg);
 }
 
 /* 图标内容 + 悬停文字颜色 */
