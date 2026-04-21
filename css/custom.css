@@ -118,3 +118,34 @@
 
 .tag-flower::before { content: "🌸"; }
 .tag-flower:hover { color: #d63384; }
+
+
+
+/* =========================
+   雪花
+   ========================= */
+.snowflake {
+  position: fixed;
+  top: -30px;
+  color: white;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+  font-size: 12px;
+  opacity: 0.35;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+  animation: snow-fall linear infinite;
+}
+
+/* 飘落动画（更自然） */
+@keyframes snow-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(25px, 50vh, 0) rotate(180deg);
+  }
+  100% {
+    transform: translate3d(-15px, 110vh, 0) rotate(360deg);
+  }
+}
