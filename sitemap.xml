@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://asinglesinger.github.io/2026/03/30/JUC%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2026-04-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://asinglesinger.github.io/2026/03/30/MySQL%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2026-04-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://asinglesinger.github.io/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-22</lastmod>
@@ -119,7 +137,7 @@
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/2026/04/08/MyBatis%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://asinglesinger.github.io/2026/04/08/Python%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-08</lastmod>
     
@@ -128,7 +146,7 @@
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/2026/04/08/Python%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://asinglesinger.github.io/2026/04/08/MyBatis%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-08</lastmod>
     
@@ -218,25 +236,7 @@
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/2026/03/30/JUC%E7%AC%94%E8%AE%B0/</loc>
-    
-    <lastmod>2026-03-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://asinglesinger.github.io/2026/03/30/RocketMQ%E7%AC%94%E8%AE%B0/</loc>
-    
-    <lastmod>2026-03-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://asinglesinger.github.io/2026/03/30/MySQL%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2026-03-30</lastmod>
     
@@ -275,5 +275,12 @@
   </url>
   
 
+  
+  <url>
+    <loc>https://asinglesinger.github.io/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/</loc>
+    <lastmod>2026-04-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
   
 </urlset>
