@@ -1,0 +1,1061 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>JVM学习 | 一个人的升级日志</title><meta name="author" content="寂寞的冰可乐"><meta name="copyright" content="寂寞的冰可乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="引言 什么是 JVM Java Virtual Machine - java 程序的运行环境(java 二进制字节码的运行环境) 好处  一次编写，到处运行 自动内存管理，垃圾回收功能(屏蔽了指针) 数组下标越界检查(C语言是没有的，越界直接进行覆盖了) 多态  比较 jvm jre jdk 这里 JavaGuide 讲的很详细 JVM 是 Java虚拟机，是运行Java字节码的虚拟机。Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM学习">
+<meta property="og:url" content="https://asinglesinger.github.io/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/">
+<meta property="og:site_name" content="一个人的升级日志">
+<meta property="og:description" content="引言 什么是 JVM Java Virtual Machine - java 程序的运行环境(java 二进制字节码的运行环境) 好处  一次编写，到处运行 自动内存管理，垃圾回收功能(屏蔽了指针) 数组下标越界检查(C语言是没有的，越界直接进行覆盖了) 多态  比较 jvm jre jdk 这里 JavaGuide 讲的很详细 JVM 是 Java虚拟机，是运行Java字节码的虚拟机。Java">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424145847248.jpg">
+<meta property="article:published_time" content="2026-04-24T06:57:05.000Z">
+<meta property="article:modified_time" content="2026-04-24T14:22:02.206Z">
+<meta property="article:author" content="寂寞的冰可乐">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424145847248.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "JVM学习",
+  "url": "https://asinglesinger.github.io/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/",
+  "image": "https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424145847248.jpg",
+  "datePublished": "2026-04-24T06:57:05.000Z",
+  "dateModified": "2026-04-24T14:22:02.206Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "寂寞的冰可乐",
+      "url": "https://asinglesinger.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg"><link rel="canonical" href="https://asinglesinger.github.io/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c5d9dbcdd4a636a7d84caa2d9c8362db";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":true,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'JVM学习',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="一个人的升级日志" type="application/atom+xml">
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div class="bg-animation" id="web_bg" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424145847248.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">一个人的升级日志</span></a><a class="nav-page-title" href="/"><span class="site-name">JVM学习</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">JVM学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-24T06:57:05.000Z" title="发表于 2026-04-24 14:57:05">2026-04-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-24T14:22:02.206Z" title="更新于 2026-04-24 22:22:02">2026-04-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/">Java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">5.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>20分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>引言</h1>
+<h2 id="什么是-JVM">什么是 JVM</h2>
+<p>Java Virtual Machine - java 程序的运行环境(java 二进制字节码的运行环境)</p>
+<p><span class="tag-leaf">好处</span></p>
+<ul>
+<li>一次编写，到处运行</li>
+<li>自动内存管理，垃圾回收功能(屏蔽了指针)</li>
+<li>数组下标越界检查(C语言是没有的，越界直接进行覆盖了)</li>
+<li>多态</li>
+</ul>
+<p><span class="tag-leaf">比较</span><br>
+jvm jre jdk 这里 JavaGuide 讲的很详细</p>
+<p>JVM 是 Java虚拟机，是运行Java字节码的虚拟机。Java 程序通过编译器生成字节码文件，然后经过JVM解释器生成机器码进行执行。不同的系统(Linux、Windows、macOS)有不同的虚拟机实现，目的是让相同的字节码文件能在不同的机器上产生相同的结果。字节码和不同系统的JVM实现是Java语言一次编译、随处运行的关键所在。</p>
+<p>JDK 是一个开发工具包，让开发者使用，用来创建和编译Java程序，它包含JRE以及编译器javac和一些其他工具，比如 javadoc,javap(反编译工具)。<br>
+JRE 是运行已编译Java程序所需要的环境，主要包含 JVM、Java基础类库。<br>
+整体来说</p>
+<ul>
+<li>JDK
+<ul>
+<li>JRE
+<ul>
+<li>JVM 负责跑程序</li>
+<li>Java 核心类库</li>
+</ul>
+</li>
+<li>Java开发工具(javac,javap,javadoc,jar)</li>
+</ul>
+</li>
+</ul>
+<p>不过从Java9之后引入了模块化，不再提供独立的 JRE 安装包</p>
+<h2 id="常见的-JVM">常见的 JVM</h2>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424151338196.png" alt=""></p>
+<p>只要遵从 JVM 规范，我们自己也可以写 JVM，上面是常见的 JVM，比较常用的是 HotSpot 和 OpenJDK。这两个都免费，Oracle JDK 要收费的。下面讲解都是基于 HotSpot JVM。</p>
+<h2 id="学习路线">学习路线</h2>
+<p>如下图，JVM主要包括三个部分：类加载器，JVM内存结构与执行引擎。一个类经过编译后，必须有类加载器进行加载。类被放在方法区，类的实例对象则被放在堆中，堆中对象在调用方法时会用到虚拟机栈、程序计数器和本地方法栈。方法执行时，每行代码由执行引擎中的程序解释器解释执行，方法中的热点代码(频繁调用)会由JIT即时编译器进行优化编译，GC则负责对堆中不再被引用的对象进行垃圾回收。有时JVM还需要与操作系统进行交互，本地方法接口负责这一职责。</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424151704320.png" alt=""></p>
+<h1>内存结构</h1>
+<h2 id="程序计数器">程序计数器</h2>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424200558448.png" alt=""></p>
+<h3 id="作用">作用</h3>
+<p>Program Counter Register 程序计数器（寄存器实现）</p>
+<ul>
+<li>记住下一条jvm指令的执行地址</li>
+</ul>
+<p>Java 源代码先通过 <code>javac</code> 编译成 <code>.class</code> 字节码文件，字节码本身就是 JVM 指令的二进制表示。JVM 加载类之后，由执行引擎执行字节码。执行方式有两种：解释器逐条解释执行，或者 JIT 编译器把热点代码编译成本地机器码后交给 CPU 执行。每个 Java 线程都有自己独立的程序计数器，用来记录当前线程下一条要执行的字节码指令地址。当线程失去 CPU 后，再次获得 CPU 时，JVM 可以根据该线程自己的程序计数器继续执行。</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424154334968.png" alt=""></p>
+<ul>
+<li>特点
+<ul>
+<li>是线程私有的，每一个线程都有自己的程序计数器，记录当前线程的代码执行到哪里了</li>
+<li>虚拟机中唯一一个不会存在内存溢出的部分</li>
+</ul>
+</li>
+</ul>
+<h2 id="虚拟机栈">虚拟机栈</h2>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424200626891.png" alt=""></p>
+<h3 id="介绍">介绍</h3>
+<p>JVM 栈是线程运行时需要的一块私有内存，每个线程都有自己的 JVM 栈。</p>
+<ul>
+<li>Java 程序启动后，会创建一个主线程，它有自己的JVM栈。主线程执行 main 方法的时候，会为它创建一个栈帧并且压入栈</li>
+<li>调用 <code>new Thread().start()</code> 后，新线程启动，也会拥有自己的线程栈。</li>
+<li>每调用一个方法，JVM 都会创建一个栈帧并压入当前线程的栈中。</li>
+</ul>
+<p>栈帧中主要保存局部变量表、操作数栈、动态链接和方法返回信息。方法执行完成后，对应栈帧出栈，调用者栈帧重新成为当前活动栈帧，程序计数器继续指向调用点之后的下一条字节码指令。</p>
+<ul>
+<li>局部变量表(包括参数、局部变量，如果是成员方法还会有隐藏的 <code>this</code>)</li>
+<li>操作数栈(JVM执行字节码时临时用来计算的地方)</li>
+<li>动态链接(每个栈帧中保存了一个指向运行时常量池的引用，用来在方法执行过程中，把字节码里的符号引用解析成真正可以访问的类、方法、字段引用)<br>
+比如字节码写的 <code>调用 #5</code>，然后动态链接帮你找到 <code>#5</code> 是谁，比如 <code>Student.sayHello()</code>，然后真正定位到这个方法去执行。</li>
+<li>方法返回信息(返回后回到调用者哪里继续执行)
+<ol>
+<li>当前方法是正常返回，还是异常结束</li>
+<li>如果有返回值，返回值是什么</li>
+<li>当前方法返回后，应该回到调用者的哪里继续执行</li>
+<li>恢复哪个调用者栈帧</li>
+<li>返回值要不要压回调用者的操作数栈</li>
+</ol>
+</li>
+</ul>
+<div class="note warning no-icon flat"><p><span class="tag-q">当 <code>main</code> 调用了 <code>method1</code> 方法之后，到底是怎么恢复？是 <code>method1</code> 给下一条指令地址，还是 <code>main</code> 自己找？还是其他什么？</span><br>
+执行方法调用指令时，JVM 就已经知道“当前方法返回后应该回到哪里继续执行”。被调用方法返回后，JVM 恢复调用者栈帧，并让当前线程的程序计数器指向调用指令后面的下一条字节码。也就是说既不是 <code>main</code> 来做也不是 <code>method1</code> 来做，也不是程序计数器来做，而是JVM的执行引擎来做。</p>
+<p>JVM 在执行调用 <code>method1()</code> 的时候，会保存返回所需的信息。这些信息保存在 <code>method1</code> 栈帧中。等 <code>method1</code> 执行完后 (执行了<code>return</code>)，JVM 根据这些返回信息恢复调用者 main 的栈帧，并更新PC，让当前线程的 PC 指向 main 中调用指令之后的下一条字节码。其实这些执行完之后才让 <code>method1</code> 出栈！！！</p>
+<p>比如代码</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"method1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>字节码大概是</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">0</span><span class="token operator">:</span> invokestatic #method1
+<span class="token number">3</span><span class="token operator">:</span> bipush <span class="token number">10</span>
+<span class="token number">5</span><span class="token operator">:</span> istore_1
+<span class="token number">6</span><span class="token operator">:</span> <span class="token keyword">return</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>流程</p>
+<pre class="line-numbers language-txt" data-language="txt"><code class="language-txt">main() 调用 method1()
+        ↓
+JVM 保存调用者 main() 的执行状态(意思就是 method1 返回后，要回到 main 中 invokestatic 后面的下一条指令，也就是 3 号位置)
+        ↓
+method1 栈帧入栈
+        ↓
+PC 指向 method1 的第一条字节码
+        ↓
+method1 执行完 return
+        ↓
+method1 栈帧出栈
+        ↓
+main 栈帧恢复活动
+        ↓
+PC 被设置/恢复到 3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>程序计数器不是一个“会主动读东西的对象”。<br>
+不是程序计数器自己去读下一条地址，而是 JVM 执行引擎在执行字节码的过程中不断更新程序计数器。方法调用时保存返回位置，方法返回时恢复到那个位置。</p>
+</div>
+<p>每个线程同一时刻只能有一个当前活动栈帧，也就是栈顶栈帧。</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424155240513.png" alt=""></p>
+<p>在 IDEA 中可以查看栈帧和栈帧变量信息</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424164114310.png" alt=""></p>
+<h3 id="问题解析">问题解析</h3>
+<h4 id="垃圾回收是否涉及栈内存？">垃圾回收是否涉及栈内存？</h4>
+<p>垃圾回收不会涉及栈内存，因为栈的栈帧会随着方法调用而入栈，随着方法结束而出栈，无需进行垃圾回收。<br>
+对，确实，栈帧内存不用GC回收；但是GC还会扫描栈帧里的对象引用，因为栈帧内部的对象引用属于局部变量，属于栈帧，但是申请的对象是在堆里的，栈帧内存释放了，但是堆的还没有，这一部分GC来做，所以GC发现没人指向它，才会释放。</p>
+<p>你可能好奇，那为啥不释放栈帧的时候一块把对应堆的对象释放了？<br>
+栈帧能自动释放，是因为方法结束后这个栈帧一定没用了；堆对象不能顺手释放，是因为方法结束不代表对象没用了。</p>
+<ul>
+<li>对象可能被返回给调用者(作为返回值)</li>
+<li>对象可能被存储到别的对象里(比如在这个方法里面把这个局部变量放进了一个全局变量里面)</li>
+<li>变量逃逸(在这个方法里面这个对象被其他线程引用，在JUC里面会介绍)</li>
+</ul>
+<p>如果每次释放栈帧都检查一次对象是不是没有被人引用那性能消耗太大了</p>
+<h4 id="栈内存分配越大越好吗？">栈内存分配越大越好吗？</h4>
+<ul>
+<li>
+<p>栈的大小可以进行设置。可以通过JVM参数设置 <code>-Xss1m</code>，1m 指代大小，<code>Xss</code> 中到 ss 可以理解为 <code>Stack size</code>。<br>
+在 IDEA 中可以配置<br>
+<img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424171627229.png" alt=""></p>
+</li>
+<li>
+<p>这个 <code>-ea</code> 是开启断言测试，也就是 <code>assert</code>，跟 <code>-Xss1m</code> 没关系哈，不用管。</p>
+</li>
+<li>
+<p>线程栈越大则可以进行嵌套调用的方法层级越多，比如递归(如果栈空间不够了，会报 <code>StackOverflowError</code>)，但是并不会变快，所以需要在合理区间，不是越大越好。</p>
+</li>
+<li>
+<p>因为计算机的物理内存是有限的，线程中栈的大小设置的越大，可以容纳的线程数就会越少(每个线程都有自己的栈)。一般采用系统默认的栈内存大小即可。<br>
+比如有 <code>100MB</code> 内存，设置 <code>-Xss1m</code> 那最多能有 <code>100</code> 个线程。如果设置 <code>-Xss512k</code>，那最多可以有 <code>200</code> 个线程。</p>
+</li>
+<li>
+<p>栈内存是提前分配好的，但是栈帧大小不是固定的，不同方法栈帧大小不一样，复杂点栈帧可能就大。</p>
+</li>
+</ul>
+<h4 id="方法内的局部变量是否线程安全？">方法内的局部变量是否线程安全？</h4>
+<ul>
+<li>如果方法内局部变量没有逃离方法的作用访问，它是线程安全的</li>
+<li>如果是局部变量引用了对象，并逃离方法的作用范围，需要考虑线程安全</li>
+</ul>
+<p>这个在 JUC 里面会详细讲</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 多个线程同时执行</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">m1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">500</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        x<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这种情况下不会有线程安全问题，因为每个栈都有独立的栈空间，调用 <code>m1()</code> 方法时，每个线程都有自己的栈帧，都有互不干扰的 <code>i</code> 变量，不会有线程安全问题。</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424170745647.png" alt=""></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token comment">// 多个线程同时执行</span>
+<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">m1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;</span> <span class="token number">500</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        x<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个时候就不是线程安全了，为啥因为我线程 A 和线程 B 都在读取和修改 <code>x</code>。</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424170851820.png" alt=""></p>
+<div class="note info no-icon flat"><p><span class="tag-leaf">为啥对 <code>static int x</code> 的修改，在多线程下是不安全的？</span><br>
+本质原因是因为 <code>x++;</code> 操作不是原子性的。它是被拆解成四个指令的</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">getstatic     x      // 读取静态变量 x
+iconst_1             // 准备常量 <span class="token number">1</span>
+iadd                 // x + <span class="token number">1</span>
+putstatic    x       // 把结果写回静态变量 x<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也就是说我可能执行了两个指令就上下文切换切走了，另一个线程也来执行 <code>x++</code>，它读到的还是旧值，最后两个线程都把同一个结果写回去，导致其中一次自增丢失。</p>
+</div>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">m1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">StringBuilder</span> sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"c"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>sb<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个方法是线程安全的，里面的 <code>sb</code> 对象只在当前方法内，没有逃逸</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">m2</span><span class="token punctuation">(</span><span class="token class-name">StringBuilder</span> sb<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"c"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>sb<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个方法就是线程不安全的了，因为 <code>sb</code> 作为参数传递进来，那就有可能有两个线程同时用一个 <code>StringBuilder</code> 对象</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">StringBuilder</span> sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">m2</span><span class="token punctuation">(</span>sb<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token function">m2</span><span class="token punctuation">(</span>sb<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>比如这样，就存在同时修改的问题，存在线程不安全问题。因为 <code>sb</code> 对象放在堆里面，这两个线程都调用 <code>m2(sb)</code>，就和前面那个 <code>static int x</code> 是一样的，两个线程存在同时修改它的风险。</p>
+<div class="note danger no-icon flat"><p><span class="tag-q">为啥 <code>StringBuilder</code> 线程不安全呢？</span></p>
+<p>因为它内部维护了可变的字符数据和长度，比如可以粗略理解成：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> value<span class="token punctuation">;</span>
+<span class="token keyword">int</span> count<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>执行：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>不是一步完成的，它内部大概需要做这些事：</p>
+<ol>
+<li>判断容量够不够</li>
+<li>把字符写入内部数组</li>
+<li>修改 count 长度</li>
+</ol>
+<p>这些操作不是原子的，也没有加锁。所以就可能出现很多问题。所以想要线程安全，要么考虑自己加锁，要么用 <code>StringBuffer</code>，就是性能稍微差点</p>
+</div>
+<p>同样的，下面这个也是线程不安全的</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">m3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token class-name">StringBuilder</span> sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"c"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 内部是安全的，因为只要调用这个方法就会创建一个新的 sb, 不会有多个线程修改 sb 的问题</span>
+    <span class="token keyword">return</span> sb<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>sb</code> 返回后可能被多个线程引用去 <code>append</code>。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">StringBuilder</span> sb <span class="token operator">=</span> <span class="token function">m3</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"d"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"e"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="栈内存溢出">栈内存溢出</h3>
+<p><span class="tag-leaf">出现的情况</span></p>
+<ul>
+<li>栈帧过多导致栈内存溢出，比如说方法的递归调用</li>
+<li>栈帧过大导致栈内存溢出，一般较少出现，因为栈大小一般挺大，比如 1Mb，栈帧一般就存放一些参数、局部变量等一些其他东西，占用的内存相对较少</li>
+</ul>
+<p>我们可以编写一个递归调用的示例</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo_1</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">int</span> count<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        count<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token function">method1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>报错，可以看到总共调用了 <code>46460</code> 次</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">java.lang.StackOverflowError
+  at com.lh.Demo_1.method1<span class="token punctuation">(</span>Demo_1.java:17<span class="token punctuation">)</span>
+  <span class="token punctuation">..</span><span class="token punctuation">..</span>
+  at com.lh.Demo_1.method1<span class="token punctuation">(</span>Demo_1.java:17<span class="token punctuation">)</span>
+  at com.lh.Demo_1.method1<span class="token punctuation">(</span>Demo_1.java:17<span class="token punctuation">)</span>
+<span class="token number">46460</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以减小一下栈帧大小，看看调用次数是不是减少，比如设置 <code>-Xss256k</code></p>
+<p>这个时候再跑一下，就只会调用 <code>1479</code> 次了。</p>
+<h3 id="线程运行诊断">线程运行诊断</h3>
+<h4 id="虚拟机栈占用过多CPU">虚拟机栈占用过多CPU</h4>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 演示 cpu 占用过高
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo04</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"1..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"thread1"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"2..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000000L</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"thread2"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"3..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000000L</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token string">"thread3"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里我只讲述在 <code>macOS</code> 系统下怎么运行这个代码并且查看CPU占用等，Linux、Windows 下查看类似命令就可以。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini ~ % <span class="token builtin class-name">cd</span> Desktop/cola/code/Java/JVM/src/main/java <span class="token comment"># 进入目录</span>
+<span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % javac com/lh/Demo04.java <span class="token comment"># 编译</span>
+<span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % <span class="token function">java</span> com.lh.Demo04 <span class="token operator">&amp;</span> <span class="token comment"># 后台运行并拿到进程 PID</span>
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token number">10760</span>
+<span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % <span class="token number">1</span><span class="token punctuation">..</span>.
+<span class="token number">2</span><span class="token punctuation">..</span>.
+<span class="token number">3</span><span class="token punctuation">..</span>.
+
+<span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % <span class="token function">top</span> <span class="token parameter variable">-pid</span> <span class="token number">10760</span> <span class="token comment"># 查看进程 CPU 占用</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424182734678.png" alt=""></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">jstack <span class="token number">10760</span> <span class="token comment"># 查看进程下的线程信息</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424183547228.png" alt=""></p>
+<ul>
+<li>可以看到进程的信息，除了JVM虚拟机本身的一些进程之外，这个 <code>thread1</code>、<code>thread2</code>、<code>thread3</code> 都是咱们自己的，然后可以看到 <code>thread1</code> 正在运行，并且指出了在运行哪一行代码。</li>
+<li>这里面 <code>tid</code> 代表JVM内部线程标识，<code>nid</code> 代表操作系统线程ID，都是十六进制表示的</li>
+</ul>
+<p>macOS 不支持 ps 来查看线程名和 <code>tid</code> 字段，，，Linux 可以。</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424193106037.png" alt=""></p>
+<p>这里可以看到有个线程 <code>%CPU=100.0</code> 且 <code>STAT=R</code></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % <span class="token function">kill</span> <span class="token number">10760</span> <span class="token comment"># 杀死进程</span>
+<span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % 
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>  + <span class="token builtin class-name">exit</span> <span class="token number">143</span>   <span class="token function">java</span> com.lh.Demo04<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<div class="note warning flat"><p>不能直接杀死线程，只能杀进程。。。</p>
+</div>
+<div class="note danger no-icon flat"><p><span class="tag-q">正常 RUNNABLE 和异常 RUNNABLE 的区别</span><br>
+它 <code>%CPU=99</code>，<code>STAT=R</code>，怎么就知道它有问题呢？<br>
+正常情况：</p>
+<ul>
+<li>线程 RUNNABLE</li>
+<li>CPU 高一会儿，任务执行完就下降</li>
+<li>栈位置会变化</li>
+</ul>
+<p>异常情况：</p>
+<ul>
+<li>线程 RUNNABLE</li>
+<li>CPU 长时间很高</li>
+<li>多次 jstack 看到它一直卡在同一段代码</li>
+</ul>
+<p>比如 <code>while(true)</code>、死循环、频繁重试、复杂计算</p>
+</div>
+<h4 id="线程死锁的排查">线程死锁的排查</h4>
+<p>有的时候运行一个程序迟迟没有结果，可能是出现了死锁，下面演示一下</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lh</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * 演示线程死锁
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo05</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">static</span> <span class="token class-name">A</span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> <span class="token class-name">B</span> b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                    <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"我获得了 a 和 b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"我获得了 a 和 b"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini ~ % <span class="token builtin class-name">cd</span> Desktop/cola/code/Java/JVM/src/main/java <span class="token comment"># 进入目录</span>
+<span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % javac com/lh/Demo05.java <span class="token comment"># 编译</span>
+<span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % <span class="token function">java</span> com.lh.Demo05 <span class="token operator">&amp;</span> <span class="token comment"># 后台运行并返回进程ID</span>
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token number">14569</span>
+<span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % jstack <span class="token number">14569</span> <span class="token comment"># 查看信息</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在最后有这样一段信息</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424195834117.png" alt=""></p>
+<p>可以看到先说发现了一个死锁</p>
+<p>然后下面详细信息说 <code>Thread-0</code> 正在等待一个 <code>B</code> 锁，锁的地址是 <code>0x000000061fc1c6d0</code>，自己锁住了一个 <code>A</code> 锁，地址是 <code>0x000000061fc1bad0</code>。并且也展示了代码的位置</p>
+<pre class="line-numbers language-txt" data-language="txt"><code class="language-txt">"Thread-0":
+  at com.lh.Demo05.lambda$main$0(Demo05.java:22)
+"Thread-1":
+  at com.lh.Demo05.lambda$main$1(Demo05.java:30)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也就知道程序发生了死锁。通常情况下我们只能杀掉整个Java进程来结束死锁，并且修正代码防止再出现死锁。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % <span class="token function">kill</span> <span class="token number">14569</span>
+<span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini <span class="token function">java</span> % 
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>  + <span class="token builtin class-name">exit</span> <span class="token number">143</span>   <span class="token function">java</span> com.lh.Demo05<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="本地方法栈">本地方法栈</h2>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424200647547.png" alt=""></p>
+<ul>
+<li>
+<p>本地方法是用 <code>native</code> 修饰的方法，它没有 Java 方法体，真正实现通常由 C/C++ 等非 Java 语言完成。<br>
+当 Java 执行到这个 <code>hashCode()</code> 时，真正进入的是底层的 C/C++ 函数。</p>
+  <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Object</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">native</span> <span class="token keyword">int</span> <span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 本地方法</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><span class="tag-leaf">为什么存在本地方法？</span>这些方法通常是Java自己做不了或者不适合用Java做</p>
+</li>
+<li>
+<p>本地方法除了直接调用操作系统 API，也可能是操作 JVM 底层内部结构，比如对象头、锁、线程等待唤醒、运行时类型信息等。</p>
+</li>
+<li>
+<p>当 Java 程序调用 <code>native</code> 方法时，JVM 会进入对应的本地代码执行。本地代码执行过程中也需要参数、局部变量、返回地址等运行空间，因此 JVM 规范中定义了本地方法栈，用来为 <code>native</code> 方法服务。<br>
+Java 方法执行时用 JVM 栈，本地方法执行时可能使用本地方法栈</p>
+</li>
+<li>
+<p>Object 类中就有很多 <code>native</code> 方法，比如 <code>getClass()</code>、<code>hashCode()</code>、<code>clone()</code>、<code>wait()</code>、<code>notify()</code>、<code>notifyAll()</code> 等。</p>
+</li>
+</ul>
+<h2 id="堆">堆</h2>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424201851972.png" alt=""></p>
+<p>前面说的程序计数器、虚拟机栈、本地方法栈都是线程私有的，而堆以及后面的方法区都是线程共享的。</p>
+<h3 id="定义">定义</h3>
+<p>通过 <code>new</code> 关键字，创建对象都会使用堆内存</p>
+<p>特点</p>
+<ul>
+<li>它是线程共享的，堆中对象都需要考虑线程安全的问题</li>
+<li>有垃圾回收机制</li>
+</ul>
+<h3 id="堆内存溢出">堆内存溢出</h3>
+<p>堆中具有垃圾回收机制，但是垃圾回收的前提是堆中的对象不再被引用，因此如果我们有过多无法被回收的对象，就可能导致堆内存溢出。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemoryOverFlow</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> a <span class="token operator">=</span> <span class="token string">"hello"</span><span class="token punctuation">;</span>
+        <span class="token class-name">List</span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 一直添加数据，直到堆溢出</span>
+                a <span class="token operator">=</span> a <span class="token operator">+</span> a<span class="token punctuation">;</span>
+                i<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424202830367.png" alt=""></p>
+<p>可以通过设置参数 <code>-Xmx</code> 来设置堆内存最大大小，比如设置 <code>-Xmx8m</code></p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424202935957.png" alt=""></p>
+<p>这个时候跑的轮数就少了，更快溢出了</p>
+<div class="note info flat"><p>实际上有 <code>-Xms</code> 和 <code>-Xmx</code> 两种配置</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token parameter variable">-Xms256m</span>   初始堆大小是 256MB
+<span class="token parameter variable">-Xmx1g</span>     最大堆大小是 1GB<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div>
+<h3 id="堆内存诊断">堆内存诊断</h3>
+<p>工作中编写了一段代码，怎么判断这段代码对于内存性能的影响呢？可以用下面这些工具</p>
+<ul>
+<li><code>jps</code> 查看当前系统中有哪些 java 进程</li>
+<li><code>jmap</code> 查看瞬时时刻堆内存占用情况 <code>jmap -heap 进程id</code></li>
+<li><code>jconsole</code> 图形界面的，多功能的监测工具，可以连续监测</li>
+</ul>
+<p>通过下面这个 demo 来演示</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"1....."</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 输出提示</span>
+    <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">30000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 给 30s 时间我们看进程ID + 看看 Heap 情况</span>
+    <span class="token keyword">byte</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"2......."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">30000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    arr <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">gc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// arr 置空之后代表可以被垃圾回收了，我们再手动 gc 进行回收一下</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"3......"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">100000L</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424211007522.png" alt=""></p>
+<div class="note warning flat"><p>在这里执行 <code>jmap</code> 报错是因为 jdk8 之后的版本不能再使用这个命令了，需要改用命令 <code>jhsdb jmap --heap --pid xxx</code>。</p>
+<p>但是在 macOS 上对于这个命令支持不好，所以我们使用命令 <code>jcmd xxx GC.heap_info</code> 来查看信息</p>
+</div>
+<p>我们在控制台输出 <code>1</code> 之后，输出 <code>2</code> 之前，执行如下命令</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424212524070.png" alt=""></p>
+<p>当前提交给JVM使用的堆大小是 520MB，已使用的堆大小是 14MB</p>
+<p>控制台输出 <code>2</code> 之后，执行下面命令</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424212923336.png" alt=""></p>
+<p>堆大小增加了大约 12MB，虽然我们只申请了 10MB，但是对象本身还有对象头、对齐、G1 region 分配等额外影响，所以看到增加 12MB 左右是正常的</p>
+<p>控制台输出 <code>3</code> 之后，执行下面命令</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424213007735.png" alt=""></p>
+<p>可以通过 <code>jcmd xxx VM.flags</code> 查看堆最大大小、初始大小等等信息，列举其中几个</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">(</span>base<span class="token punctuation">)</span> ice@jimodebingkeledeMac-mini JVM % jcmd <span class="token number">18925</span> VM.flags
+<span class="token number">18925</span>:
+<span class="token parameter variable">-XX:G1HeapRegionSize</span><span class="token operator">=</span><span class="token number">4194304</span> <span class="token comment"># G1把堆切成每个小块的大小，4MB</span>
+<span class="token parameter variable">-XX:InitialHeapSize</span><span class="token operator">=</span><span class="token number">536870912</span> 
+<span class="token parameter variable">-XX:MaxHeapSize</span><span class="token operator">=</span><span class="token number">8589934592</span> 
+<span class="token parameter variable">-XX:+UseG1GC</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>和上面 <code>jcmd xxx GC.heap_info</code> 进行对应</p>
+<ul>
+<li><code>garbage-first heap</code> 代表用的是 G1 垃圾收集器，对应 VM.flags 里面的 <code>-XX:+UseG1GC</code>，G1 的全称就是 <code>garbage-first</code>。</li>
+<li><code>-XX:MaxHeapSize=8589934592</code> 即 8GB，代表最大堆内存大小</li>
+<li><code>total 532480K</code> 代表当前JVM已经提交的堆内存大小，换算一下就是 520 MB，按理来说应该是 512MB，JVM 启动后，G1 根据运行过程、内部策略、对象分配、对齐等原因，当前实际提交堆变成了 520MB。</li>
+<li><code>InitialHeapSize=536870912</code> 512MB JVM 参数里的初始堆大小配置值。</li>
+</ul>
+<p><span class="tag-leaf">jconsole</span></p>
+<p>jconsole 的使用方法就比较简单，直接在终端输入 <code>jconsole</code> 就会自动弹出来</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424214905984.png" alt=""></p>
+<p>我们选择进程点击连接就可以查看。</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424215158341.png" alt=""></p>
+<p>上面这个增大缩小的过程分别是我们分配堆内存和GC的过程。</p>
+<p>除了内存(还提供了手动GC按钮)，jconsole还可以监测线程、cpu 占用率以及类的数量变化等。<br>
+还可以帮我们坚持死锁的情况</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424215256731.png" alt=""></p>
+<h4 id="多次垃圾回收内存占用仍很高问题的排查">多次垃圾回收内存占用仍很高问题的排查</h4>
+<p><code>jvisualvm</code> 也是一个可视化工具，比 jconsole 更好用，在命令行输入 <code>jvisualvm</code> 就能用，但是 JDK1.8 之后或者是比较新的JDK1.8不会再自动集成它了，需要手动下载这个软件</p>
+<p>macOS 下可以通过 homebrew 下载</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">brew <span class="token function">install</span> <span class="token parameter variable">--cask</span> visualvm<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>安装好后，我们用如下代码进行演示</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 演示查看对象个数 堆转储 dump
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo1_13</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">&#123;</span>
+    	<span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">30000L</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Student</span><span class="token punctuation">></span></span> students <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">200</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            students<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//            Student student = new Student();</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000000000L</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Student</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> big <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token number">1024</span><span class="token operator">*</span><span class="token number">1024</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 1MB</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424221127440.png" alt=""></p>
+<p>启动程序后打开软件我们可以选中进程</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424221405612.png" alt=""></p>
+<p>我们可以看到堆大小的变化，启动后过了一段时间可以看到堆内存确实变大了很多，然后我们点击 <code>Preform GC</code> 手动进行GC，发现堆也没啥变化。</p>
+<p>我们可以点击 <code>Heap Dump</code> 来获取当前堆大小的快照</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424221740601.png" alt=""></p>
+<p>右下角点击 <code>view all</code> 可以查看当前占用堆内存的实例对象，最高的是 <code>ArrayList</code>，里面存放了非常多的 <code>Student</code>，每个都还不小</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424221819114.png" alt=""></p>
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/markmap-toolbar@0.18.10/dist/style.css"><script src="https://fastly.jsdelivr.net/npm/d3@7"></script><script src="https://fastly.jsdelivr.net/npm/markmap-view@0.18.10"></script><script src="https://fastly.jsdelivr.net/npm/markmap-toolbar@0.18.10"></script>
+<link rel="stylesheet" href="/css/markmap.css">
+
+<script src="/js/markmap.js"></script>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io">寂寞的冰可乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/">https://asinglesinger.github.io/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://asinglesinger.github.io" target="_blank">一个人的升级日志</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post-share"><div class="social-share" data-image="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424145847248.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习(Google ADK)"><img class="cover" src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Agent学习(Google ADK)</div></div><div class="info-2"><div class="info-item-1">基于Google ADK & Kaggle的智能体课程，涉及智能体架构、工具、会话、记忆、观测、评估、A2A</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">寂寞的冰可乐</div><div class="author-info-description">去码头搞点薯条</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/aSingleSinger"><i class="fab fa-github"></i><span>We need to talk</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">随便逛逛吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-JVM"><span class="toc-number">1.1.</span> <span class="toc-text">什么是 JVM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84-JVM"><span class="toc-number">1.2.</span> <span class="toc-text">常见的 JVM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF"><span class="toc-number">1.3.</span> <span class="toc-text">学习路线</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">内存结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-number">2.1.</span> <span class="toc-text">程序计数器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-number">2.1.1.</span> <span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="toc-number">2.2.</span> <span class="toc-text">虚拟机栈</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.2.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E8%A7%A3%E6%9E%90"><span class="toc-number">2.2.2.</span> <span class="toc-text">问题解析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%98%AF%E5%90%A6%E6%B6%89%E5%8F%8A%E6%A0%88%E5%86%85%E5%AD%98%EF%BC%9F"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">垃圾回收是否涉及栈内存？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E8%B6%8A%E5%A4%A7%E8%B6%8A%E5%A5%BD%E5%90%97%EF%BC%9F"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">栈内存分配越大越好吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E5%86%85%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E6%98%AF%E5%90%A6%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="toc-number">2.2.2.3.</span> <span class="toc-text">方法内的局部变量是否线程安全？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="toc-number">2.2.3.</span> <span class="toc-text">栈内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E8%BF%90%E8%A1%8C%E8%AF%8A%E6%96%AD"><span class="toc-number">2.2.4.</span> <span class="toc-text">线程运行诊断</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E5%8D%A0%E7%94%A8%E8%BF%87%E5%A4%9ACPU"><span class="toc-number">2.2.4.1.</span> <span class="toc-text">虚拟机栈占用过多CPU</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%AD%BB%E9%94%81%E7%9A%84%E6%8E%92%E6%9F%A5"><span class="toc-number">2.2.4.2.</span> <span class="toc-text">线程死锁的排查</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-number">2.3.</span> <span class="toc-text">本地方法栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86"><span class="toc-number">2.4.</span> <span class="toc-text">堆</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">2.4.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="toc-number">2.4.2.</span> <span class="toc-text">堆内存溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A0%86%E5%86%85%E5%AD%98%E8%AF%8A%E6%96%AD"><span class="toc-number">2.4.3.</span> <span class="toc-text">堆内存诊断</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E6%AC%A1%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E4%BB%8D%E5%BE%88%E9%AB%98%E9%97%AE%E9%A2%98%E7%9A%84%E6%8E%92%E6%9F%A5"><span class="toc-number">2.4.3.1.</span> <span class="toc-text">多次垃圾回收内存占用仍很高问题的排查</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/" title="JVM学习"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424145847248.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JVM学习"/></a><div class="content"><a class="title" href="/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/" title="JVM学习">JVM学习</a><time datetime="2026-04-24T06:57:05.000Z" title="发表于 2026-04-24 14:57:05">2026-04-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习(Google ADK)"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent学习(Google ADK)"/></a><div class="content"><a class="title" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习(Google ADK)">Agent学习(Google ADK)</a><time datetime="2026-04-15T09:07:44.000Z" title="发表于 2026-04-15 17:07:44">2026-04-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/11/RAG%E5%AD%A6%E4%B9%A0/" title="RAG学习">RAG学习</a><time datetime="2026-04-11T06:04:13.000Z" title="发表于 2026-04-11 14:04:13">2026-04-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/Canvas%E7%94%BB%E5%B8%83/" title="Canvas画布">Canvas画布</a><time datetime="2026-04-08T01:43:16.000Z" title="发表于 2026-04-08 09:43:16">2026-04-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/SSM%E6%95%B4%E5%90%88/" title="SSM整合">SSM整合</a><time datetime="2026-04-08T01:42:27.000Z" title="发表于 2026-04-08 09:42:27">2026-04-08</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 寂寞的冰可乐</span></div><div class="footer_custom_text">只写不背，未完待续</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.outerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+    setTimeout(() => URL.revokeObjectURL(url), 30000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        if (typeof svg === 'string') {
+          openSvgInNewTab({ source: svg, initViewBox })
+          return
+        }
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+
+    // Avoid binding multiple times on themeChange/pjax
+    if (wrap.__mermaidGestureBound) return
+    wrap.__mermaidGestureBound = true
+
+    // Helper: map client (viewport) coordinate -> viewBox coordinate
+    const clientToViewBox = (clientX, clientY) => {
+      const rect = svg.getBoundingClientRect()
+      const vb = wrap.__mermaidCurViewBox || getSvgViewBox(svg)
+      const x = vb[0] + (clientX - rect.left) * (vb[2] / rect.width)
+      const y = vb[1] + (clientY - rect.top) * (vb[3] / rect.height)
+      return { x, y, rect, vb }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      startCenter: null
+    }
+
+    const clampVb = vb => {
+      const init = wrap.__mermaidInitViewBox || vb
+      const minW = init[2] * 0.1
+      const maxW = init[2] * 10
+      const minH = init[3] * 0.1
+      const maxH = init[3] * 10
+      vb[2] = clamp(vb[2], minW, maxW)
+      vb[3] = clamp(vb[3], minH, maxH)
+      return vb
+    }
+
+    const setCurVb = vb => {
+      vb = clampVb(vb)
+      wrap.__mermaidCurViewBox = vb
+      setSvgViewBox(svg, vb)
+    }
+
+    const onPointerDown = e => {
+      // Allow only primary button for mouse
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      if (state.pointers.size === 1) {
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        state.startCenter = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 }
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      // Pan with 1 pointer
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = [...state.pointers.values()][0]
+        const prev = { x: e.clientX - e.movementX, y: e.clientY - e.movementY }
+        // movementX/Y unreliable on touch, compute from stored last position
+        const last = wrap.__mermaidLastSinglePointer || p
+        const dxClient = p.x - last.x
+        const dyClient = p.y - last.y
+        wrap.__mermaidLastSinglePointer = p
+
+        const { rect } = clientToViewBox(p.x, p.y)
+        const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        const dx = dxClient * (vb[2] / rect.width)
+        const dy = dyClient * (vb[3] / rect.height)
+        setCurVb([vb[0] - dx, vb[1] - dy, vb[2], vb[3]])
+        return
+      }
+
+      // Pinch zoom with 2 pointers
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist // dist bigger => zoom in (viewBox smaller)
+
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const centerClient = { x: cx, y: cy }
+
+        const pxy = clientToViewBox(centerClient.x, centerClient.y)
+        const cpx = pxy.x
+        const cpy = pxy.y
+
+        const vb = zoomAtPoint(state.startVb, factor, cpx, cpy)
+        setCurVb(vb)
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+        state.startCenter = null
+        wrap.__mermaidLastSinglePointer = null
+      } else if (state.pointers.size === 1) {
+        // reset single pointer baseline to avoid jump
+        wrap.__mermaidLastSinglePointer = [...state.pointers.values()][0]
+      }
+    }
+
+    // Wheel zoom (mouse/trackpad)
+    const onWheel = e => {
+      // ctrlKey on mac trackpad pinch; we treat both as zoom
+      e.preventDefault()
+      const delta = e.deltaY
+      const zoomFactor = delta > 0 ? 1.1 : 0.9
+      const { x, y } = clientToViewBox(e.clientX, e.clientY)
+      const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      setCurVb(zoomAtPoint(vb, zoomFactor, x, y))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (!init) return
+      wrap.__mermaidCurViewBox = init.slice()
+      setSvgViewBox(svg, init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown)
+    svg.addEventListener('pointermove', onPointerMove)
+    svg.addEventListener('pointerup', onPointerUpOrCancel)
+    svg.addEventListener('pointercancel', onPointerUpOrCancel)
+    svg.addEventListener('wheel', onWheel, { passive: false })
+    svg.addEventListener('dblclick', onDblClick)
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+
+      // Clear old render (themeChange/pjax will rerun)
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      item.__mermaidGestureBound = false
+
+      const config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script src="/js/click-word.js"></script><script src="/js/sakura.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="想吃点什么～" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>

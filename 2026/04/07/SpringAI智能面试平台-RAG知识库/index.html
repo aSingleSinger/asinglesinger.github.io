@@ -1,24 +1,25 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SpringAI智能面试平台+RAG知识库 | 一个人的升级日志</title><meta name="author" content="寂寞的冰可乐"><meta name="copyright" content="寂寞的冰可乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="环境搭建 使用 Docker 进行搭建，下载一个 Docker Desktop。 安装 PostgreSQL + pgvector 关系数据库+向量存储 终端运行命令 docker run -d    --name guide_pgvector    -p 5432:5432    -e POSTGRES_PASSWORD&#x3D;123456    -v &#x2F;Users&#x2F;ice&#x2F;Desktop&#x2F;cola&#x2F;">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SpringAI智能面试平台+RAG知识库 | 一个人的升级日志</title><meta name="author" content="寂寞的冰可乐"><meta name="copyright" content="寂寞的冰可乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于大语言模型的智能面试辅助平台，包含RAG知识库问答、智能简历分析、模拟面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringAI智能面试平台+RAG知识库">
 <meta property="og:url" content="https://asinglesinger.github.io/2026/04/07/SpringAI%E6%99%BA%E8%83%BD%E9%9D%A2%E8%AF%95%E5%B9%B3%E5%8F%B0-RAG%E7%9F%A5%E8%AF%86%E5%BA%93/">
 <meta property="og:site_name" content="一个人的升级日志">
-<meta property="og:description" content="环境搭建 使用 Docker 进行搭建，下载一个 Docker Desktop。 安装 PostgreSQL + pgvector 关系数据库+向量存储 终端运行命令 docker run -d    --name guide_pgvector    -p 5432:5432    -e POSTGRES_PASSWORD&#x3D;123456    -v &#x2F;Users&#x2F;ice&#x2F;Desktop&#x2F;cola&#x2F;">
+<meta property="og:description" content="基于大语言模型的智能面试辅助平台，包含RAG知识库问答、智能简历分析、模拟面试">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg">
+<meta property="og:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423144259154.jpg">
 <meta property="article:published_time" content="2026-04-07T03:30:20.000Z">
-<meta property="article:modified_time" content="2026-04-11T05:03:17.398Z">
+<meta property="article:modified_time" content="2026-04-23T12:04:18.012Z">
 <meta property="article:author" content="寂寞的冰可乐">
-<meta property="article:tag" content="Bug, 摸鱼, 编程, 踩坑记录">
+<meta property="article:tag" content="大模型应用开发">
+<meta property="article:tag" content="项目实战">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg"><script type="application/ld+json">{
+<meta name="twitter:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423144259154.jpg"><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "SpringAI智能面试平台+RAG知识库",
   "url": "https://asinglesinger.github.io/2026/04/07/SpringAI%E6%99%BA%E8%83%BD%E9%9D%A2%E8%AF%95%E5%B9%B3%E5%8F%B0-RAG%E7%9F%A5%E8%AF%86%E5%BA%93/",
-  "image": "https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg",
+  "image": "https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423144259154.jpg",
   "datePublished": "2026-04-07T03:30:20.000Z",
-  "dateModified": "2026-04-11T05:03:17.398Z",
+  "dateModified": "2026-04-23T12:04:18.012Z",
   "author": [
     {
       "@type": "Person",
@@ -178,7 +179,7 @@ btf.addGlobalFn('pjaxSend', () => {
   Pace.restart()
 }, 'pace_restart')
 
-</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div class="bg-animation" id="web_bg" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">一个人的升级日志</span></a><a class="nav-page-title" href="/"><span class="site-name">SpringAI智能面试平台+RAG知识库</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SpringAI智能面试平台+RAG知识库</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-07T03:30:20.000Z" title="发表于 2026-04-07 11:30:20">2026-04-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-11T05:03:17.398Z" title="更新于 2026-04-11 13:03:17">2026-04-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">9.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>37分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>环境搭建</h1>
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div class="bg-animation" id="web_bg" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423144259154.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">一个人的升级日志</span></a><a class="nav-page-title" href="/"><span class="site-name">SpringAI智能面试平台+RAG知识库</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SpringAI智能面试平台+RAG知识库</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-07T03:30:20.000Z" title="发表于 2026-04-07 11:30:20">2026-04-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-23T12:04:18.012Z" title="更新于 2026-04-23 20:04:18">2026-04-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">11.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>45分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>环境搭建</h1>
 <p>使用 Docker 进行搭建，下载一个 Docker Desktop。</p>
 <h2 id="安装-PostgreSQL-pgvector">安装 PostgreSQL + pgvector</h2>
 <p>关系数据库+向量存储</p>
@@ -937,131 +938,6 @@ pinyin4j <span class="token operator">=</span> <span class="token interpolation-
         <span class="token string">"duplicate"</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol>
-<li>验证文件</li>
-</ol>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
- * 验证文件基本属性（是否为空、文件大小）
- *
- * @param file 上传的文件
- * @param maxSizeBytes 最大文件大小（字节）
- * @param fileTypeName 文件类型名称（用于错误消息，如"简历"、"知识库"）
- */</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">validateFile</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">,</span> <span class="token keyword">long</span> maxSizeBytes<span class="token punctuation">,</span> <span class="token class-name">String</span> fileTypeName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">BAD_REQUEST</span><span class="token punctuation">,</span> 
-            <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"请选择要上传的%s文件"</span><span class="token punctuation">,</span> fileTypeName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> maxSizeBytes<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">BAD_REQUEST</span><span class="token punctuation">,</span> <span class="token string">"文件大小超过限制"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="2">
-<li>验证文件类型</li>
-</ol>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// modules.resume.service.ResumeParseService</span>
-<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">ContentTypeDetectionService</span> contentTypeDetectionService<span class="token punctuation">;</span>
-<span class="token comment">/**
- * 检测文件的MIME类型
- */</span>
-<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">detectContentType</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> contentTypeDetectionService<span class="token punctuation">.</span><span class="token function">detectContentType</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-
-
-<span class="token comment">// infrastructure.file.ContentTypeDetectionService</span>
-<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Tika</span> tika<span class="token punctuation">;</span>
-<span class="token comment">/**
- * 检测文件的 MIME 类型
- * 使用 Tika 进行基于内容的检测，比 HTTP 头部更准确
- *
- * @param file MultipartFile 文件
- * @return MIME 类型字符串
- */</span>
-<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">detectContentType</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">InputStream</span> inputStream <span class="token operator">=</span> file<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> tika<span class="token punctuation">.</span><span class="token function">detect</span><span class="token punctuation">(</span>inputStream<span class="token punctuation">,</span> file<span class="token punctuation">.</span><span class="token function">getOriginalFilename</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        log<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span><span class="token string">"无法检测文件类型，使用 Content-Type 头部: &#123;&#125;"</span><span class="token punctuation">,</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> file<span class="token punctuation">.</span><span class="token function">getContentType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>这里使用的 Apache Tika，是大数据和安全领域非常出名的文件指纹鉴定器。因为如果有人恶意把一个 <code>.exe</code> 改名成 <code>.png</code> 并上传，并且在请求头写 <code>Content-Type: image/png</code>，那么就可能造成安全漏洞。Apache Tika 的原理是，每种格式的文件，在二进制开头的几个字节都是固定的，比如 PNG 图片开头一定是 <code>89 50 4E 47</code>，通过这个，可以准确判断出文件的真实类型。</p>
-<ol start="3">
-<li>检查简历是否已存在</li>
-</ol>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// modules.resume.service.ResumePersistenceService</span>
-<span class="token comment">/**
- * 检查简历是否已存在（基于文件内容hash）
- * 
- * @param file 上传的文件
- * @return 如果存在返回已有的简历实体，否则返回空
- */</span>
-<span class="token keyword">public</span> <span class="token class-name">Optional</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ResumeEntity</span><span class="token punctuation">></span></span> <span class="token function">findExistingResume</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">String</span> fileHash <span class="token operator">=</span> fileHashService<span class="token punctuation">.</span><span class="token function">calculateHash</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">Optional</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ResumeEntity</span><span class="token punctuation">></span></span> existing <span class="token operator">=</span> resumeRepository<span class="token punctuation">.</span><span class="token function">findByFileHash</span><span class="token punctuation">(</span>fileHash<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 根据实体类的属性fileHash去数据库查询</span>
-        
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>existing<span class="token punctuation">.</span><span class="token function">isPresent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"检测到重复简历: hash=&#123;&#125;"</span><span class="token punctuation">,</span> fileHash<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">ResumeEntity</span> resume <span class="token operator">=</span> existing<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            resume<span class="token punctuation">.</span><span class="token function">incrementAccessCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 更新访问次数、最后访问时间</span>
-            resumeRepository<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>resume<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 更新上面这个信息到数据库</span>
-        <span class="token punctuation">&#125;</span>
-        
-        <span class="token keyword">return</span> existing<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"检查简历重复时出错: &#123;&#125;"</span><span class="token punctuation">,</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token class-name">Optional</span><span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token comment">// infrastructure.file.FileHashService</span>
-<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token constant">HASH_ALGORITHM</span> <span class="token operator">=</span> <span class="token string">"SHA-256"</span><span class="token punctuation">;</span> <span class="token comment">// 或者MD5</span>
-<span class="token comment">/**
- * 计算文件的 SHA-256 哈希值
- *
- * @param file MultipartFile 文件
- * @return 十六进制哈希字符串
- */</span>
-<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">calculateHash</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> <span class="token function">calculateHash</span><span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"读取文件内容失败: &#123;&#125;"</span><span class="token punctuation">,</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">INTERNAL_ERROR</span><span class="token punctuation">,</span> <span class="token string">"计算文件哈希失败"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">/**
- * 计算字节数组的 SHA-256 哈希值
- *
- * @param data 字节数组
- * @return 十六进制哈希字符串
- */</span>
-<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">calculateHash</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">MessageDigest</span> digest <span class="token operator">=</span> <span class="token class-name">MessageDigest</span><span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token constant">HASH_ALGORITHM</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Java 自带的加密工具类</span>
-        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> hashBytes <span class="token operator">=</span> digest<span class="token punctuation">.</span><span class="token function">digest</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 得到哈希值-32byte</span>
-        <span class="token keyword">return</span> <span class="token function">bytesToHex</span><span class="token punctuation">(</span>hashBytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">NoSuchAlgorithmException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"哈希算法不支持: &#123;&#125;"</span><span class="token punctuation">,</span> <span class="token constant">HASH_ALGORITHM</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">INTERNAL_ERROR</span><span class="token punctuation">,</span> <span class="token string">"计算文件哈希失败"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">/**
- * 将字节数组转换为十六进制字符串
- */</span>
-<span class="token keyword">private</span> <span class="token class-name">String</span> <span class="token function">bytesToHex</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token class-name">StringBuilder</span> result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span>bytes<span class="token punctuation">.</span>length <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">byte</span> b <span class="token operator">:</span> bytes<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        result<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"%02x"</span><span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 2*32, 字符串长度为64</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> result<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li><code>SHA-256</code> 结果得到的是 <code>256</code> bit，无论多大的文件，最后都可以用一个固定 <code>256</code> 比特的哈希值表示，然后哈希值转为十六进制，<code>256/4=64</code>，方便我们查看</li>
-</ul>
 <p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260410133051009.png" alt=""></p>
 <p>流程图如上</p>
 <h4 id="知识库删除流程">知识库删除流程</h4>
@@ -1441,6 +1317,63 @@ pinyin4j <span class="token operator">=</span> <span class="token interpolation-
 <p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260410180455345.png" alt=""></p>
 <h1>核心功能开发</h1>
 <h2 id="基于-Tika-实现多格式内容提取与解析">基于 Tika 实现多格式内容提取与解析</h2>
+<h3 id="Apache-Tika-简介">Apache Tika 简介</h3>
+<p>Apache Tika 是一个非常成熟的开源&quot;内容分析工具箱&quot;，它最大的特点是能从上千种不同格式的文件（如 PDF、Office 文档、音频、视频等）中，通过统一接口提取出文本和元数据（Metadata）。</p>
+<h4 id="技术选型对比">技术选型对比</h4>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>格式支持</th>
+<th>输出目标</th>
+<th>核心优势</th>
+<th>局限性/风险</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Apache Tika</strong></td>
+<td><strong>极高</strong></td>
+<td>纯文本/XML</td>
+<td><strong>统一 API</strong>；自动识别类型；可集成 OCR；社区生态极强</td>
+<td>依赖包偏大；默认策略会带来噪音，需要定制</td>
+<td><strong>首选：全能型选手</strong></td>
+</tr>
+<tr>
+<td><strong>Apache POI</strong></td>
+<td>中 (Office)</td>
+<td>结构化对象</td>
+<td>对 Word/Excel 的结构控制细（段落、表格、样式）</td>
+<td>不支持 PDF；工程代码量大；多格式需拼装</td>
+<td>适合仅处理 Excel/Word 报表</td>
+</tr>
+<tr>
+<td><strong>PDFBox</strong></td>
+<td>低 (PDF)</td>
+<td>文本/图片</td>
+<td>PDF 解析最稳定；支持坐标定位</td>
+<td>只覆盖 PDF；扫描件需 OCR；多格式仍要拼装</td>
+<td>适合作为 Tika 的底层组件</td>
+</tr>
+<tr>
+<td><strong>Pandoc</strong></td>
+<td>极高</td>
+<td>跨格式转换</td>
+<td>格式转换的&quot;瑞士军刀&quot;，排版还原度极高</td>
+<td>需系统级安装（非纯 Java）；并发性能较差</td>
+<td>适合离线文档转换工具</td>
+</tr>
+<tr>
+<td><strong>在线解析 API</strong></td>
+<td>高</td>
+<td>结构化 JSON</td>
+<td>零维护；通常带 AI 增强识别</td>
+<td><strong>数据隐私风险</strong>；成本高；网络依赖</td>
+<td>数据敏感场景不推荐</td>
+</tr>
+</tbody>
+</table>
 <h3 id="架构设计">架构设计</h3>
 <h4 id="整体架构">整体架构</h4>
 <p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260411130040367.png" alt=""></p>
@@ -1474,7 +1407,366 @@ pinyin4j <span class="token operator">=</span> <span class="token interpolation-
         <span class="token keyword">return</span> <span class="token class-name">Result</span><span class="token punctuation">.</span><span class="token function">success</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io">寂寞的冰可乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io/2026/04/07/SpringAI%E6%99%BA%E8%83%BD%E9%9D%A2%E8%AF%95%E5%B9%B3%E5%8F%B0-RAG%E7%9F%A5%E8%AF%86%E5%BA%93/">https://asinglesinger.github.io/2026/04/07/SpringAI%E6%99%BA%E8%83%BD%E9%9D%A2%E8%AF%95%E5%B9%B3%E5%8F%B0-RAG%E7%9F%A5%E8%AF%86%E5%BA%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://asinglesinger.github.io" target="_blank">一个人的升级日志</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related  no-desc" href="/2026/04/01/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%B8%85%E5%8D%95/" title="面试问题清单"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">面试问题清单</div></div></div></a><a class="pagination-related  no-desc" href="/2026/04/07/Gradle%E5%AD%A6%E4%B9%A0/" title="Gradle学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Gradle学习</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">寂寞的冰可乐</div><div class="author-info-description">去码头搞点薯条</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/aSingleSinger"><i class="fab fa-github"></i><span>We need to talk</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">随便逛逛吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-PostgreSQL-pgvector"><span class="toc-number">1.1.</span> <span class="toc-text">安装 PostgreSQL + pgvector</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PGvector-%E5%90%91%E9%87%8F%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.1.</span> <span class="toc-text">PGvector 向量功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-Boot-RustFS"><span class="toc-number">1.2.</span> <span class="toc-text">Spring Boot + RustFS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RustFS"><span class="toc-number">1.2.1.</span> <span class="toc-text">RustFS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RustFS-%E7%AE%A1%E7%90%86%E5%90%8E%E5%8F%B0"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">RustFS 管理后台</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring-Boot-%E9%9B%86%E6%88%90%E5%AE%9E%E6%88%98"><span class="toc-number">1.2.2.</span> <span class="toc-text">Spring Boot 集成实战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Gradle"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">Gradle</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">配置属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E7%B1%BB"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">配置属性类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#S3-%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">S3 客户端配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1%E5%B0%81%E8%A3%85"><span class="toc-number">1.2.3.</span> <span class="toc-text">文件存储服务封装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%B1%BB%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">服务类设计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">文件上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">文件下载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4"><span class="toc-number">1.2.3.4.</span> <span class="toc-text">文件删除</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E6%A1%B6%E7%AE%A1%E7%90%86"><span class="toc-number">1.2.3.5.</span> <span class="toc-text">存储桶管理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6-Key-%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83"><span class="toc-number">1.2.4.</span> <span class="toc-text">文件 Key 设计规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E9%9B%86%E6%88%90%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.5.</span> <span class="toc-text">业务集成示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E5%8E%86%E4%B8%8A%E4%BC%A0%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.5.1.</span> <span class="toc-text">简历上传分析流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E5%BA%93%E5%88%A0%E9%99%A4%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.5.2.</span> <span class="toc-text">知识库删除流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.2.6.</span> <span class="toc-text">最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8E%BB%E9%87%8D"><span class="toc-number">1.2.6.1.</span> <span class="toc-text">文件去重</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-number">1.2.6.2.</span> <span class="toc-text">错误处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E5%88%86%E7%89%87%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.6.3.</span> <span class="toc-text">大文件分片上传</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.6.3.1.</span> <span class="toc-text">大文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%86%E7%89%87%E4%B8%8A%E4%BC%A0%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.6.3.1.1.</span> <span class="toc-text">分片上传流程</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0-%E7%A7%92%E4%BC%A0"><span class="toc-number">1.2.6.3.2.</span> <span class="toc-text">断点续传 &amp; 秒传</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E6%A8%A1%E5%9E%8B-API-%E7%94%B3%E8%AF%B7"><span class="toc-number">1.3.</span> <span class="toc-text">大模型 API 申请</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2Redis-%E9%A1%B9%E7%9B%AE%E5%90%AF%E5%8A%A8"><span class="toc-number">1.4.</span> <span class="toc-text">部署Redis&amp;项目启动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-%E9%83%A8%E7%BD%B2-Redis"><span class="toc-number">1.4.1.</span> <span class="toc-text">Docker 部署 Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">本地运行项目</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">克隆项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">配置数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">配置环境变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.2.4.</span> <span class="toc-text">修改应用配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.4.2.5.</span> <span class="toc-text">启动服务</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">核心功能开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-Tika-%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%A0%BC%E5%BC%8F%E5%86%85%E5%AE%B9%E6%8F%90%E5%8F%96%E4%B8%8E%E8%A7%A3%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">基于 Tika 实现多格式内容提取与解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.1.1.</span> <span class="toc-text">架构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">整体架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8C%E5%B1%82%E6%B8%85%E7%90%86%E7%AD%96%E7%95%A5"><span class="toc-number">2.1.1.2.</span> <span class="toc-text">双层清理策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.1.2.</span> <span class="toc-text">文件上传实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Controller-%E5%85%A5%E5%8F%A3"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">Controller 入口</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习(Google ADK)"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent学习(Google ADK)"/></a><div class="content"><a class="title" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习(Google ADK)">Agent学习(Google ADK)</a><time datetime="2026-04-15T09:07:44.000Z" title="发表于 2026-04-15 17:07:44">2026-04-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/11/RAG%E5%AD%A6%E4%B9%A0/" title="RAG学习">RAG学习</a><time datetime="2026-04-11T06:04:13.000Z" title="发表于 2026-04-11 14:04:13">2026-04-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/Canvas%E7%94%BB%E5%B8%83/" title="Canvas画布">Canvas画布</a><time datetime="2026-04-08T01:43:16.000Z" title="发表于 2026-04-08 09:43:16">2026-04-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/SSM%E6%95%B4%E5%90%88/" title="SSM整合">SSM整合</a><time datetime="2026-04-08T01:42:27.000Z" title="发表于 2026-04-08 09:42:27">2026-04-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/SpringMVC%E5%AD%A6%E4%B9%A0/" title="SpringMVC学习">SpringMVC学习</a><time datetime="2026-04-08T01:41:48.000Z" title="发表于 2026-04-08 09:41:48">2026-04-08</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 寂寞的冰可乐</span></div><div class="footer_custom_text">只写不背，未完待续</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+<div class="note info no-icon flat"><p>这里面两个注解</p>
+<ul>
+<li><code>@RateLimit</code> 是自定义的注解，用来限流，后面再详细说</li>
+<li><code>@PostMapping</code> 中的 <code>consumes</code> 和 <code>prodeces</code> 参看 <a href="#PostMapping%E4%B8%AD%E7%9A%84consumes%E5%92%8Cproduces">@PostMapping 中的 consumes 和 produces</a></li>
+</ul>
+</div>
+<h4 id="上传服务实现">上传服务实现</h4>
+<p><code>ResumeUploadService</code> 实现了完整的八步上传流程：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Slf4j</span>
+<span class="token annotation punctuation">@Service</span>
+<span class="token annotation punctuation">@RequiredArgsConstructor</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ResumeUploadService</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">ResumeParseService</span> parseService<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">FileStorageService</span> storageService<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">ResumePersistenceService</span> persistenceService<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">FileValidationService</span> fileValidationService<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">AnalyzeStreamProducer</span> analyzeStreamProducer<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> <span class="token constant">MAX_FILE_SIZE</span> <span class="token operator">=</span> <span class="token number">10</span> <span class="token operator">*</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span><span class="token punctuation">;</span> <span class="token comment">// 10MB</span>
+
+    <span class="token comment">/**
+     * 上传并分析简历（异步）
+     */</span>
+    <span class="token keyword">public</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">uploadAndAnalyze</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 1. 验证文件（非空、大小限制）</span>
+        fileValidationService<span class="token punctuation">.</span><span class="token function">validateFile</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> <span class="token constant">MAX_FILE_SIZE</span><span class="token punctuation">,</span> <span class="token string">"简历"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 2. 检测并验证文件类型</span>
+        <span class="token class-name">String</span> contentType <span class="token operator">=</span> parseService<span class="token punctuation">.</span><span class="token function">detectContentType</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">validateContentType</span><span class="token punctuation">(</span>contentType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 3. 检查简历是否已存在（基于 SHA-256 哈希去重）</span>
+        <span class="token class-name">Optional</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ResumeEntity</span><span class="token punctuation">></span></span> existingResume <span class="token operator">=</span> persistenceService<span class="token punctuation">.</span><span class="token function">findExistingResume</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>existingResume<span class="token punctuation">.</span><span class="token function">isPresent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token function">handleDuplicateResume</span><span class="token punctuation">(</span>existingResume<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// 4. 解析简历文本（Tika + 文本清理）</span>
+        <span class="token class-name">String</span> resumeText <span class="token operator">=</span> parseService<span class="token punctuation">.</span><span class="token function">parseResume</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>resumeText <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> resumeText<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">RESUME_PARSE_FAILED</span><span class="token punctuation">,</span>
+                <span class="token string">"无法从文件中提取文本内容，请确保文件不是扫描版PDF"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// 5. 保存文件到对象存储（RustFS/S3）</span>
+        <span class="token class-name">String</span> fileKey <span class="token operator">=</span> storageService<span class="token punctuation">.</span><span class="token function">uploadResume</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">String</span> fileUrl <span class="token operator">=</span> storageService<span class="token punctuation">.</span><span class="token function">getFileUrl</span><span class="token punctuation">(</span>fileKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"简历已存储到RustFS: &#123;&#125;"</span><span class="token punctuation">,</span> fileKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 6. 保存简历记录到数据库（状态：PENDING）</span>
+        <span class="token class-name">ResumeEntity</span> savedResume <span class="token operator">=</span> persistenceService<span class="token punctuation">.</span><span class="token function">saveResume</span><span class="token punctuation">(</span>
+            file<span class="token punctuation">,</span> resumeText<span class="token punctuation">,</span> fileKey<span class="token punctuation">,</span> fileUrl<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 7. 发送分析任务到 Redis Stream（异步）</span>
+        analyzeStreamProducer<span class="token punctuation">.</span><span class="token function">sendAnalyzeTask</span><span class="token punctuation">(</span>savedResume<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> resumeText<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 8. 返回结果</span>
+        <span class="token keyword">return</span> <span class="token class-name">Map</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>
+            <span class="token string">"resume"</span><span class="token punctuation">,</span> <span class="token class-name">Map</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>
+                <span class="token string">"id"</span><span class="token punctuation">,</span> savedResume<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token string">"filename"</span><span class="token punctuation">,</span> savedResume<span class="token punctuation">.</span><span class="token function">getOriginalFilename</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token string">"analyzeStatus"</span><span class="token punctuation">,</span> <span class="token class-name">AsyncTaskStatus</span><span class="token punctuation">.</span><span class="token constant">PENDING</span><span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string">"storage"</span><span class="token punctuation">,</span> <span class="token class-name">Map</span><span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>
+                <span class="token string">"fileKey"</span><span class="token punctuation">,</span> fileKey<span class="token punctuation">,</span>
+                <span class="token string">"fileUrl"</span><span class="token punctuation">,</span> fileUrl<span class="token punctuation">,</span>
+                <span class="token string">"resumeId"</span><span class="token punctuation">,</span> savedResume<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string">"duplicate"</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上传流程图</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423172012795.png" alt=""></p>
+<p>之前提到过，这里我们再详细看代码</p>
+<h5 id="验证文件">验证文件</h5>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">调用</button><button type="button" class="tab">校验逻辑</button></div><div class="tab-contents"><div class="tab-item-content active"><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 1. 验证文件（非空、大小限制）</span>
+fileValidationService<span class="token punctuation">.</span><span class="token function">validateFile</span><span class="token punctuation">(</span>file<span class="token punctuation">,</span> <span class="token constant">MAX_FILE_SIZE</span><span class="token punctuation">,</span> <span class="token string">"简历"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 要验证的文件、最大文件大小、文件类型名称</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div><div class="tab-item-content"><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// interview.guide/infrastructure.file.FileValidationService</span>
+
+<span class="token comment">/**
+ * 验证文件基本属性（是否为空、文件大小）
+ *
+ * @param file 上传的文件
+ * @param maxSizeBytes 最大文件大小（字节）
+ * @param fileTypeName 文件类型名称（用于错误消息，如"简历"、"知识库"）
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">validateFile</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">,</span> <span class="token keyword">long</span> maxSizeBytes<span class="token punctuation">,</span> <span class="token class-name">String</span> fileTypeName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">BAD_REQUEST</span><span class="token punctuation">,</span> 
+            <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"请选择要上传的%s文件"</span><span class="token punctuation">,</span> fileTypeName<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> maxSizeBytes<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">BAD_REQUEST</span><span class="token punctuation">,</span> <span class="token string">"文件大小超过限制"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h5 id="验证文件类型">验证文件类型</h5>
+<p>先验证文件类型，再检验是否符合，使用文件的 MIME 类型，而不是用后缀名或者请求头中的 <code>Content-Type</code> 这些不可靠的信息。</p>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">调用</button><button type="button" class="tab">检测文件类型</button><button type="button" class="tab">校验</button></div><div class="tab-contents"><div class="tab-item-content active"><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 2. 检测并验证文件类型</span>
+<span class="token class-name">String</span> contentType <span class="token operator">=</span> parseService<span class="token punctuation">.</span><span class="token function">detectContentType</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">validateContentType</span><span class="token punctuation">(</span>contentType<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></div><div class="tab-item-content"><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// modules.resume.service.ResumeParseService</span>
+<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">ContentTypeDetectionService</span> contentTypeDetectionService<span class="token punctuation">;</span>
+<span class="token comment">/**
+ * 检测文件的MIME类型
+ */</span>
+<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">detectContentType</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> contentTypeDetectionService<span class="token punctuation">.</span><span class="token function">detectContentType</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里使用的 Apache Tika，是大数据和安全领域非常出名的文件指纹鉴定器。因为如果有人恶意把一个 <code>.exe</code> 改名成 <code>.png</code> 并上传，并且在请求头写 <code>Content-Type: image/png</code>，那么就可能造成安全漏洞。Apache Tika 的原理是，每种格式的文件，在二进制开头的几个字节都是固定的，比如 PNG 图片开头一定是 <code>89 50 4E 47</code>，也会结合文件名、容器结构等信息，综合判断出文件的真实类型。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// infrastructure.file.ContentTypeDetectionService</span>
+<span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Tika</span> tika<span class="token punctuation">;</span>
+<span class="token comment">/**
+ * 检测文件的 MIME 类型
+ * 使用 Tika 进行基于内容的检测，比 HTTP 头部更准确
+ *
+ * @param file MultipartFile 文件
+ * @return MIME 类型字符串
+ */</span>
+<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">detectContentType</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">InputStream</span> inputStream <span class="token operator">=</span> file<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> tika<span class="token punctuation">.</span><span class="token function">detect</span><span class="token punctuation">(</span>inputStream<span class="token punctuation">,</span> file<span class="token punctuation">.</span><span class="token function">getOriginalFilename</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        log<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span><span class="token string">"无法检测文件类型，使用 Content-Type 头部: &#123;&#125;"</span><span class="token punctuation">,</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> file<span class="token punctuation">.</span><span class="token function">getContentType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div><div class="tab-item-content"><p>检验文件类型是否支持</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// interview.guide.modules.resume.service.ResumeUploadService</span>
+<span class="token comment">/**
+ * 验证文件类型
+ */</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">validateContentType</span><span class="token punctuation">(</span><span class="token class-name">String</span> contentType<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    fileValidationService<span class="token punctuation">.</span><span class="token function">validateContentTypeByList</span><span class="token punctuation">(</span>
+        contentType<span class="token punctuation">,</span>
+        appConfig<span class="token punctuation">.</span><span class="token function">getAllowedTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string">"不支持的文件类型: "</span> <span class="token operator">+</span> contentType
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>appConfig.getAllowedTypes()</code> 支持的文件类型配置在了 yml 文件，这几个都是 MIME 类型</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">app</span><span class="token punctuation">:</span>
+  <span class="token key atrule">resume</span><span class="token punctuation">:</span>
+    <span class="token key atrule">allowed-types</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> application/pdf <span class="token comment"># pdf</span>
+      <span class="token punctuation">-</span> application/msword <span class="token comment"># doc</span>
+      <span class="token punctuation">-</span> application/vnd.openxmlformats<span class="token punctuation">-</span>officedocument.wordprocessingml.document <span class="token comment"># docx</span>
+      <span class="token punctuation">-</span> text/plain <span class="token comment"># txt</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// interview.guide.infrastructure.file.FileValidationService</span>
+
+<span class="token comment">/**
+ * 验证文件类型（基于MIME类型）
+ *
+ * @param contentType 文件的MIME类型
+ * @param allowedTypes 允许的MIME类型列表（支持部分匹配，如"pdf"会匹配"application/pdf"）
+ * @param errorMessage 验证失败时的错误消息
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">validateContentTypeByList</span><span class="token punctuation">(</span><span class="token class-name">String</span> contentType<span class="token punctuation">,</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> allowedTypes<span class="token punctuation">,</span> <span class="token class-name">String</span> errorMessage<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isAllowedType</span><span class="token punctuation">(</span>contentType<span class="token punctuation">,</span> allowedTypes<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">BAD_REQUEST</span><span class="token punctuation">,</span> 
+            errorMessage <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">?</span> errorMessage <span class="token operator">:</span> <span class="token string">"不支持的文件类型: "</span> <span class="token operator">+</span> contentType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 检查文件类型是否在允许列表中
+ */</span>
+<span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">isAllowedType</span><span class="token punctuation">(</span><span class="token class-name">String</span> contentType<span class="token punctuation">,</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> allowedTypes<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>contentType <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> allowedTypes <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> allowedTypes<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token class-name">String</span> lowerContentType <span class="token operator">=</span> contentType<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> allowedTypes<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">anyMatch</span><span class="token punctuation">(</span>allowed <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">String</span> lowerAllowed <span class="token operator">=</span> allowed<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> lowerContentType<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>lowerAllowed<span class="token punctuation">)</span> <span class="token operator">||</span> lowerAllowed<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>lowerContentType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里其实不是用的严格匹配，而是比较宽松、容错性匹配，这样业务配置更方便。<code>pdf</code>、<code>application/pdf</code> 这种都能识别</p></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<h5 id="检查简历是否已存在">检查简历是否已存在</h5>
+<div class="tabs"><div class="nav-tabs"><button type="button" class="tab active">调用</button><button type="button" class="tab">查重</button></div><div class="tab-contents"><div class="tab-item-content active"><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 3. 检查简历是否已存在（基于 SHA-256 哈希去重）</span>
+<span class="token class-name">Optional</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ResumeEntity</span><span class="token punctuation">></span></span> existingResume <span class="token operator">=</span> persistenceService<span class="token punctuation">.</span><span class="token function">findExistingResume</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>existingResume<span class="token punctuation">.</span><span class="token function">isPresent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token function">handleDuplicateResume</span><span class="token punctuation">(</span>existingResume<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></div><div class="tab-item-content"><p>实现基于内容的查重，而不是文件名之类的</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// modules.resume.service.ResumePersistenceService</span>
+<span class="token comment">/**
+ * 检查简历是否已存在（基于文件内容hash）
+ * 
+ * @param file 上传的文件
+ * @return 如果存在返回已有的简历实体，否则返回空
+ */</span>
+<span class="token keyword">public</span> <span class="token class-name">Optional</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ResumeEntity</span><span class="token punctuation">></span></span> <span class="token function">findExistingResume</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">String</span> fileHash <span class="token operator">=</span> fileHashService<span class="token punctuation">.</span><span class="token function">calculateHash</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 计算内容哈希</span>
+        <span class="token class-name">Optional</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ResumeEntity</span><span class="token punctuation">></span></span> existing <span class="token operator">=</span> resumeRepository<span class="token punctuation">.</span><span class="token function">findByFileHash</span><span class="token punctuation">(</span>fileHash<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 根据实体类的属性fileHash去数据库查询</span>
+        
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>existing<span class="token punctuation">.</span><span class="token function">isPresent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"检测到重复简历: hash=&#123;&#125;"</span><span class="token punctuation">,</span> fileHash<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">ResumeEntity</span> resume <span class="token operator">=</span> existing<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            resume<span class="token punctuation">.</span><span class="token function">incrementAccessCount</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 更新访问次数、最后访问时间</span>
+            resumeRepository<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>resume<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 更新上面这个信息到数据库</span>
+        <span class="token punctuation">&#125;</span>
+        
+        <span class="token keyword">return</span> existing<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"检查简历重复时出错: &#123;&#125;"</span><span class="token punctuation">,</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token class-name">Optional</span><span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><span class="tag-leaf">计算内容哈希</span></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// infrastructure.file.FileHashService</span>
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> <span class="token constant">HASH_ALGORITHM</span> <span class="token operator">=</span> <span class="token string">"SHA-256"</span><span class="token punctuation">;</span> <span class="token comment">// 或者MD5</span>
+<span class="token comment">/**
+ * 计算文件的 SHA-256 哈希值
+ *
+ * @param file MultipartFile 文件
+ * @return 十六进制哈希字符串
+ */</span>
+<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">calculateHash</span><span class="token punctuation">(</span><span class="token class-name">MultipartFile</span> file<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token function">calculateHash</span><span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"读取文件内容失败: &#123;&#125;"</span><span class="token punctuation">,</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">INTERNAL_ERROR</span><span class="token punctuation">,</span> <span class="token string">"计算文件哈希失败"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">/**
+ * 计算字节数组的 SHA-256 哈希值
+ *
+ * @param data 字节数组
+ * @return 十六进制哈希字符串
+ */</span>
+<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">calculateHash</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">MessageDigest</span> digest <span class="token operator">=</span> <span class="token class-name">MessageDigest</span><span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token constant">HASH_ALGORITHM</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Java 自带的加密工具类</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> hashBytes <span class="token operator">=</span> digest<span class="token punctuation">.</span><span class="token function">digest</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 得到哈希值-32byte, 256bit</span>
+        <span class="token keyword">return</span> <span class="token function">bytesToHex</span><span class="token punctuation">(</span>hashBytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">NoSuchAlgorithmException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        log<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"哈希算法不支持: &#123;&#125;"</span><span class="token punctuation">,</span> <span class="token constant">HASH_ALGORITHM</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BusinessException</span><span class="token punctuation">(</span><span class="token class-name">ErrorCode</span><span class="token punctuation">.</span><span class="token constant">INTERNAL_ERROR</span><span class="token punctuation">,</span> <span class="token string">"计算文件哈希失败"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">/**
+ * 将字节数组转换为十六进制字符串
+ */</span>
+<span class="token keyword">private</span> <span class="token class-name">String</span> <span class="token function">bytesToHex</span><span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">StringBuilder</span> result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span>bytes<span class="token punctuation">.</span>length <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 1byte 需要两个十六进制字符</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">byte</span> b <span class="token operator">:</span> bytes<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        result<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">"%02x"</span><span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 2*32, 字符串长度为64</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> result<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>String.format(&quot;%02x&quot;, b)</code> 中 <code>%x</code> 指按照十六进制输出，<code>2</code> 代表宽度至少为两位，<code>0</code> 代表不够两位前面补 <code>0</code>。</li>
+</ul></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li><code>SHA-256</code> 结果得到的是 <code>256</code> bit，无论多大的文件，最后都可以用一个固定 <code>256</code> 比特的哈希值表示，然后哈希值转为十六进制，<code>256/4=64</code>，方便我们查看</li>
+</ul>
+<h1>知识点补充</h1>
+<p><span id="PostMapping中的consumes和produces"></span></p>
+<h2 id="PostMapping-中的-consumes-和-produces">@PostMapping 中的 consumes 和 produces</h2>
+<h3 id="consumes">consumes</h3>
+<p><code>@PostMapping</code> 里面的 <code>consumes</code> 本质上是按请求头里的 <code>Content-Type</code> 来缩小请求映射范围</p>
+<p><code>@PostMapping</code> 中的 <code>consumes</code> 代表这个接口接收的请求是 <code>multipart/form-data</code>，也就是说如果前端请求是 Post，并且 <code>Content-Type</code> 是 <code>multipart/form-data</code> 才会进来这个请求</p>
+<ul>
+<li>如果 <code>consumes</code> 是 <code>application/json</code>，这种代表Post请求传来的是 JSON 数据，常见于用 <code>@RequestBody</code> 接收对象</li>
+<li>如果 <code>consumes</code> 是 <code>application/x-www-form-urlencoded</code>，代表传来的是表单数据</li>
+<li>如果 <code>consumes</code> 是 <code>multipart/form-data</code> 既可以传普通字段也可以传文件</li>
+</ul>
+<p>这个限定的作用是，假如说我虽然往这个URL发起Post请求，我定义的参数类型是 <code>MultipartFile</code>，但是传送的是 JSON 数据，在接收参数的时候会报错，而加上这个 <code>consumes=multipart/form-data</code>，直接从类型上就明确限制。能够避免参数解析时才失败，在请求映射阶段就把不符合的请求拦掉，让接口语义更明确。</p>
+<h3 id="produces">produces</h3>
+<p><code>produces</code> 会根据请求头 Accept 和方法可产出的媒体类型来缩小映射范围。</p>
+<p><code>consumes</code> 代表我接收什么格式的请求，相对应的，还有 <code>produces</code> 代表返回什么格式的响应。<br>
+为什么有这个呢？因为同一个接口，理论上可以返回不同格式，比如一个查询接口，可以返回：<code>JSON</code>，<code>XML</code>，纯文本，<code>HTML</code>。</p>
+<p>我们原来固有的观念是 <code>@RestController</code> 返回 JSON 数据，但其实这个注解作用是把返回值直接写到响应体。通常情况下我们返回的是对象类型的数据，一般是用 Jackson 转为 JSON 了而已。</p>
+<ul>
+<li>还记得 <code>@RestController</code> 是 <code>@Controller</code> + <code>@ResponseBody</code>，<code>@Controller</code> 是返回视图解析，加 <code>@ResponseBody</code> 是表明不返回视图解析了，直接写入相应体。至于最终返回什么类型，不归它管</li>
+</ul>
+<p><span class="tag-leaf">具体返回类型由谁决定呢？</span><br>
+返回值类型+可用的 <code>HttpMessageConverter</code>+内容协商结果</p>
+<ul>
+<li>如果返回的是对象类型，在 SpringBoot 项目里面，如果项目里有 Jackson(webmvc 里面带着Jackson)，一般会用 <code>MappingJackson2HttpMessageConverter</code>，转为JSON</li>
+<li>如果是字符串类型，会用 <code>StringHttpMessageConverter</code>，支持 <code>*/*</code>，它默认是返回 <code>text/plain</code>，但是会看一眼请求头里面的 <code>Accept</code>，根据这个再做决定</li>
+</ul>
+<p>比如说这个代码</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DemoController</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/hello"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token string">"hello"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423155733144.png" alt=""></p>
+<p>这里面第一个 <code>text/html;charset=UTF-8</code>，代表返回的是 HTML 文本，会按 HTML 网页进行解析。<br>
+也就是说如果客户端的 Accept 指向 <code>text/html</code>，而方法又没有显式限制 <code>produces</code>，那么最终响应有可能协商成 <code>text/html</code>。</p>
+<p>我们可以再演示一下</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DemoController</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/hello"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token string">"&lt;h1>Hello World&lt;/h1>"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423161609354.png" alt=""></p>
+<p>但是如果我们限定 <code>produces</code></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DemoController</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/hello"</span><span class="token punctuation">,</span> produces <span class="token operator">=</span> <span class="token class-name">MediaType</span><span class="token punctuation">.</span><span class="token constant">TEXT_PLAIN_VALUE</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token string">"&lt;h1>Hello World&lt;/h1>"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423161748624.png" alt=""></p>
+<p>如果你犯贱，我就写返回类型是 JSON</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DemoController</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/hello"</span><span class="token punctuation">,</span> produces <span class="token operator">=</span> <span class="token class-name">MediaType</span><span class="token punctuation">.</span><span class="token constant">APPLICATION_JSON_VALUE</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token string">"&lt;h1>Hello World&lt;/h1>"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423164322894.png" alt=""></p>
+<p>其实还是走的 <code>StringHttpMessageConverter</code>，<code>produces</code> 只是代表我这个接口声明/协商出来的媒体类型是 JSON，但实际上它并不能真的转为 JSON。</p>
+<p><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423165150095.png" alt=""></p>
+<p>详细分析一下哈，<code>Accept</code> 就是</p>
+<pre class="line-numbers language-http" data-language="http"><code class="language-http"><span class="token header"><span class="token header-name keyword">Accept</span><span class="token punctuation">:</span> <span class="token header-value">text/html,
+        application/xhtml+xml,
+        application/xml;q=0.9,
+        image/avif,
+        image/webp,
+        image/apng,
+        */*;q=0.8,
+        application/signed-exchange;v=b3;q=0.7</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>q</code> 代表偏好，不写就默认为 <code>1</code>，值越大偏好越重。这里偏好与 <code>text/html</code>、<code>application/xhtml+xml</code>，<code>image/avif</code>。。。。</li>
+<li>我声明了 <code>produces</code> 是 <code>application/json</code>，还能返回，核心原因是 Accept 里面有 <code>*/*</code>，虽然权重低，但是前面都不匹配，这个也就凑活用了，所以能返回</li>
+<li>但是走的还是 <code>StringHttpMessageConverter</code>。</li>
+</ul>
+<p>原来不写的时候默认返回的是 <code>text/html</code> 对吧，因为这个优先级高，所以优先返回的这个</p>
+<div class="note success flat"><ul>
+<li><code>produces</code>：主要管这个方法声明能产出什么类型</li>
+<li><code>Accept</code>：主要管客户端能接受什么类型</li>
+<li><code>StringHttpMessageConverter</code>：主要管这个 String 响应体最终怎么写出去</li>
+</ul>
+</div>
+<div class="note success flat"><p>所以其实对象就走 Jackson，字符串就走这个 <code>StringHttpMessageConverter</code>。除非要么你是返回视图，它不走了，要么是你自己改了消息转换器(<code>MessageConverter</code>)的配置。不然都这样走。</p>
+</div>
+<h2 id="Hibernate">Hibernate</h2>
+<h2 id="异常处理">异常处理</h2>
+<h2 id="RateLimit-限流">@RateLimit 限流</h2>
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/markmap-toolbar@0.18.10/dist/style.css"><script src="https://fastly.jsdelivr.net/npm/d3@7"></script><script src="https://fastly.jsdelivr.net/npm/markmap-view@0.18.10"></script><script src="https://fastly.jsdelivr.net/npm/markmap-toolbar@0.18.10"></script>
+<link rel="stylesheet" href="/css/markmap.css">
+
+<script src="/js/markmap.js"></script>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io">寂寞的冰可乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io/2026/04/07/SpringAI%E6%99%BA%E8%83%BD%E9%9D%A2%E8%AF%95%E5%B9%B3%E5%8F%B0-RAG%E7%9F%A5%E8%AF%86%E5%BA%93/">https://asinglesinger.github.io/2026/04/07/SpringAI%E6%99%BA%E8%83%BD%E9%9D%A2%E8%AF%95%E5%B9%B3%E5%8F%B0-RAG%E7%9F%A5%E8%AF%86%E5%BA%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://asinglesinger.github.io" target="_blank">一个人的升级日志</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/">大模型应用开发</a><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a></div><div class="post-share"><div class="social-share" data-image="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260423144259154.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related  no-desc" href="/2026/04/01/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%B8%85%E5%8D%95/" title="面试问题清单"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">面试问题清单</div></div></div></a><a class="pagination-related  no-desc" href="/2026/04/07/Gradle%E5%AD%A6%E4%B9%A0/" title="Gradle学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Gradle学习</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习(Google ADK)"><img class="cover" src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-15</div><div class="info-item-2">Agent学习(Google ADK)</div></div><div class="info-2"><div class="info-item-1">基于Google ADK & Kaggle的智能体课程，涉及智能体架构、工具、会话、记忆、观测、评估、A2A</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">寂寞的冰可乐</div><div class="author-info-description">去码头搞点薯条</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/aSingleSinger"><i class="fab fa-github"></i><span>We need to talk</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">随便逛逛吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-PostgreSQL-pgvector"><span class="toc-number">1.1.</span> <span class="toc-text">安装 PostgreSQL + pgvector</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PGvector-%E5%90%91%E9%87%8F%E5%8A%9F%E8%83%BD"><span class="toc-number">1.1.1.</span> <span class="toc-text">PGvector 向量功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-Boot-RustFS"><span class="toc-number">1.2.</span> <span class="toc-text">Spring Boot + RustFS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RustFS"><span class="toc-number">1.2.1.</span> <span class="toc-text">RustFS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RustFS-%E7%AE%A1%E7%90%86%E5%90%8E%E5%8F%B0"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">RustFS 管理后台</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring-Boot-%E9%9B%86%E6%88%90%E5%AE%9E%E6%88%98"><span class="toc-number">1.2.2.</span> <span class="toc-text">Spring Boot 集成实战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Gradle"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">Gradle</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">配置属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E7%B1%BB"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">配置属性类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#S3-%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">S3 客户端配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%8D%E5%8A%A1%E5%B0%81%E8%A3%85"><span class="toc-number">1.2.3.</span> <span class="toc-text">文件存储服务封装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%B1%BB%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">服务类设计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">文件上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">文件下载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4"><span class="toc-number">1.2.3.4.</span> <span class="toc-text">文件删除</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E6%A1%B6%E7%AE%A1%E7%90%86"><span class="toc-number">1.2.3.5.</span> <span class="toc-text">存储桶管理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6-Key-%E8%AE%BE%E8%AE%A1%E8%A7%84%E8%8C%83"><span class="toc-number">1.2.4.</span> <span class="toc-text">文件 Key 设计规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E9%9B%86%E6%88%90%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.2.5.</span> <span class="toc-text">业务集成示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%80%E5%8E%86%E4%B8%8A%E4%BC%A0%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.5.1.</span> <span class="toc-text">简历上传分析流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E5%BA%93%E5%88%A0%E9%99%A4%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.5.2.</span> <span class="toc-text">知识库删除流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.2.6.</span> <span class="toc-text">最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8E%BB%E9%87%8D"><span class="toc-number">1.2.6.1.</span> <span class="toc-text">文件去重</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-number">1.2.6.2.</span> <span class="toc-text">错误处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E5%88%86%E7%89%87%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.6.3.</span> <span class="toc-text">大文件分片上传</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">1.2.6.3.1.</span> <span class="toc-text">大文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%88%86%E7%89%87%E4%B8%8A%E4%BC%A0%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.6.3.1.1.</span> <span class="toc-text">分片上传流程</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0-%E7%A7%92%E4%BC%A0"><span class="toc-number">1.2.6.3.2.</span> <span class="toc-text">断点续传 &amp; 秒传</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E6%A8%A1%E5%9E%8B-API-%E7%94%B3%E8%AF%B7"><span class="toc-number">1.3.</span> <span class="toc-text">大模型 API 申请</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2Redis-%E9%A1%B9%E7%9B%AE%E5%90%AF%E5%8A%A8"><span class="toc-number">1.4.</span> <span class="toc-text">部署Redis&amp;项目启动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-%E9%83%A8%E7%BD%B2-Redis"><span class="toc-number">1.4.1.</span> <span class="toc-text">Docker 部署 Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">本地运行项目</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">克隆项目</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">配置数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.4.2.3.</span> <span class="toc-text">配置环境变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.2.4.</span> <span class="toc-text">修改应用配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.4.2.5.</span> <span class="toc-text">启动服务</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">核心功能开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-Tika-%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%A0%BC%E5%BC%8F%E5%86%85%E5%AE%B9%E6%8F%90%E5%8F%96%E4%B8%8E%E8%A7%A3%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">基于 Tika 实现多格式内容提取与解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache-Tika-%E7%AE%80%E4%BB%8B"><span class="toc-number">2.1.1.</span> <span class="toc-text">Apache Tika 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%AF%B9%E6%AF%94"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">技术选型对比</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.1.2.</span> <span class="toc-text">架构设计</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">整体架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8C%E5%B1%82%E6%B8%85%E7%90%86%E7%AD%96%E7%95%A5"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">双层清理策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.1.3.</span> <span class="toc-text">文件上传实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Controller-%E5%85%A5%E5%8F%A3"><span class="toc-number">2.1.3.1.</span> <span class="toc-text">Controller 入口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.1.3.2.</span> <span class="toc-text">上传服务实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.3.2.1.</span> <span class="toc-text">验证文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.1.3.2.2.</span> <span class="toc-text">验证文件类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E7%AE%80%E5%8E%86%E6%98%AF%E5%90%A6%E5%B7%B2%E5%AD%98%E5%9C%A8"><span class="toc-number">2.1.3.2.3.</span> <span class="toc-text">检查简历是否已存在</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">知识点补充</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PostMapping-%E4%B8%AD%E7%9A%84-consumes-%E5%92%8C-produces"><span class="toc-number">3.1.</span> <span class="toc-text">@PostMapping 中的 consumes 和 produces</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#consumes"><span class="toc-number">3.1.1.</span> <span class="toc-text">consumes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#produces"><span class="toc-number">3.1.2.</span> <span class="toc-text">produces</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hibernate"><span class="toc-number">3.2.</span> <span class="toc-text">Hibernate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-number">3.3.</span> <span class="toc-text">异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RateLimit-%E9%99%90%E6%B5%81"><span class="toc-number">3.4.</span> <span class="toc-text">@RateLimit 限流</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/" title="JVM学习"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424145847248.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JVM学习"/></a><div class="content"><a class="title" href="/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/" title="JVM学习">JVM学习</a><time datetime="2026-04-24T06:57:05.000Z" title="发表于 2026-04-24 14:57:05">2026-04-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习(Google ADK)"><img src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent学习(Google ADK)"/></a><div class="content"><a class="title" href="/2026/04/15/Agent%E5%AD%A6%E4%B9%A0/" title="Agent学习(Google ADK)">Agent学习(Google ADK)</a><time datetime="2026-04-15T09:07:44.000Z" title="发表于 2026-04-15 17:07:44">2026-04-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/11/RAG%E5%AD%A6%E4%B9%A0/" title="RAG学习">RAG学习</a><time datetime="2026-04-11T06:04:13.000Z" title="发表于 2026-04-11 14:04:13">2026-04-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/Canvas%E7%94%BB%E5%B8%83/" title="Canvas画布">Canvas画布</a><time datetime="2026-04-08T01:43:16.000Z" title="发表于 2026-04-08 09:43:16">2026-04-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/08/SSM%E6%95%B4%E5%90%88/" title="SSM整合">SSM整合</a><time datetime="2026-04-08T01:42:27.000Z" title="发表于 2026-04-08 09:42:27">2026-04-08</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 寂寞的冰可乐</span></div><div class="footer_custom_text">只写不背，未完待续</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
   const showKatex = () => {
     document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
   }
@@ -1488,4 +1780,325 @@ pinyin4j <span class="token operator">=</span> <span class="token interpolation-
   }
 
   showKatex()
+})()</script><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.outerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+    setTimeout(() => URL.revokeObjectURL(url), 30000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        if (typeof svg === 'string') {
+          openSvgInNewTab({ source: svg, initViewBox })
+          return
+        }
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+
+    // Avoid binding multiple times on themeChange/pjax
+    if (wrap.__mermaidGestureBound) return
+    wrap.__mermaidGestureBound = true
+
+    // Helper: map client (viewport) coordinate -> viewBox coordinate
+    const clientToViewBox = (clientX, clientY) => {
+      const rect = svg.getBoundingClientRect()
+      const vb = wrap.__mermaidCurViewBox || getSvgViewBox(svg)
+      const x = vb[0] + (clientX - rect.left) * (vb[2] / rect.width)
+      const y = vb[1] + (clientY - rect.top) * (vb[3] / rect.height)
+      return { x, y, rect, vb }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      startCenter: null
+    }
+
+    const clampVb = vb => {
+      const init = wrap.__mermaidInitViewBox || vb
+      const minW = init[2] * 0.1
+      const maxW = init[2] * 10
+      const minH = init[3] * 0.1
+      const maxH = init[3] * 10
+      vb[2] = clamp(vb[2], minW, maxW)
+      vb[3] = clamp(vb[3], minH, maxH)
+      return vb
+    }
+
+    const setCurVb = vb => {
+      vb = clampVb(vb)
+      wrap.__mermaidCurViewBox = vb
+      setSvgViewBox(svg, vb)
+    }
+
+    const onPointerDown = e => {
+      // Allow only primary button for mouse
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      if (state.pointers.size === 1) {
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        state.startCenter = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 }
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      // Pan with 1 pointer
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = [...state.pointers.values()][0]
+        const prev = { x: e.clientX - e.movementX, y: e.clientY - e.movementY }
+        // movementX/Y unreliable on touch, compute from stored last position
+        const last = wrap.__mermaidLastSinglePointer || p
+        const dxClient = p.x - last.x
+        const dyClient = p.y - last.y
+        wrap.__mermaidLastSinglePointer = p
+
+        const { rect } = clientToViewBox(p.x, p.y)
+        const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        const dx = dxClient * (vb[2] / rect.width)
+        const dy = dyClient * (vb[3] / rect.height)
+        setCurVb([vb[0] - dx, vb[1] - dy, vb[2], vb[3]])
+        return
+      }
+
+      // Pinch zoom with 2 pointers
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist // dist bigger => zoom in (viewBox smaller)
+
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const centerClient = { x: cx, y: cy }
+
+        const pxy = clientToViewBox(centerClient.x, centerClient.y)
+        const cpx = pxy.x
+        const cpy = pxy.y
+
+        const vb = zoomAtPoint(state.startVb, factor, cpx, cpy)
+        setCurVb(vb)
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+        state.startCenter = null
+        wrap.__mermaidLastSinglePointer = null
+      } else if (state.pointers.size === 1) {
+        // reset single pointer baseline to avoid jump
+        wrap.__mermaidLastSinglePointer = [...state.pointers.values()][0]
+      }
+    }
+
+    // Wheel zoom (mouse/trackpad)
+    const onWheel = e => {
+      // ctrlKey on mac trackpad pinch; we treat both as zoom
+      e.preventDefault()
+      const delta = e.deltaY
+      const zoomFactor = delta > 0 ? 1.1 : 0.9
+      const { x, y } = clientToViewBox(e.clientX, e.clientY)
+      const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      setCurVb(zoomAtPoint(vb, zoomFactor, x, y))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (!init) return
+      wrap.__mermaidCurViewBox = init.slice()
+      setSvgViewBox(svg, init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown)
+    svg.addEventListener('pointermove', onPointerMove)
+    svg.addEventListener('pointerup', onPointerUpOrCancel)
+    svg.addEventListener('pointercancel', onPointerUpOrCancel)
+    svg.addEventListener('wheel', onWheel, { passive: false })
+    svg.addEventListener('dblclick', onDblClick)
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+
+      // Clear old render (themeChange/pjax will rerun)
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      item.__mermaidGestureBound = false
+
+      const config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
 })()</script></div><script src="/js/click-word.js"></script><script src="/js/sakura.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="想吃点什么～" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
