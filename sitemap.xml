@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://asinglesinger.github.io/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://asinglesinger.github.io/2026/03/30/JUC%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2026-05-01</lastmod>
     
@@ -11,9 +11,9 @@
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/2026/03/30/JUC%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://asinglesinger.github.io/2026/05/01/%E4%BA%8C%E7%8B%97/</loc>
     
-    <lastmod>2026-04-28</lastmod>
+    <lastmod>2026-05-01</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -22,7 +22,16 @@
   <url>
     <loc>https://asinglesinger.github.io/2026/04/07/SpringAI%E6%99%BA%E8%83%BD%E9%9D%A2%E8%AF%95%E5%B9%B3%E5%8F%B0-RAG%E7%9F%A5%E8%AF%86%E5%BA%93/</loc>
     
-    <lastmod>2026-04-23</lastmod>
+    <lastmod>2026-05-01</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://asinglesinger.github.io/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/</loc>
+    
+    <lastmod>2026-05-01</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -164,7 +173,7 @@
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/2026/04/08/JavaScript%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://asinglesinger.github.io/2026/04/08/MyBatis-plus%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-08</lastmod>
     
@@ -173,7 +182,7 @@
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/2026/04/08/MyBatis-plus%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://asinglesinger.github.io/2026/04/08/JavaScript%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-08</lastmod>
     
