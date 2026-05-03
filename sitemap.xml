@@ -119,6 +119,15 @@
   </url>
   
   <url>
+    <loc>https://asinglesinger.github.io/2026/04/08/TypeScript%E5%AD%A6%E4%B9%A0/</loc>
+    
+    <lastmod>2026-04-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://asinglesinger.github.io/2026/04/08/ajax%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-08</lastmod>
@@ -129,15 +138,6 @@
   
   <url>
     <loc>https://asinglesinger.github.io/2026/04/08/SpringMVC%E5%AD%A6%E4%B9%A0/</loc>
-    
-    <lastmod>2026-04-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://asinglesinger.github.io/2026/04/08/TypeScript%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-08</lastmod>
     
@@ -164,15 +164,6 @@
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/2026/04/08/Python%E5%AD%A6%E4%B9%A0/</loc>
-    
-    <lastmod>2026-04-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://asinglesinger.github.io/2026/04/08/MyBatis%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-08</lastmod>
@@ -182,7 +173,7 @@
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/2026/04/08/MyBatis-plus%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://asinglesinger.github.io/2026/04/08/Python%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-08</lastmod>
     
@@ -192,6 +183,15 @@
   
   <url>
     <loc>https://asinglesinger.github.io/2026/04/08/JavaScript%E5%AD%A6%E4%B9%A0/</loc>
+    
+    <lastmod>2026-04-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://asinglesinger.github.io/2026/04/08/MyBatis-plus%E5%AD%A6%E4%B9%A0/</loc>
     
     <lastmod>2026-04-08</lastmod>
     
@@ -288,14 +288,14 @@
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/tags/Java/</loc>
+    <loc>https://asinglesinger.github.io/tags/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://asinglesinger.github.io/tags/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/</loc>
+    <loc>https://asinglesinger.github.io/tags/Java/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
