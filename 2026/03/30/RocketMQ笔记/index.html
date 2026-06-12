@@ -7,20 +7,20 @@
 <meta property="og:site_name" content="一个人的升级日志">
 <meta property="og:description" content="MQ概述  传统项目架构下的问题：请求方向响应方发送请求，如果中间链路出现问题，那么信息无法送到，请求方也没法发送了。 MQ全称 Message Queue，是在消息的传输过程中保存消息的容器。多用于分布式系统之间进行通信。  中间放一个MQ，生产者把消息给MQ，MQ把消息往下分发给消费者。  优势 应用解耦 消费方存活与否不影响生产方  比如如下情况  当用户买商品时，库存系统、支付系统、物流系">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg">
+<meta property="og:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260612100222159.jpg%22">
 <meta property="article:published_time" content="2026-03-30T12:39:32.000Z">
-<meta property="article:modified_time" content="2026-03-30T12:40:35.631Z">
+<meta property="article:modified_time" content="2026-06-12T02:04:18.030Z">
 <meta property="article:author" content="寂寞的冰可乐">
-<meta property="article:tag" content="Bug, 摸鱼, 编程, 踩坑记录">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg"><script type="application/ld+json">{
+<meta name="twitter:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260612100222159.jpg%22"><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "RocketMQ笔记",
   "url": "https://asinglesinger.github.io/2026/03/30/RocketMQ%E7%AC%94%E8%AE%B0/",
-  "image": "https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg",
+  "image": "https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260612100222159.jpg\"",
   "datePublished": "2026-03-30T12:39:32.000Z",
-  "dateModified": "2026-03-30T12:40:35.631Z",
+  "dateModified": "2026-06-12T02:04:18.030Z",
   "author": [
     {
       "@type": "Person",
@@ -180,43 +180,43 @@ btf.addGlobalFn('pjaxSend', () => {
   Pace.restart()
 }, 'pace_restart')
 
-</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div class="bg-animation" id="web_bg" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">一个人的升级日志</span></a><a class="nav-page-title" href="/"><span class="site-name">RocketMQ笔记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">RocketMQ笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-30T12:39:32.000Z" title="发表于 2026-03-30 20:39:32">2026-03-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-30T12:40:35.631Z" title="更新于 2026-03-30 20:40:35">2026-03-30</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">15.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>54分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>MQ概述</h1>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192110890.png" alt="image-20260319211030836"></p>
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div class="bg-animation" id="web_bg" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260612100222159.jpg&quot;);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">一个人的升级日志</span></a><a class="nav-page-title" href="/"><span class="site-name">RocketMQ笔记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">RocketMQ笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-30T12:39:32.000Z" title="发表于 2026-03-30 20:39:32">2026-03-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-12T02:04:18.030Z" title="更新于 2026-06-12 10:04:18">2026-06-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/">Java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">15.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>54分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>MQ概述</h1>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192110890.png" alt=""></p>
 <p>传统项目架构下的问题：请求方向响应方发送请求，如果中间链路出现问题，那么信息无法送到，请求方也没法发送了。</p>
 <p>MQ全称 Message Queue，是在消息的传输过程中保存消息的容器。多用于分布式系统之间进行通信。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192113812.png" alt="image-20260319211342740"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192113812.png" alt=""></p>
 <p>中间放一个MQ，生产者把消息给MQ，MQ把消息往下分发给消费者。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192116769.png" alt="image-20260319211602727"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192116769.png" alt=""></p>
 <h2 id="优势">优势</h2>
 <h3 id="应用解耦">应用解耦</h3>
 <p>消费方存活与否不影响生产方</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192117196.png" alt="image-20260319211723111"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192117196.png" alt=""></p>
 <p>比如如下情况</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192118469.png" alt="image-20260319211845416"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192118469.png" alt=""></p>
 <p>当用户买商品时，库存系统、支付系统、物流系统都会接收到这个消息产生对应动作，各个系统干各自的任务，完成业务解耦。</p>
 <p>这时候，比如我想收到订单信息后再进行一个大数据统计，这个时候就可以单独做一个模块就可以，然后让MQ把消息发送给大数据系统就可以了。这个时候订单系统、其他系统都没有发生变化。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192121732.png" alt="image-20260319212157682"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192121732.png" alt=""></p>
 <h3 id="异步提速">异步提速</h3>
 <p>生产方发完消息，可以继续下一步业务逻辑</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192126726.png" alt="image-20260319212652631"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192126726.png" alt=""></p>
 <p>比如这里，原本如果按正常传统逻辑，需要先把数据存入数据库50ms，通知库存系统修改库存200ms，通知支付系统调用支付200ms，通知物流系统200ms，加起来有650ms，但是如果有MQ，我只需要先向数据库发送消息50ms，向MQ发送消息50ms，之后MQ将三分消息分别下发，这三个系统可以并行进行了。</p>
 <h3 id="削峰填谷">削峰填谷</h3>
 <p>生产方发送完消息，可以继续下一步业务逻辑。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192132723.png" alt="image-20260319213211662"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192132723.png" alt=""></p>
 <p>比如618节日，下单量剧增，达到10w/s，但是物流系统或者mysql系统他能处理的数据量只有1w/s。这个时候可以把下单信息全部存入MQ，物流系统慢慢的处理这些信息。而订单系统可以继续接收订单信息。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192133256.png" alt="image-20260319213337208"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192133256.png" alt=""></p>
 <h2 id="劣势">劣势</h2>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192137430.png" alt="image-20260319213705385"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192137430.png" alt=""></p>
 <h1>介绍</h1>
 <h2 id="MQ产品">MQ产品</h2>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192141915.png" alt="image-20260319214131878"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192141915.png" alt=""></p>
 <ul>
 <li>RabbitMQ 处理速度快，但是是 erlang 语言，需要配置环境</li>
 <li>RocketMQ 吞吐量高</li>
 </ul>
 <p>总体来说RabbitMQ用于中小型项目，RocketMQ用于大型项目，kafka 用于大数据。</p>
 <h2 id="RocketMQ">RocketMQ</h2>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192146044.png" alt="image-20260319214620997"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192146044.png" alt=""></p>
 <p>对于MQ的所有劣势RocketMQ都有它的解决方案</p>
 <h2 id="基础概念">基础概念</h2>
 <h3 id="核心组件">核心组件</h3>
@@ -241,7 +241,7 @@ btf.addGlobalFn('pjaxSend', () => {
 </ul>
 <p>所有组件都向命名服务器集群发送心跳包来查看是否宕机。</p>
 <h3 id="核心工作流程">核心工作流程</h3>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192221732.png" alt="image-20260319222140585"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603192221732.png" alt=""></p>
 <ol>
 <li>
 <p>Broker 注册：Broker 在启动时，会向集群中所有的 NameServer 节点发起 “注册”，汇报自己的 IP 地址以及自己负责存储哪些业务主题（Topic）的数据。之后，Broker 会定时向 NameServer 发送心跳包以维持存活状态。</p>
@@ -280,30 +280,30 @@ Tag     标题 细分主题, 比如普通用户下单，VIP下单，不一样的
 <h1>安装</h1>
 <h2 id="下载配置">下载配置</h2>
 <p>前往官网下载包并解压缩</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201435193.png" alt="image-20260320143534134"></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201434627.png" alt="image-20260320143458506"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201435193.png" alt=""></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201434627.png" alt=""></p>
 <p>配置系统环境变量，放入 <code>ROCKETMQ_HOME</code></p>
 <h2 id="启动">启动</h2>
 <p>CMD命令框执行进入MQ文件夹\bin下执行命令启动 nameserver</p>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">start mqnamesrv.cmd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201437191.png" alt="image-20260320143756137"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201437191.png" alt=""></p>
 <p>出现 <code>The Name Server boot success</code> 代表启动成功（不要退出）</p>
 <p>启动 brokder</p>
 <p><code>-n 127.0.0.1:9876</code> 代表 nameserver 在端口 9876 上</p>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">start mqbroker.cmd -n 127.0.0.1:9876 autoCreateTopicEnable&#x3D;true<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201441817.png" alt="image-20260320144139705"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201441817.png" alt=""></p>
 <h2 id="测试">测试</h2>
 <p>需要同时启动 nameserver、broker。</p>
 <blockquote>
 <p>测试发送消息</p>
 </blockquote>
 <p>之后我们做个测试，也需要配置一个环境变量</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201444007.png" alt="image-20260320144454942"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201444007.png" alt=""></p>
 <p>然后我们把 nameserver 黑窗口关闭然后重启一下</p>
 <p>之后 <code>bin</code> 目录下执行命令</p>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">tools.cmd org.apache.rocketmq.example.quickstart.Producer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>如果报错，检查环境变量对不对，重启 nameserver、broker</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201451084.png" alt="image-20260320145124003"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201451084.png" alt=""></p>
 <p>结果如上，向 nameserver 发送1000条信息，查看结果</p>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">SendResult [sendStatus&#x3D;SEND_OK, msgId&#x3D;0A040466067C339097526508425503E4, offsetMsgId&#x3D;AC13400100002A9F000000000003AD1A, messageQueue&#x3D;MessageQueue [topic&#x3D;TopicTest, brokerName&#x3D;Latte, queueId&#x3D;0], queueOffset&#x3D;249, recallHandle&#x3D;null]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>topic</code> TopicTest</p>
@@ -311,7 +311,7 @@ Tag     标题 细分主题, 比如普通用户下单，VIP下单，不一样的
 <p>测试接收消息</p>
 </blockquote>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">tools.cmd org.apache.rocketmq.example.quickstart.Consumer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201455480.png" alt="image-20260320145534381"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201455480.png" alt=""></p>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">ConsumeMessageThread_please_rename_unique_group_name_4_20 Receive New Messages: [MessageExt [brokerName&#x3D;Latte, queueId&#x3D;3, storeSize&#x3D;242, queueOffset&#x3D;235, sysFlag&#x3D;0, bornTimestamp&#x3D;1773989440059, bornHost&#x3D;&#x2F;172.19.64.1:58048, storeTimestamp&#x3D;1773989440059, storeHost&#x3D;&#x2F;172.19.64.1:10911, msgId&#x3D;AC13400100002A9F0000000000037B00, commitLogOffset&#x3D;228096, bodyCRC&#x3D;1936861256, reconsumeTimes&#x3D;0, preparedTransactionOffset&#x3D;0, toString()&#x3D;Message&#123;topic&#x3D;&#39;TopicTest&#39;, flag&#x3D;0, properties&#x3D;&#123;CONSUME_START_TIME&#x3D;1773989716440, MSG_REGION&#x3D;DefaultRegion, UNIQ_KEY&#x3D;0A040466067C339097526508423B03AF, CLUSTER&#x3D;DefaultCluster, MIN_OFFSET&#x3D;0, TAGS&#x3D;TagA, WAIT&#x3D;true, TRACE_ON&#x3D;true, MAX_OFFSET&#x3D;250&#125;, body&#x3D;[72, 101, 108, 108, 111, 32, 82, 111, 99, 107, 101, 116, 77, 81, 32, 57, 52, 51], transactionId&#x3D;&#39;null&#39;&#125;]]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>第一行 <code>Receive New Messages</code> 接收到了消息，里面有 brokerName，body 就是消息。最后这个终端是没有停的，因为此时消费者和MQ建立了一个长连接，等待接收消息。</p>
 <h2 id="控制台">控制台</h2>
@@ -320,10 +320,10 @@ Tag     标题 细分主题, 比如普通用户下单，VIP下单，不一样的
 <p>然后，我们把它打成 jar 包，执行命令如下，在源代码目录</p>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">mvn clean package &quot;-Dmaven.test.skip&#x3D;true&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>打包成功后，在 <code>cmd</code> 窗口启动</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201623424.png" alt="image-20260320162351287"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201623424.png" alt=""></p>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">java -jar rocketmq-dashboard-2.1.0.jar<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>看是哪个端口，这里是 <code>localhost:8082</code></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201631365.png" alt="image-20260320163115271"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201631365.png" alt=""></p>
 <h1>简单入门</h1>
 <p>先创建一个空的 Maven 项目，导入依赖</p>
 <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
@@ -356,12 +356,12 @@ Tag     标题 细分主题, 比如普通用户下单，VIP下单，不一样的
         producer<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 关闭producer</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202107729.png" alt="image-20260320210708655"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202107729.png" alt=""></p>
 <p>结果发送成功。</p>
 <p>注意，启动brokder的时候，有个配置参数需要开启 <code>autoCreateTopicEnable=true</code>，因为 topic 如果不存在，默认是不创建的，发送会失败。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201717650.png" alt="image-20260320171729560"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603201717650.png" alt=""></p>
 <p>并且默认要求磁盘剩余空间要在10%以上才能正常运行。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202049883.png" alt="image-20260320204916805"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202049883.png" alt=""></p>
 <h2 id="简单消费者">简单消费者</h2>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Consumer</span> <span class="token punctuation">&#123;</span>
 
@@ -391,7 +391,7 @@ Tag     标题 细分主题, 比如普通用户下单，VIP下单，不一样的
         <span class="token comment">// 消费者不要关, 因为要接收消息！！！</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202110839.png" alt="image-20260320211031782"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202110839.png" alt=""></p>
 <p>因为前面我把 Producer 运行了三次，所以这里输出了三个。</p>
 <p>消费者窗口不用关，等生产者再发送的时候，消费者可以收到。</p>
 <h1>多消费者模型</h1>
@@ -437,18 +437,18 @@ Tag     标题 细分主题, 比如普通用户下单，VIP下单，不一样的
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这个时候生产者是生产 10 个消息的，如果有多个消费者会怎么接收这个消息呢？</p>
 <p>我们开启两个消费者</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202119689.png" alt="image-20260320211903593"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202119689.png" alt=""></p>
 <blockquote>
 <p>默认只能开启一个实例，需要配置如下</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202120938.png" alt="image-20260320211736686"></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202120636.png" alt="image-20260320211805423"></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202120270.png" alt="image-20260320211748214"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202120938.png" alt=""></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202120636.png" alt=""></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202120270.png" alt=""></p>
 </blockquote>
 <p>生产者</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202121176.png" alt="image-20260320212120093"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202121176.png" alt=""></p>
 <p>消息发送成功</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202121856.png" alt="image-20260320212158764"></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202122549.png" alt="image-20260320212213495"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202121856.png" alt=""></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603202122549.png" alt=""></p>
 <p>两个消费者各接收了五个。</p>
 <p>为什么会一人一半？（负载均衡机制）</p>
 <p>RocketMQ 会把 Topic 里的消息队列平均分配给同一个组内的所有消费者。（<font color=blue>这两个消费者都是 <code>group1</code></font>）</p>
@@ -460,12 +460,12 @@ Tag     标题 细分主题, 比如普通用户下单，VIP下单，不一样的
 <p>之后我们尝试两个消费者，一个 <code>group1</code>，一个 <code>group2</code> 试试</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">DefaultMQPushConsumer</span> consumer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultMQPushConsumer</span><span class="token punctuation">(</span><span class="token string">"group2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 一个是group1启动，一个是group2启动</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>然后Producer、Consumer主题我们都换为 Topic3。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210852292.png" alt="image-20260321085246164"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210852292.png" alt=""></p>
 <p>十条消息发送成功</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210853907.png" alt="image-20260321085305824"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210853907.png" alt=""></p>
 <p>Consumer1和Consumer2都接收到了10条消息。</p>
 <p>==集群模式下，同个主题对于不同组是广播模式，每个组都会消费同个消息，会重复消费；对于同个组是集群模式，每个消费者平摊消息，不会重复消费。== 但是如果有三个 Conusumer，默认四个队列，那就有两个 Consumer 会各监听一个，有一个 Consumer 监听两个队列。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210907509.png" alt="image-20260321090746383"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210907509.png" alt=""></p>
 <p>当有两个Group，第一个Group有两个Consumer时，RocketMq往Topic1发送10条消息，结果如图。</p>
 <p>但是如果你想 Group1 里面所有的 Consumer 都收到这10条消息怎么办？设置消息的消费模式</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 设置消费模式</span>
@@ -476,15 +476,15 @@ consumer<span class="token punctuation">.</span><span class="token function">set
     <span class="token function">BROADCASTING</span><span class="token punctuation">(</span><span class="token string">"BROADCASTING"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">// 广播</span>
     <span class="token function">CLUSTERING</span><span class="token punctuation">(</span><span class="token string">"CLUSTERING"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 集群</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210926684.png" alt="image-20260321092624794"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210926684.png" alt=""></p>
 <h1>消息</h1>
 <h2 id="消息类型">消息类型</h2>
 <h3 id="同步消息">同步消息</h3>
 <p>即时性较强，重要的消息，且必须有回执的消息，例如短信，通知（转账成功）<br>
-<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210936262.png" alt="image-20260321093651145"></p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210936262.png" alt=""></p>
 <h3 id="异步消息">异步消息</h3>
 <p>即时性较弱，但需要回执的消息，例如订单中的某些消息。（生产者发送完消息就做自己的事就可以了，消费者得到结果慢慢进行回执就可以）</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210937628.png" alt="image-20260321093748500"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210937628.png" alt=""></p>
 <p>在 <code>Producer</code> 代码里面，原来我们的写法其实就是同步消息</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 4. 发什么</span>
 <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -519,13 +519,13 @@ producer<span class="token punctuation">.</span><span class="token function">shu
 <span class="token comment">// 6. 打扫战场</span>
 producer<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 关闭producer</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>但是执行完之后报错了</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210957886.png" alt="image-20260321095740779"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603210957886.png" alt=""></p>
 <p>打印了消息发送成功，返回的 <code>exit code</code> 也是0，说明执行没有问题，是回调函数打印的 <code>Exception</code></p>
 <p>原因在于因为是异步执行，在 <code>for</code> 循环里面执行完 <code>producer.send</code> 后是继续向下执行的，所以会打印发送成功的消息，10次循环结束后，会再向下执行关闭 producer，那么无论是 <code>onSuccess</code> 还是 <code>onException</code>，其实结果都没有人接收了，所以需要把 <code>producer.shutdown();</code> 这行代码删除。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211004577.png" alt="image-20260321100422480"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211004577.png" alt=""></p>
 <h3 id="单向消息">单向消息</h3>
 <p>不需要有回执的消息，例如日志类消息</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211005124.png" alt="image-20260321100541972"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211005124.png" alt=""></p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token class-name">String</span> msg <span class="token operator">=</span> <span class="token string">"hello world "</span> <span class="token operator">+</span> i<span class="token punctuation">;</span>
     <span class="token class-name">Message</span> message <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Message</span><span class="token punctuation">(</span><span class="token string">"topic4"</span><span class="token punctuation">,</span> <span class="token string">"tag1"</span><span class="token punctuation">,</span> msg<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -559,7 +559,7 @@ messages<span class="token punctuation">.</span><span class="token function">add
 <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>sendResult<span class="token punctuation">)</span><span class="token punctuation">;</span>
 producer<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 关闭producer</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>注意点：</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211029541.png" alt="image-20260321102948412"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211029541.png" alt=""></p>
 <ul>
 <li>相同的 waitStoreMsgOK 就是说相同的消息类型</li>
 </ul>
@@ -610,7 +610,7 @@ producer<span class="token punctuation">.</span><span class="token function">shu
 consumer<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token string">"topic8"</span><span class="token punctuation">,</span> <span class="token string">"tag1 || tag2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 对 tag1 和 tag2 消息感兴趣</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="语法过滤">语法过滤</h3>
 <p>同时，还支持高级过滤 ==SQL92表达式== 过滤</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211047667.png" alt="image-20260321104717512"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211047667.png" alt=""></p>
 <p>之前说消息长度的计算包括消息追加的属性，比如如下：</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Message</span> message <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Message</span><span class="token punctuation">(</span><span class="token string">"topic8"</span><span class="token punctuation">,</span> <span class="token string">"tag1"</span><span class="token punctuation">,</span> msg<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 message<span class="token punctuation">.</span><span class="token function">putUserProperty</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">,</span> <span class="token string">"18"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -622,15 +622,15 @@ message<span class="token punctuation">.</span><span class="token function">putU
 consumer<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token string">"topic8"</span><span class="token punctuation">,</span> <span class="token class-name">MessageSelector</span><span class="token punctuation">.</span><span class="token function">bySql</span><span class="token punctuation">(</span><span class="token string">"age > 16 and TAGS = 'tag1'"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 consumer<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token string">"topic8"</span><span class="token punctuation">,</span> <span class="token class-name">MessageSelector</span><span class="token punctuation">.</span><span class="token function">bySql</span><span class="token punctuation">(</span><span class="token string">"age > 16 and TAGS in ('tag1', 'tag2')"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>但是 RocketMQ 默认这种根据属性过滤是关闭的，我们可以同个 Dashboard 查看</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211104090.png" alt="image-20260321110401937"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211104090.png" alt=""></p>
 <p>可以看到是 false，默认是关闭的，需要我们进行配置。</p>
 <p>我们需要打开安装目录下 <code>conf</code> 文件夹下的 <code>broker.conf</code>，在末尾加入</p>
 <pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">enablePropertyFilter</span><span class="token punctuation">=</span><span class="token value attr-value">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>保存之后重启 nameserver，broker。到这里其实就能用了，但是 Windows 还是有问题（其他系统没问题），这里还需要用别的命令执行一下</p>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">mqadmin.cmd updateBrokerConfig -blocalhost:10911 -kenablePropertyFilter -vtrue<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211110857.png" alt="image-20260321111045718"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211110857.png" alt=""></p>
 <p>执行成功后，可以在 dashboard 查看是否开启成功</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211111623.png" alt="image-20260321111136511"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211111623.png" alt=""></p>
 <p>开启成功后就可以测试一下了，发送两条消息，一条是 <code>age=19</code> 的，一条是 <code>age=14</code> 的</p>
 <p>然后看一下消费者只接收到了一条消息，说明SQL过滤成功了。</p>
 <blockquote>
@@ -689,8 +689,8 @@ consumer<span class="token punctuation">.</span><span class="token function">sub
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>实现 <code>RocketMQListener</code>，里面接收实体类泛型，在注解中配置要监听的主题、过滤的消息、所在组。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211515120.png" alt="image-20260321151533981"></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211515940.png" alt="image-20260321151542820"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211515120.png" alt=""></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211515940.png" alt=""></p>
 <h2 id="其余设置">其余设置</h2>
 <p>对于不同类型的消息发送如下</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 同步消息</span>
@@ -741,10 +741,10 @@ rocketMQTemplate<span class="token punctuation">.</span><span class="token funct
 <p>在注解上多加一个参数即可。</p>
 <h2 id="消息的特殊处理">消息的特殊处理</h2>
 <h3 id="消息顺序">消息顺序</h3>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211559635.png" alt="image-20260321155943431"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211559635.png" alt=""></p>
 <p>我们分析一下，其实前面能察觉到，前面发送 <code>1~10</code>，但是读取的时候顺序完全是乱的。这是因为一个Topic里面是有多个队列的（前面说过，默认四个），这里我们演示三个。三个订单，并发进行，订单1消息依次进入 queue0、1、2，然后订单2消息依次进入queue1、2，然后订单3消息依次进入queue0、1、2。但是消费者是线程，每个消费者在集群模式下是根据负载均衡均匀分配队列的，如果某个消费者负责读取 queue0，而且它处理速度快，那就会出现 queue0 很快被执行完，其他两个队列还没动的情况。这个时候消息处理顺序是错误的！</p>
 <p>我们想要的效果如下</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211605738.png" alt="image-20260321160520552"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211605738.png" alt=""></p>
 <p>同一个订单消息进入同一个队列，这样即使某个消费者处理速度快也是按顺序执行的。也就是==消息队列内有序，队列外无序==</p>
 <p>如果我们能选择让同一个订单的消息进入同一个队列是不是就可以了？</p>
 <p>下面我们创建一个订单类</p>
@@ -827,7 +827,7 @@ consumer<span class="token punctuation">.</span><span class="token function">reg
         <span class="token keyword">return</span> <span class="token class-name">ConsumeOrderlyStatus</span><span class="token punctuation">.</span><span class="token constant">SUCCESS</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211651097.png" alt="image-20260321165155923"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603211651097.png" alt=""></p>
 <p>订单1，2，3都是按照顺序来做的，并且同一个订单进入的同一个队列 <code>queueId</code></p>
 <blockquote>
 <p>:question: 为什么消费者也要改？</p>
@@ -838,7 +838,7 @@ consumer<span class="token punctuation">.</span><span class="token function">reg
 <h3 id="事务消息">事务消息</h3>
 <h4 id="概念">概念</h4>
 <p>为什么存在这个东西呢？你看前面的消息都是直接发送，但事实上，真正变动数据库操作之后，成功才去发送消息，不成功便不发送。所以下面图里面的本地事务代表操作数据库的事务。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603212008846.png" alt="image-20260321200843654"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603212008846.png" alt=""></p>
 <ul>
 <li>
 <p>红色就是正常发送流程 (1-4)</p>
@@ -1065,20 +1065,20 @@ producer.setTransactionListener(new TransactionListener() &#123;
 </ul>
 </li>
 </ul>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220808943.png" alt="image-20260322080813658"></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220814172.png" alt="image-20260322081448873"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220808943.png" alt=""></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220814172.png" alt=""></p>
 <p>这里配置的是一主三从，启动 nameserver 之后，主机和从机都会向 nameserver 上去注册。</p>
 <p>通过 <code>brokerName</code> 设置为同一组，通过 <code>brokerId</code> 设置主机，一组只能有一个主机，谁的 <code>Id=0</code> 谁就是主机。</p>
 <h2 id="工作流程">工作流程</h2>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220817986.png" alt="image-20260322081756758"></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220818521.png" alt="image-20260322081815305"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220817986.png" alt=""></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220818521.png" alt=""></p>
 <h2 id="双主双从">双主双从</h2>
 <h3 id="系统配置">系统配置</h3>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220822014.png" alt="image-20260322082215711"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220822014.png" alt=""></p>
 <p>两个nameserver，分别在一台主机上，master1 和 slave1，主从分开，分别在一台机器上。</p>
 <p>搭建是在虚拟机上，虚拟机下载就不说了，我用的是 CentOS7，需要配置网络，看末尾。构建两台虚拟机，并且设置静态IP地址分别是 <code>192.168.200.129</code> 个 <code>192.168.200.130</code></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220923740.png" alt="image-20260322092330586"></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220926941.png" alt="image-20260322092643772"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220923740.png" alt=""></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220926941.png" alt=""></p>
 <p>用 XShell 工具连接</p>
 <h3 id="环境配置">环境配置</h3>
 <p><font color=red>！两台机器都操作！</font></p>
@@ -1124,7 +1124,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 </li>
 <li>
 <p>将 <code>rocketmq</code> 解压到 <code>/rocketmq</code><br>
-<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220957411.png" alt="image-20260322095755253"><br>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220957411.png" alt=""><br>
 上传上去，并且重命名为 rocketmq。</p>
 </li>
 <li>
@@ -1144,15 +1144,15 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 </li>
 </ol>
 <p>想配置两主两从以及nameserver，肯定需要配置文件，在 <code>/rocketmq/conf</code> 目录下的 <code>2m-2s-sync</code> 里面可以去配置</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221033282.png" alt="image-20260322103345134"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221033282.png" alt=""></p>
 <p>这个文件夹里面有四个文件</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221034707.png" alt="image-20260322103415560"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221034707.png" alt=""></p>
 <p>分别代表 a主、a从、b主、b从。</p>
 <p>那么 <code>node1</code> 主机要设置 a主、b从，那 a从、b主文件就可以删除了。<code>node2</code> 主机就相反删除另外两个。</p>
 <p>node1如下</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221047040.png" alt="image-20260322104735877"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221047040.png" alt=""></p>
 <p>node2如下</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221048262.png" alt="image-20260322104818099"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221048262.png" alt=""></p>
 <p>node1 的 broker-a.properties 内容（原来里面的内容全部删除就可以，vi 命令里面 <code>:%d</code> 删除全部内容）</p>
 <pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token comment">#所属集群名字</span>
 <span class="token key attr-name">brokerClusterName</span><span class="token punctuation">=</span><span class="token value attr-value">rocketmq-cluster</span>
@@ -1406,17 +1406,17 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <p>同理因为我用的是 Java17，所以还需要调整其他内容</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> /rocketmq/bin/runserver.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>修改 <a target="_blank" rel="noopener" href="http://runserver.sh">runserver.sh</a></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221534187.png" alt="image-20260322153409018"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221534187.png" alt=""></p>
 <p>之后启动</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">nohup</span> <span class="token function">sh</span> mqnamesrv <span class="token operator">&amp;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221534149.png" alt="image-20260322153453985"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221534149.png" alt=""></p>
 <p>然后通过 jps 可以看到已经启动了，两台服务器都是如此</p>
 <p>nameserver 启动了，该到broker了</p>
 <p>对于第一个结点 <code>192.168.200.129</code> 启动a主、b从</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">nohup</span> <span class="token function">sh</span> mqbroker <span class="token parameter variable">-c</span> /rocketmq/conf/2m-2s-sync/broker-a.properties <span class="token operator">&amp;</span>
 
 <span class="token function">nohup</span> <span class="token function">sh</span> mqbroker <span class="token parameter variable">-c</span> /rocketmq/conf/2m-2s-sync/broker-b-s.properties <span class="token operator">&amp;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221547938.png" alt="image-20260322154717732"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221547938.png" alt=""></p>
 <p>对于第二个结点 <code>192.168.200.130</code> 启动b主、a从</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">nohup</span> <span class="token function">sh</span> mqbroker <span class="token parameter variable">-c</span> /rocketmq/conf/2m-2s-sync/broker-b.properties <span class="token operator">&amp;</span>
 
@@ -1427,14 +1427,14 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <p>然后启动生产者和消费者</p>
 <p>然后 node1 进入 <code>/rocketmq/bin</code> 目录下</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sh</span> tools.sh org.apache.rocketmq.example.quickstart.Producer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221610378.png" alt="image-20260322161027126"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221610378.png" alt=""></p>
 <p>发送是没有问题的</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sh</span> tools.sh org.apache.rocketmq.example.quickstart.Consumer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221611358.png" alt="image-20260322161117109"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221611358.png" alt=""></p>
 <p>消费也是没有问题的</p>
 <h1>高级特性</h1>
 <h2 id="消息存储">消息存储</h2>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221619908.png" alt="image-20260322161913665"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221619908.png" alt=""></p>
 <ol>
 <li>
 <p>消息生产者发送消息到 MQ</p>
@@ -1471,12 +1471,12 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <ol>
 <li>
 <p>顺序写，原来磁盘空间因为有磁盘碎片的原因，所以如果写入一个比较大的数据的时候，基本在磁盘都是随机写，速度大概 100k/s 非常慢。如下，蓝色是数据<br>
-<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221654601.png" alt="image-20260322165444363"></p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221654601.png" alt=""></p>
 <p>而 RocketMQ 会向 Linux 每次申请 1G 的连续空间，这些就是顺序写，600-3000m/s，速度超级快</p>
 </li>
 <li>
 <p>利用 Linux 的零拷贝<br>
-<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221655883.png" alt="image-20260322165529652"><br>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221655883.png" alt=""><br>
 这里经历了四次拷贝</p>
 <ol>
 <li>硬盘数据 --&gt; 内核态<br>
@@ -1489,7 +1489,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 最后，DMA 引擎将数据从 Socket 缓冲区拷贝到网卡硬件，发送出去。</li>
 </ol>
 <p>但这里第 2 和第 3 步都是用 CPU 来进行数据搬运，如果消息非常多，就会慢喽，并且同样的数据在内存里面好几份。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221703847.png" alt="image-20260322170323617"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221703847.png" alt=""></p>
 <p>所以采用了零拷贝技术</p>
 <ul>
 <li>把数据传输从 4 次复制减少到 3 次。直接把内核态的缓冲区地址映射到用户态（mmap技术）</li>
@@ -1502,7 +1502,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <p>第二个先大概知道吧，底层知识了</p>
 </blockquote>
 <h2 id="存储结构">存储结构</h2>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221723474.png" alt="image-20260322172315247"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221723474.png" alt=""></p>
 <p>MQ 数据存储区域包括如下内容</p>
 <ul>
 <li>消息数据存储区域
@@ -1528,7 +1528,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 </li>
 </ul>
 <p>第一个我们可以来到 <code>/rocketmq/store/commitlog</code> 文件夹下，查看信息</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221728725.png" alt="image-20260322172817535"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221728725.png" alt=""></p>
 <p>可以看到，第一个 1G 是咱们配置文件申请的默认 1G 的存储空间，第二个 1G 是 RocketMQ 的预分配机制，就是预创建的下一个空文件，这是为了防止第一个文件写满的时候，还要去请求操作系统分配磁盘空间（很耗时），从而保证发消息的低延迟。</p>
 <p>每个topic的每个queue都存在这个 commitlog 里面，里面存储了 topic，queueId，message。</p>
 <blockquote>
@@ -1538,13 +1538,13 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <p>如果只有 CommitLog，那如果消费者想找一个 TopicA 的消息，得从头到尾搜索才行，所以有了 ConsumeQueue，它不断扫描 CommitLog 的末尾，发现新消息之后，就把这个消息的物理位置偏移、长度提取出来进行存储。ConsumeQueue 是按照 <code>store/consumequeue/&#123;Topic&#125;/&#123;QueueID&#125;</code> 进行物理隔离划分的。每个文件由固定长度（20字节）的索引单元组成（固定长度，也是查询快的原因）。</p>
 <p><code>minOffset</code> 当前 Topic 队列里面，最早消息的逻辑序号；<code>maxOffset</code> 最新消息的逻辑序号；<code>consumerOffset</code> 代表消费者上次读到的逻辑序号。这里其实是只记录顺序，不是记内存地址，比如 <code>0</code> 就代表第 1 个消息。</p>
 <p>因为索引单元长度是固定的，那是不是比如说我想读 <code>TopicTest</code> <code>Queue_0</code> 的第 100 个，那就去这个文件夹下面去取物理地址，因为这个文件是固定大小的索引单元，所以直接 <code>20 * 100</code> 就是去 2000 的位置处去看看这个消息真正的物理索引位置在哪，哎取出来就找到了真实的消息。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221842402.png" alt="image-20260322184229003"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221842402.png" alt=""></p>
 <p>那么 Index 有啥用呢？正常消费的时候，是按照消息顺序1，2，3依次往下读，这也是 ConsumeQueue 的作用，但是如果说想根据 MessageID 或者 MessageKey（通过 <code>message.setKeys(&quot;&quot;)</code> 来设置） 查呢？就需要这个了，它存的是一个哈希表，记录Key的哈希值，物理偏移量（物理地址），时间戳（消息存入的时间），可以一下就查到是否入库。</p>
 <p>比如前面不是说比如宕机又重启了，不确定某个消息发没发过，我就可以从这里根据业务ID查询，看看有没有入库。此外，在排查分布式事务、由于网络抖动导致的重复投递等问题时，IndexFile 也是唯一的“后悔药”。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221844870.png" alt="image-20260322184403646"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221844870.png" alt=""></p>
 <h2 id="刷盘机制">刷盘机制</h2>
 <h3 id="同步刷盘">同步刷盘</h3>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221923634.png" alt="image-20260322192319332"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221923634.png" alt=""></p>
 <ol>
 <li>生产者发送消息到 MQ，MQ 接收到消息数据</li>
 <li>MQ 挂起生产者发送消息的线程</li>
@@ -1572,7 +1572,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <h2 id="高可用性">高可用性</h2>
 <ul>
 <li>nameserver：无状态 + 全服务器注册<br>
-<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221948733.png" alt="image-20260322194851487"><br>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221948733.png" alt=""><br>
 前面说的这里就是，每个 broker 都要向所有的 nameserver 注册（全服务器注册），并且三个 nameserver 之间是没有关联的，互相不认识（无状态)。</li>
 <li>消息服务器：主从架构（2M-2S）</li>
 <li>消息生产：生产者将相同的 topic 绑定到多个 group 组，保障 master 挂掉后，其他 master 仍可正常进行消息接收<br>
@@ -1605,7 +1605,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <h2 id="负载均衡">负载均衡</h2>
 <p>这里不考虑广播模式哈，广播模式，所有消费者都收到消息，就不存在负载均衡问题了。</p>
 <p>==Producer 负载均衡==：内部实现了不同 Broker 集群中对同一 topic 对应消息队列的负载均衡</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222006271.png" alt="image-20260322200628024"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222006271.png" alt=""></p>
 <p>比如两个 Broker（分别在一台机器上）都有 TopicA，每个 TopicA 都有四个队列，消息来了之后，是一个一个轮询放入的。</p>
 <p>==Consumer 负载均衡==</p>
 <ul>
@@ -1613,10 +1613,10 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <li>循环平均分配（解决宕机问题）</li>
 </ul>
 <p>下面这个就是平均分配，比如两个 Broker 都有一个 TopicA，每个 Topic 有三个队列，有三个消费者，他们一人两个队列</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222014785.png" alt="image-20260322201400486"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222014785.png" alt=""></p>
 <p>但是这有个缺点，就是加入 Broker 宕机了，那么还是保持消费者A没有消息接收了，消费者B接收一个队列，消费者C接收两个队列，这样相当于本来A，B，C每人三分之一的消息，A不接收了，B收1/3，C收2/3。不均衡了</p>
 <p>下面就是循环平均分配，每个 Broker 的 Queue 平均分配到消费者集群，如果有一个宕掉，负载还是很均衡的</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222018408.png" alt="image-20260322201801123"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222018408.png" alt=""></p>
 <blockquote>
 <p>当出现 8 个 queue，他们三个分配就会是 3，3，2 的情况，尽可能做到平衡。可以通过增大 Queue 数量尽可能实现平衡</p>
 <p>生产环境下的黄金法则：</p>
@@ -1625,7 +1625,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 </blockquote>
 <blockquote>
 <p>那么到底怎么算呢？</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222030372.png" alt="image-20260322203032137"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222030372.png" alt=""></p>
 <p>怎么算？</p>
 <ul>
 <li>Consumer 会从 nameserver 那里获取 Topic 的元数据（看 Topic1 在所有 Broker 加起来有多少 Queue）</li>
@@ -1638,7 +1638,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <p>当消息消费后未正常返回消费成功的信息将启动消息重试机制，非为两种，顺序消息、无序消息</p>
 <h3 id="顺序消息">顺序消息</h3>
 <p>就是前面说的消息顺序，某些消息必须按照局部顺序进行发送，比如必须是 <code>1.创建订单 -&gt; 2.支付成功 -&gt; 3.物流发货</code> 的顺序</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222056086.png" alt="image-20260322205619777"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222056086.png" alt=""></p>
 <p>比如当发送第一个消息给Consumer的时候，在返回ACK的时候网络不好断了，那么 MQ 就会自动进行消息重发（每次间隔时间为 1 秒）。因为消息A没成功发送之前，消息B，C，D都不能动。</p>
 <p>注意：应用会出现消息消费被阻塞的情况，因此，要对顺序消息的消费情况进行监控，避免阻塞现象发生。因为一直重发，某个队列消息就会堆积，达到一定阈值或者某条消息重试次数过多就会报警。就得人工介入了</p>
 <h3 id="无序消息">无序消息</h3>
@@ -1647,7 +1647,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <li>无序消息重试仅适用负载均衡（集群）模型下的消息消费，不适用于广播模式下的消息消费</li>
 <li>为保障无序消息的消费，MQ 设定了合理的消息重试间隔时长</li>
 </ul>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222108830.png" alt="image-20260322210810521"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222108830.png" alt=""></p>
 <p>无序消息发送后没收到 ACK 是不影响后续消息的执行的，会把消息放到重试队列里面。</p>
 <h3 id="死信队列">死信队列</h3>
 <p>当消息消费重试到达了指定次数（默认16次）后，MQ 将无法被正常消费的消息称为死信消息，死信消息不会被抛弃，而是保存到了一个全新的队列中，该队列成为死信队列</p>
@@ -1675,13 +1675,13 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <ul>
 <li>
 <p>网络闪断<br>
-<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222118606.png" alt="image-20260322211704820"><br>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222118606.png" alt=""><br>
 比如这里，生产者发送了消息给Broker，Broker存到了文件系统，发送ACK回去网络出现了问题，导致Producer没接收到</p>
 </li>
 <li>
 <p>生产者宕机<br>
 或者在返回ACK时，生产者宕机了，没接收到，再重启的时候又重新发送消息了。</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222120993.png" alt="image-20260322212055742"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603222120993.png" alt=""></p>
 </li>
 </ul>
 </li>
@@ -1723,18 +1723,18 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <h2 id="虚拟机网络配置">虚拟机网络配置</h2>
 <p>需要把虚拟机的网络网段和本机的配置到一个网段</p>
 <p>虚拟机点击编辑-&gt;虚拟机网络编辑器，点击 VMnet8，更改设置</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220855567.png" alt="image-20260322085557434"></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220856303.png" alt="image-20260322085642226"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220855567.png" alt=""></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220856303.png" alt=""></p>
 <p>将子网IP、掩码配置好，NAT 设置的网关IP配置上</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220857897.png" alt="image-20260322085737769"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220857897.png" alt=""></p>
 <p>DHCP设置的起始IP地址和结束IP地址配置好</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220858494.png" alt="image-20260322085822389"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220858494.png" alt=""></p>
 <p>在高级网络设置里面配置</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220859636.png" alt="image-20260322085937511"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220859636.png" alt=""></p>
 <p>双击 Internet 协议版本4（TCP/IPv4）</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220900686.png" alt="image-20260322090014562"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220900686.png" alt=""></p>
 <p>修改下面三个位置</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220900499.png" alt="image-20260322090038381"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220900499.png" alt=""></p>
 <p>完成</p>
 <p>我的网卡名是 ens33，根据这个我想在CentOS上配置静态IP地址</p>
 <p>在终端输入以下命令</p>
@@ -1759,7 +1759,7 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 </ul>
 <p>重启生效</p>
 <p>输入以下命令： <code>systemctl restart network</code></p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220911756.png" alt="image-20260322091136650"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603220911756.png" alt=""></p>
 <h2 id="配置JDK17">配置JDK17</h2>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">mkdir -p &#x2F;usr&#x2F;local&#x2F;java &amp;&amp; cd &#x2F;usr&#x2F;local&#x2F;java<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">curl -O https:&#x2F;&#x2F;mirrors.huaweicloud.com&#x2F;openjdk&#x2F;17.0.2&#x2F;openjdk-17.0.2_linux-x64_bin.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -1774,12 +1774,12 @@ systemctl disable firewalld.service<span aria-hidden="true" class="line-numbers-
 <p>然后刷新配置</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">source</span> /etc/profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>查看是否安装成功</p>
-<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221523265.png" alt="image-20260322152354111"></p>
+<p><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/202603221523265.png" alt=""></p>
 <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/markmap-toolbar@0.18.10/dist/style.css"><script src="https://fastly.jsdelivr.net/npm/d3@7"></script><script src="https://fastly.jsdelivr.net/npm/markmap-view@0.18.10"></script><script src="https://fastly.jsdelivr.net/npm/markmap-toolbar@0.18.10"></script>
 <link rel="stylesheet" href="/css/markmap.css">
 
 <script src="/js/markmap.js"></script>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io">寂寞的冰可乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io/2026/03/30/RocketMQ%E7%AC%94%E8%AE%B0/">https://asinglesinger.github.io/2026/03/30/RocketMQ%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://asinglesinger.github.io" target="_blank">一个人的升级日志</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related  no-desc" href="/2026/03/30/JUC%E7%AC%94%E8%AE%B0/" title="JUC笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">JUC笔记</div></div></div></a><a class="pagination-related  no-desc" href="/2026/04/01/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%B8%85%E5%8D%95/" title="面试问题清单"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">面试问题清单</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">寂寞的冰可乐</div><div class="author-info-description">去码头搞点薯条</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/aSingleSinger"><i class="fab fa-github"></i><span>We need to talk</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">随便逛逛吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">MQ概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">1.1.</span> <span class="toc-text">优势</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E8%A7%A3%E8%80%A6"><span class="toc-number">1.1.1.</span> <span class="toc-text">应用解耦</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E6%8F%90%E9%80%9F"><span class="toc-number">1.1.2.</span> <span class="toc-text">异步提速</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8A%E5%B3%B0%E5%A1%AB%E8%B0%B7"><span class="toc-number">1.1.3.</span> <span class="toc-text">削峰填谷</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A3%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text">劣势</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MQ%E4%BA%A7%E5%93%81"><span class="toc-number">2.1.</span> <span class="toc-text">MQ产品</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RocketMQ"><span class="toc-number">2.2.</span> <span class="toc-text">RocketMQ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">2.3.</span> <span class="toc-text">基础概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="toc-number">2.3.1.</span> <span class="toc-text">核心组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">2.3.2.</span> <span class="toc-text">核心工作流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">下载配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-number">3.2.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">3.3.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="toc-number">3.4.</span> <span class="toc-text">控制台</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">简单入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%94%9F%E4%BA%A7%E8%80%85"><span class="toc-number">4.1.</span> <span class="toc-text">简单生产者</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%B6%88%E8%B4%B9%E8%80%85"><span class="toc-number">4.2.</span> <span class="toc-text">简单消费者</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">多消费者模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">消息</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.1.</span> <span class="toc-text">消息类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.1.</span> <span class="toc-text">同步消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.2.</span> <span class="toc-text">异步消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%90%91%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.3.</span> <span class="toc-text">单向消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%B6%E6%97%B6%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.4.</span> <span class="toc-text">延时消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.5.</span> <span class="toc-text">批量消息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E8%BF%87%E6%BB%A4"><span class="toc-number">6.2.</span> <span class="toc-text">消息过滤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E8%BF%87%E6%BB%A4"><span class="toc-number">6.2.1.</span> <span class="toc-text">语法过滤</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">SpringBoot 整合</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Producer-Consumer"><span class="toc-number">7.1.</span> <span class="toc-text">Producer&amp;Consumer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BD%99%E8%AE%BE%E7%BD%AE"><span class="toc-number">7.2.</span> <span class="toc-text">其余设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E7%89%B9%E6%AE%8A%E5%A4%84%E7%90%86"><span class="toc-number">7.3.</span> <span class="toc-text">消息的特殊处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%A1%BA%E5%BA%8F"><span class="toc-number">7.3.1.</span> <span class="toc-text">消息顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF"><span class="toc-number">7.3.2.</span> <span class="toc-text">事务消息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">7.3.2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">7.3.2.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">集群搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">8.1.</span> <span class="toc-text">工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E4%B8%BB%E5%8F%8C%E4%BB%8E"><span class="toc-number">8.2.</span> <span class="toc-text">双主双从</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">8.2.1.</span> <span class="toc-text">系统配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">8.2.2.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4"><span class="toc-number">8.2.3.</span> <span class="toc-text">启动集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E9%9B%86%E7%BE%A4"><span class="toc-number">8.2.4.</span> <span class="toc-text">测试集群</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">高级特性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%AD%98%E5%82%A8"><span class="toc-number">9.1.</span> <span class="toc-text">消息存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E6%96%B9%E5%BC%8F"><span class="toc-number">9.2.</span> <span class="toc-text">读写方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">9.3.</span> <span class="toc-text">存储结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E7%9B%98%E6%9C%BA%E5%88%B6"><span class="toc-number">9.4.</span> <span class="toc-text">刷盘机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E5%88%B7%E7%9B%98"><span class="toc-number">9.4.1.</span> <span class="toc-text">同步刷盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E5%88%B7%E7%9B%98"><span class="toc-number">9.4.2.</span> <span class="toc-text">异步刷盘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-number">9.5.</span> <span class="toc-text">高可用性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6"><span class="toc-number">9.6.</span> <span class="toc-text">主从数据复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">9.7.</span> <span class="toc-text">负载均衡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%87%8D%E8%AF%95"><span class="toc-number">9.8.</span> <span class="toc-text">消息重试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%B6%88%E6%81%AF"><span class="toc-number">9.8.1.</span> <span class="toc-text">顺序消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%BA%8F%E6%B6%88%E6%81%AF"><span class="toc-number">9.8.2.</span> <span class="toc-text">无序消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97"><span class="toc-number">9.8.3.</span> <span class="toc-text">死信队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="toc-number">9.9.</span> <span class="toc-text">消息重复消费</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BA%E7%8E%B0%E5%8E%9F%E5%9B%A0"><span class="toc-number">9.9.1.</span> <span class="toc-text">出现原因</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%B9%82%E7%AD%89"><span class="toc-number">9.10.</span> <span class="toc-text">消息幂等</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">10.1.</span> <span class="toc-text">虚拟机网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEJDK17"><span class="toc-number">10.2.</span> <span class="toc-text">配置JDK17</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/05/Docker%E5%AD%A6%E4%B9%A0/" title="Docker学习">Docker学习</a><time datetime="2026-06-05T01:29:40.000Z" title="发表于 2026-06-05 09:29:40">2026-06-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/01/Spring-Cloud%E5%AD%A6%E4%B9%A0/" title="Spring Cloud学习">Spring Cloud学习</a><time datetime="2026-06-01T07:00:34.000Z" title="发表于 2026-06-01 15:00:34">2026-06-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91/" title="数据结构-树">数据结构-树</a><time datetime="2026-05-18T04:52:06.000Z" title="发表于 2026-05-18 12:52:06">2026-05-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/14/Java%E5%9F%BA%E7%A1%80-%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="Java基础-集合源码分析">Java基础-集合源码分析</a><time datetime="2026-05-14T02:46:10.000Z" title="发表于 2026-05-14 10:46:10">2026-05-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/10/Java%E5%9F%BA%E7%A1%80-%E6%B3%9B%E5%9E%8B/" title="Java基础-一文搞懂泛型">Java基础-一文搞懂泛型</a><time datetime="2026-05-10T02:18:45.000Z" title="发表于 2026-05-10 10:18:45">2026-05-10</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 寂寞的冰可乐</span></div><div class="footer_custom_text">只写不背，未完待续</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(async () => {
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io">寂寞的冰可乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io/2026/03/30/RocketMQ%E7%AC%94%E8%AE%B0/">https://asinglesinger.github.io/2026/03/30/RocketMQ%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://asinglesinger.github.io" target="_blank">一个人的升级日志</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post-share"><div class="social-share" data-image="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260612100222159.jpg&quot;" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related  no-desc" href="/2026/03/30/JUC%E7%AC%94%E8%AE%B0/" title="JUC笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">JUC笔记</div></div></div></a><a class="pagination-related  no-desc" href="/2026/04/01/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%B8%85%E5%8D%95/" title="面试问题清单"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">面试问题清单</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related no-desc" href="/2026/04/24/JVM%E5%AD%A6%E4%B9%A0/" title="JVM学习"><img class="cover" src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260424145847248.jpg" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-24</div><div class="info-item-2">JVM学习</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">寂寞的冰可乐</div><div class="author-info-description">去码头搞点薯条</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/aSingleSinger"><i class="fab fa-github"></i><span>We need to talk</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">随便逛逛吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">MQ概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">1.1.</span> <span class="toc-text">优势</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E8%A7%A3%E8%80%A6"><span class="toc-number">1.1.1.</span> <span class="toc-text">应用解耦</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E6%8F%90%E9%80%9F"><span class="toc-number">1.1.2.</span> <span class="toc-text">异步提速</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8A%E5%B3%B0%E5%A1%AB%E8%B0%B7"><span class="toc-number">1.1.3.</span> <span class="toc-text">削峰填谷</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A3%E5%8A%BF"><span class="toc-number">1.2.</span> <span class="toc-text">劣势</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MQ%E4%BA%A7%E5%93%81"><span class="toc-number">2.1.</span> <span class="toc-text">MQ产品</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RocketMQ"><span class="toc-number">2.2.</span> <span class="toc-text">RocketMQ</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">2.3.</span> <span class="toc-text">基础概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="toc-number">2.3.1.</span> <span class="toc-text">核心组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">2.3.2.</span> <span class="toc-text">核心工作流程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">下载配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-number">3.2.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">3.3.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="toc-number">3.4.</span> <span class="toc-text">控制台</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">简单入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%94%9F%E4%BA%A7%E8%80%85"><span class="toc-number">4.1.</span> <span class="toc-text">简单生产者</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%B6%88%E8%B4%B9%E8%80%85"><span class="toc-number">4.2.</span> <span class="toc-text">简单消费者</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">多消费者模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">消息</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.1.</span> <span class="toc-text">消息类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.1.</span> <span class="toc-text">同步消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.2.</span> <span class="toc-text">异步消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%90%91%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.3.</span> <span class="toc-text">单向消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%B6%E6%97%B6%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.4.</span> <span class="toc-text">延时消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E6%B6%88%E6%81%AF"><span class="toc-number">6.1.5.</span> <span class="toc-text">批量消息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E8%BF%87%E6%BB%A4"><span class="toc-number">6.2.</span> <span class="toc-text">消息过滤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E8%BF%87%E6%BB%A4"><span class="toc-number">6.2.1.</span> <span class="toc-text">语法过滤</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">SpringBoot 整合</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Producer-Consumer"><span class="toc-number">7.1.</span> <span class="toc-text">Producer&amp;Consumer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BD%99%E8%AE%BE%E7%BD%AE"><span class="toc-number">7.2.</span> <span class="toc-text">其余设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E7%89%B9%E6%AE%8A%E5%A4%84%E7%90%86"><span class="toc-number">7.3.</span> <span class="toc-text">消息的特殊处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%A1%BA%E5%BA%8F"><span class="toc-number">7.3.1.</span> <span class="toc-text">消息顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF"><span class="toc-number">7.3.2.</span> <span class="toc-text">事务消息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">7.3.2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">7.3.2.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">集群搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">8.1.</span> <span class="toc-text">工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E4%B8%BB%E5%8F%8C%E4%BB%8E"><span class="toc-number">8.2.</span> <span class="toc-text">双主双从</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="toc-number">8.2.1.</span> <span class="toc-text">系统配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">8.2.2.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4"><span class="toc-number">8.2.3.</span> <span class="toc-text">启动集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E9%9B%86%E7%BE%A4"><span class="toc-number">8.2.4.</span> <span class="toc-text">测试集群</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">高级特性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%AD%98%E5%82%A8"><span class="toc-number">9.1.</span> <span class="toc-text">消息存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E6%96%B9%E5%BC%8F"><span class="toc-number">9.2.</span> <span class="toc-text">读写方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="toc-number">9.3.</span> <span class="toc-text">存储结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B7%E7%9B%98%E6%9C%BA%E5%88%B6"><span class="toc-number">9.4.</span> <span class="toc-text">刷盘机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E5%88%B7%E7%9B%98"><span class="toc-number">9.4.1.</span> <span class="toc-text">同步刷盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E5%88%B7%E7%9B%98"><span class="toc-number">9.4.2.</span> <span class="toc-text">异步刷盘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="toc-number">9.5.</span> <span class="toc-text">高可用性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6"><span class="toc-number">9.6.</span> <span class="toc-text">主从数据复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">9.7.</span> <span class="toc-text">负载均衡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%87%8D%E8%AF%95"><span class="toc-number">9.8.</span> <span class="toc-text">消息重试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E6%B6%88%E6%81%AF"><span class="toc-number">9.8.1.</span> <span class="toc-text">顺序消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%BA%8F%E6%B6%88%E6%81%AF"><span class="toc-number">9.8.2.</span> <span class="toc-text">无序消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%BB%E4%BF%A1%E9%98%9F%E5%88%97"><span class="toc-number">9.8.3.</span> <span class="toc-text">死信队列</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="toc-number">9.9.</span> <span class="toc-text">消息重复消费</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BA%E7%8E%B0%E5%8E%9F%E5%9B%A0"><span class="toc-number">9.9.1.</span> <span class="toc-text">出现原因</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%B9%82%E7%AD%89"><span class="toc-number">9.10.</span> <span class="toc-text">消息幂等</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">10.1.</span> <span class="toc-text">虚拟机网络配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEJDK17"><span class="toc-number">10.2.</span> <span class="toc-text">配置JDK17</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/05/Docker%E5%AD%A6%E4%B9%A0/" title="Docker学习">Docker学习</a><time datetime="2026-06-05T01:29:40.000Z" title="发表于 2026-06-05 09:29:40">2026-06-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/01/Spring-Cloud%E5%AD%A6%E4%B9%A0/" title="Spring Cloud学习">Spring Cloud学习</a><time datetime="2026-06-01T07:00:34.000Z" title="发表于 2026-06-01 15:00:34">2026-06-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91/" title="数据结构-树">数据结构-树</a><time datetime="2026-05-18T04:52:06.000Z" title="发表于 2026-05-18 12:52:06">2026-05-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/14/Java%E5%9F%BA%E7%A1%80-%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" title="Java基础-集合源码分析">Java基础-集合源码分析</a><time datetime="2026-05-14T02:46:10.000Z" title="发表于 2026-05-14 10:46:10">2026-05-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/10/Java%E5%9F%BA%E7%A1%80-%E6%B3%9B%E5%9E%8B/" title="Java基础-一文搞懂泛型">Java基础-一文搞懂泛型</a><time datetime="2026-05-10T02:18:45.000Z" title="发表于 2026-05-10 10:18:45">2026-05-10</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 寂寞的冰可乐</span></div><div class="footer_custom_text">只写不背，未完待续</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(async () => {
   const showKatex = () => {
     document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
   }
