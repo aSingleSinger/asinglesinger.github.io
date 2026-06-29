@@ -149,3 +149,7 @@
     transform: translate3d(-15px, 110vh, 0) rotate(360deg);
   }
 }
+
+#recent-posts > .recent-post-items > .recent-post-item > .recent-post-info > .content {
+  -webkit-line-clamp: 4 !important;
+}
