@@ -1,0 +1,788 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><!-- hexo injector head_begin start -->
+<link rel="stylesheet" href="/css/bilicard.css">
+<!-- hexo injector head_begin end --><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Git学习 | 一个人的升级日志</title><meta name="author" content="寂寞的冰可乐"><meta name="copyright" content="寂寞的冰可乐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Git 用来管理代码版本，记录每次修改，支持回退历史、分支开发和多人协作，是现代软件开发中最常用的版本控制工具。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git学习">
+<meta property="og:url" content="https://asinglesinger.github.io/2026/07/03/Git%E5%AD%A6%E4%B9%A0/">
+<meta property="og:site_name" content="一个人的升级日志">
+<meta property="og:description" content="Git 用来管理代码版本，记录每次修改，支持回退历史、分支开发和多人协作，是现代软件开发中最常用的版本控制工具。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704082542763.jpg">
+<meta property="article:published_time" content="2026-07-03T05:53:36.000Z">
+<meta property="article:modified_time" content="2026-07-04T00:26:52.628Z">
+<meta property="article:author" content="寂寞的冰可乐">
+<meta property="article:tag" content="开发工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704082542763.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Git学习",
+  "url": "https://asinglesinger.github.io/2026/07/03/Git%E5%AD%A6%E4%B9%A0/",
+  "image": "https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704082542763.jpg",
+  "datePublished": "2026-07-03T05:53:36.000Z",
+  "dateModified": "2026-07-04T00:26:52.628Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "寂寞的冰可乐",
+      "url": "https://asinglesinger.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg"><link rel="canonical" href="https://asinglesinger.github.io/2026/07/03/Git%E5%AD%A6%E4%B9%A0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c5d9dbcdd4a636a7d84caa2d9c8362db";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+btf.addGlobalFn('pjaxComplete', () => {
+  _hmt.push(['_trackPageview',window.location.pathname])
+}, 'baidu_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":true,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Git学习',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="一个人的升级日志" type="application/atom+xml">
+</head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/black/pace-theme-loading-bar.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div class="bg-animation" id="web_bg" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260416171911061.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704082542763.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">一个人的升级日志</span></a><a class="nav-page-title" href="/"><span class="site-name">Git学习</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 分享</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Git学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-03T05:53:36.000Z" title="发表于 2026-07-03 13:53:36">2026-07-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-07-04T00:26:52.628Z" title="更新于 2026-07-04 08:26:52">2026-07-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div class="bvideo"><a href="//www.bilibili.com/video/BV1pX4y1S7Dq" target="_blank">
+        <div class="bvideo-box">
+            <div class="bvideo-cover">
+                <div class="cover-default"></div>
+                <div class="bvideo-cover-layer" style="background-image:url(https://images.weserv.nl/?url=http://i1.hdslb.com/bfs/archive/99022224a0bd49bf131585af44b64a4871f96809.jpg)">
+                    <i class="icon-video"></i>
+                </div>
+                <span class="duration">00:29:40</span>
+            </div>
+            <div class="bvideo-info">
+                <p class="title">30分钟弄懂所有工作Git必备操作 / Git 入门教程</p>
+                <p class="card-status">
+                    <span class="play-num">
+                        <i class="fa fa-youtube-play"></i>
+                        <span>29.1万</span></span>
+                    <span>
+                        <i class="fa fa-list-alt"></i>
+                        <span>445</span></span></p>
+                <div class="partition">
+                    <label class="card-label">视频</label>
+                    <label class="up-label"></label>
+                    <label class="up-name">高低肩真的难受</label>
+                </div>
+                <div class="actions hide"></div>
+            </div>
+        </div>
+    </a></div>
+<p>学习之前可以先看看这两个</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/git/git-workflow.html">Git 工作流程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/git/git-workspace-index-repo.html">Git 工作区、暂存区和版本库</a></li>
+</ul>
+<h1>Git 介绍</h1>
+<p>一个免费开源的分布式版本控制系统</p>
+<h2 id="安装">安装</h2>
+<p><a target="_blank" rel="noopener" href="https://git-scm.com/install/mac">安装 | 官网</a></p>
+<p>直接去官网安装即可，这里我是 mac 电脑，直接用 homebrew 安装就可以</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">brew <span class="token function">install</span> <span class="token function">git</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>mac 直接打开终端就可以使用了，windows 需要通过右键打开 git bash 来使用</p>
+<h2 id="基础配置">基础配置</h2>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> config <span class="token parameter variable">--global</span> user.name <span class="token string">"xxx"</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> user.email xxx@example.com<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>这两个命令用于配置 Git 的提交者身份信息：<a target="_blank" rel="noopener" href="http://user.name">user.name</a> 设置提交记录中显示的用户名，user.email 设置提交记录中显示的邮箱；加上 --global 表示这套配置对当前电脑用户下的所有 Git 仓库都生效。它们不会用于登录 GitHub，也跟 GitHub 账号没关系，只是用来标记每次代码提交是谁提交的，方便在 GitHub、Gitee、GitLab 等平台上关联提交记录和账号。</p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260703142017345.png"/>
+<div class="note info flat"><p>你填啥都没有问题，只是对你提交身份的一个说明，你写名字是二狗都没问题</p>
+</div>
+<h1>Git 命令</h1>
+<h2 id="创建仓库">创建仓库</h2>
+<p>在一个文件夹(你的项目文件夹)中执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> init<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>执行完之后就创建了一个本地 Git 仓库，本质上是多了一个隐藏的 <code>.git</code> 目录，这个仓库完全在本机，所以不联网也能使用大部分功能，比如提交到本地或在回滚之类的。只有推送到远程仓库或从远程仓库拉取代码时，才需要联网。</p>
+<h2 id="克隆仓库">克隆仓库</h2>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260703142717379.png"/>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/torvalds/linux.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>通过这个命令来克隆网络上的一个 Git 项目，但是我们通常没有权限直接 <code>push</code> 到原仓库，我们只能推送到自己有权限的远程仓库。</p>
+<h2 id="Git-文件状态和提交版本">Git 文件状态和提交版本</h2>
+<p>创建仓库后，仓库中的新文件默认是未被 Git 跟踪的。如果没有通过 <code>git add </code>把这些文件加入暂存区，那么执行 <code>git commit</code> 生成新版本时，这些文件不会被记录到该版本中。既然文件本身都没有进入版本记录，那么它之前的内容状态和修改过程也不会被 Git 保存。</p>
+<div class="note warning flat"><p>创建 Git 仓库后，仓库中的新文件默认处于未跟踪状态。未跟踪文件在没有执行 <code>git add</code> 之前，只是普通文件，Git 不会记录它的内容变化；如果直接提交，这些文件不会进入版本记录。只有当文件被 <code>git add</code> 加入暂存区，并通过 <code>git commit</code> 提交后，Git 才会从该次提交时的文件内容开始进行版本管理，之前的修改过程 Git 是不知道的。</p>
+</div>
+<h3 id="跟踪">跟踪</h3>
+<p>通过下面的命令来跟踪一个文件或者目录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> <span class="token function">add</span> <span class="token operator">&lt;</span>name<span class="token operator">></span>
+
+<span class="token function">git</span> <span class="token function">add</span> filename       <span class="token comment"># 将单个文件添加到暂存区</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span>              <span class="token comment"># 将工作区中的所有修改添加到暂存区</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="取消跟踪">取消跟踪</h3>
+<p>如果你不想跟踪这个文件或者目录来，你可以用下面的命令</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> <span class="token function">rm</span> <span class="token operator">&lt;</span>name<span class="token operator">></span>
+
+<span class="token function">git</span> <span class="token function">rm</span> <span class="token parameter variable">--cache</span> <span class="token operator">&lt;</span>name<span class="token operator">></span>  <span class="token comment"># 可以将项目保存在目录中，只删除跟踪标志</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<div class="note info flat"><p><code>git rm &lt;name&gt;</code> 是 从 Git 仓库和本地工作区都删除文件；<code>git rm --cached &lt;name&gt;</code> 是 只从 Git 仓库的跟踪记录中删除文件，但本地文件还保留。</p>
+</div>
+<h3 id="文件状态修改">文件状态修改</h3>
+<p>当你修改完了之后，你想把变更放到暂存区，那就要再次执行 <code>git add</code>，也就是说你改动的东西只要没 <code>git add</code>，Git 就不知道你变更了文件，就只会提交你上次 <code>git add</code> 时的内容</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> <span class="token function">add</span> <span class="token operator">&lt;</span>file-name<span class="token operator">></span>　　 <span class="token comment"># 设置缓存状态，放入暂存区</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果你后悔了，不想提交了，可以执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> reset HEAD <span class="token operator">&lt;</span>name<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>取消缓存状态，从暂存区撤回来，不进入下一次提交了，暂存区的该文件回退到你上次 <code>git commit</code> 时的文件版本(你工作区的还是不变，还是你改动后的内容)。</p>
+<div class="note info flat"><p>也就是说即使你中间 <code>git add</code> 了 5 次，但是没提交，那这 5 次 <code>git add</code> 都失效了。但是本地文件还是你改动后的，没影响。</p>
+</div>
+<h3 id="提交-取消修改">提交/取消修改</h3>
+<p>之后你想提交修改的内容，就用下面的命令</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">'修改xxx'</span>   <span class="token comment"># 提交命令</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果你提交之后又不想提交了，可以进行撤回</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> reset head~ <span class="token parameter variable">--soft</span>　　<span class="token comment"># 撤销提交（无法撤销第一次）</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="查看文件状态">查看文件状态</h3>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> status     <span class="token comment"># 查询文件状态</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260703150822824.png" style="width: 50%"/>
+<p>如果想看更细致的，文件修改前后的区别，可以用下面的命令</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> <span class="token function">diff</span>          <span class="token comment"># 查看文件与修改前区别</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果想查看之前历史的提交</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> log           <span class="token comment"># 查看日志文件</span>
+
+<span class="token function">git</span> log <span class="token parameter variable">--pretty</span>  <span class="token comment"># 美化输出，可以格式化输出</span>
+
+　　%h 简化哈希     <span class="token comment"># 提交记录的一个哈希值，可以通过哈希值找到我们本次的提交</span>
+
+　　%an 作者名字
+
+　　%ar 修订日期（距今）
+
+　　%ad 修订日期
+
+　　%s 提交说明
+
+<span class="token comment"># 比如</span>
+<span class="token function">git</span> log <span class="token parameter variable">--pretty</span><span class="token operator">=</span>format:<span class="token string">"%h-%an, %ar:%s"</span>
+
+<span class="token function">git</span> log <span class="token parameter variable">--graph</span>   <span class="token comment"># 以图形化形式显现</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260703151250428.png" style="width: 70%"/>
+<h2 id="Git-远程仓库">Git 远程仓库</h2>
+<p>我们可以在 GitHub 上自己创建一个仓库，也就是远程仓库了</p>
+<h3 id="链接远程仓库">链接远程仓库</h3>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> remote <span class="token function">add</span> origin https://xxx.git  <span class="token comment"># origin 是给远程仓库起的别名，一般就叫 origin，名字只在本地仓库有效</span>
+
+<span class="token function">git</span> remote <span class="token function">rename</span> 原远程仓库别名 新远程仓库别名
+
+<span class="token function">git</span> remote  <span class="token comment"># 查看当前本地仓库配置了哪些远程仓库别名</span>
+
+<span class="token function">git</span> remote <span class="token parameter variable">-v</span>  <span class="token comment"># 如果还想看对应的 URL</span>
+
+<span class="token comment"># 显示如下</span>
+origin  https://github.com/xxx/test.git <span class="token punctuation">(</span>fetch<span class="token punctuation">)</span>  <span class="token comment"># 从这个远程仓库拉取代码</span>
+origin  https://github.com/xxx/test.git <span class="token punctuation">(</span>push<span class="token punctuation">)</span>   <span class="token comment"># 向这个远程仓库推送代码</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260703151659865.png" style="width: 70%"/>
+<h3 id="推送">推送</h3>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> push origin master  <span class="token comment"># 向 origin 仓库推送 master 分支</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>推送需要认证身份，github 无法使用用户名密码认证方式，进入官网生成 token</p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260703153201157.png"/>
+<p>然后设置有效期，名字，仓库权限，这里是权限全打开，然后生成</p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260703153303843.png" style="width: 50%"/>
+<p>这样输入用户名你就用用户名，密码就用这个 token 就可以了，但是这种比较麻烦，有更方便的方式</p>
+<p><span class="tag-leaf">通过 SSH 协议生成密钥进行认证</span></p>
+<ul>
+<li>用来本机和 GitHub、Gitee、GitLab 建立免密连接</li>
+</ul>
+<p>首先进入用户的 ssh 目录中</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~/.ssh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>生成 SSH 密钥</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ssh-keygen <span class="token parameter variable">-t</span> rsa <span class="token parameter variable">-b</span> <span class="token number">4096</span> <span class="token parameter variable">-C</span> <span class="token string">"xxx@qq.com"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li><code>-t rsa</code> 是生成密钥的算法</li>
+<li><code>-b 4096</code> 选择生成的大小</li>
+<li><code>-C &quot;xxx@qq.com&quot;</code> 推荐写个人邮箱</li>
+</ul>
+<p>执行后要求输入密钥名，比如 <code>mac-git</code>，然后设置一个密码</p>
+<p>查看并复制密钥文件内容</p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704062132228.png"/>
+<p>复制公钥的内容</p>
+<p>进入 github 的 SSH and GPG keys 页面添加密钥</p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704062338375.png" style="width: 70%"/>
+<p>完整的复制过来就可以，包括结尾的邮箱和开头的 ssh-rsa</p>
+<p>这样之后我们克隆项目就可以不用再验证身份之类的了</p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704062909673.png" style="width: 25%"/>
+<p>之后我们再克隆就 <code>git clone SSH链接</code> 就可以了</p>
+<h1>Git 分支</h1>
+<p>Git 每次提交都会生成一个 commit 对象，这个对象有唯一的哈希值。通过这个 commit 对象，可以找到本次提交对应的项目快照，也就能恢复到这个版本的代码。每个 commit 对象还会记录它的上一个提交对象，也就是 parent，所以多个提交对象会通过 parent 串成一条历史链。分支本质上是一个只记录“最新一次 commit 哈希值”的指针文件。Git 通过这个最新提交，再沿着每个 commit 的 parent 往前找，就能找到这个分支的完整提交历史。HEAD 指向我们当前所在的分支(你不能一次操作两个分支吧)，而当前分支再指向某个最新的 commit 对象。</p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704063437192.png" style="width: 70%"/>
+<p><code>master/main</code> 保存线上稳定版本；<code>develop</code> 用于日常功能集成；开发新功能时，从 <code>develop</code> 拉出 <code>feature</code> 分支来完整不同的功能模块，完成后合并回 <code>develop</code>；准备发布时，从 <code>develop</code> 拉出 <code>release</code> 分支进行测试和修复，完成后合并到 <code>master/main</code> 并打 tag；线上版本出现紧急问题时，从 <code>master/main</code> 拉出 <code>hotfix</code> 分支修复，修完后同时合并回 <code>master/main</code> 和 <code>develop</code>。</p>
+<h2 id="使用分支">使用分支</h2>
+<p>我们可以通过下面的指令看到当前的分支</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> log
+
+<span class="token function">git</span> status<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704070555794.png" style="width: 70%"/>
+　　
+也可以通过这个命令查看所有的分支
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> branch <span class="token parameter variable">--list</span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704070756909.png" style="width: 70%"/>
+<p>前面带 <code>*</code> 的就是当前分支</p>
+<p>想创建、切换分支就可以用下面的命令</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> branch　新分支名
+<span class="token function">git</span> checkout <span class="token parameter variable">-b</span> 新分支名  <span class="token comment"># 创建并切换到新分支</span>
+
+<span class="token function">git</span> checkout 分支名　　<span class="token comment"># 切换分支</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>显示提交日志</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> log <span class="token parameter variable">--all</span>
+
+<span class="token function">git</span> log <span class="token parameter variable">--all</span> <span class="token parameter variable">--graph</span>　　<span class="token comment"># 显示更加直观的日志</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704071824691.png" style="width: 70%"/>
+　　
+<h2 id="分支合并">分支合并</h2>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> merge 融合分支 <span class="token comment"># 合并分支</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>也就是把当前分支和某个分支文件内容合并</p>
+<p>如果要合并的两个分支都修改了同一个地方就会报错，因为不知道要保留哪一个</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> status  <span class="token comment"># 查看哪里有冲突</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704072643883.png" style="width: 70%"/>
+<p>比如这里说都修改了 <code>test_file</code></p>
+<p>进入到冲突文件中, 选择一个分支的内容保留下来, 保存退出</p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704072844208.png" style="width: 40%"/>
+<p>这里它会给你标注上冲突的地方，我们只需要选择某一块保留的就可以，比如想留下来 <code>feature2</code> 分支的内容，就是把红色标注的地方都去掉，然后保存即可</p>
+<p>冲突解决后就可以提交了</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> <span class="token function">add</span> 文件名
+
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">'提交描述'</span>
+
+<span class="token function">git</span> log <span class="token parameter variable">--all</span> <span class="token parameter variable">--graph</span> 查看合并状态<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1>推送、拉取、跟踪远程分支</h1>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> push 仓库名 分支名
+
+<span class="token comment"># 比如</span>
+<span class="token function">git</span> push origin master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是每次都要写仓库名和分支名也挺麻烦，我们可以</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> push <span class="token parameter variable">-u</span> 仓库名 分支名<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这样第一次使用 <code>-u</code> 指定推送目标后，后面可以直接使用 <code>git push</code>，就等价于 <code>git push origin master</code></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> push <span class="token parameter variable">-u</span> origin master <span class="token comment"># 第一次推送</span>
+
+<span class="token function">git</span> push <span class="token comment"># 第二次推送</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>如果想拉取远程仓库的分支</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> fetch　　<span class="token comment"># 拉取分支</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>远程分支拉取到本地后，并不一定会自动变成本地分支。它通常会先以 <code>origin/分支名</code> 的形式存在，表示“远程分支在本地的跟踪记录”。如果想基于远程分支创建一个本地分支，可以先通过 <code>git branch -r</code> 查看远程分支名，再创建对应的本地分支。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看远程分支</span>
+<span class="token function">git</span> branch <span class="token parameter variable">-r</span>
+
+<span class="token comment"># 查看本地分支和远程分支</span>
+<span class="token function">git</span> branch <span class="token parameter variable">-a</span>
+
+<span class="token comment"># 基于远程分支创建本地分支</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">-b</span> 本地分支名 远程分支名
+
+<span class="token comment"># 自动创建本地分支，并跟踪对应远程分支</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">--track</span> 远程分支名
+
+<span class="token comment"># 比如</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">-b</span> dev origin/dev
+<span class="token comment"># 或者</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">--track</span> origin/dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1>贮藏功能</h1>
+<p>用于功能写一半了，但是我们又需要切到别的分支上去修改内容，这个时候也不适合去提交来保持我们的修改，我们就可以贮藏一下我们当前分支修改的内容，然后再去切换分支</p>
+<img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704075400846.png" style="width: 70%"/>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> stash
+<span class="token comment"># 等价于</span>
+<span class="token function">git</span> stash push<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>当前分支修改到一半想要切换分支不允许，可以用此命令将当前分支修改的东西储藏起来再切换</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> stash apply  <span class="token comment"># 恢复暂存内容，stash 记录仍保留</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>切换回来后恢复之前存储的内容</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> stash list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>文件可以多次存储，所以我们可以查看存储记录列表，可以通过</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> stash apply stash@<span class="token punctuation">&#123;</span>记录号<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>恢复到指定记录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> stash pop<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>恢复并删除最近一次记录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> stash drop @stash<span class="token punctuation">&#123;</span>记录号<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>删除指定记录</p>
+<h1>重置、变基</h1>
+<h2 id="重置">重置</h2>
+<p>撤销我们某次 commit 的操作</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> reset <span class="token parameter variable">--soft</span> HEAD~<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<div class="note waning flat"><p>注意：HEAD 就是当前提交，所以 <code>git reset --soft HEAD</code> 基本没什么效果。因为本来就在当前提交上，没有往回退。所以一般用 <code>HEAD~</code> 或者 <code>HEAD~数字</code></p>
+</div>
+<ul>
+<li>HEAD：当前提交。</li>
+<li>HEAD~：当前提交的上一个提交。</li>
+<li>HEAD~2：从当前提交往前数两个提交，不是简单说“倒数第二次提交”。</li>
+<li><code>--soft</code>：只回退提交记录，代码修改还保留在暂存区，相当于取消了 commit，但没有取消 git add。</li>
+<li>默认不加参数时，相当于 <code>--mixed</code>，例如 <code>git reset HEAD~</code>，会回退提交记录，并取消暂存状态，修改内容还在工作区。</li>
+<li><code>--hard</code>：回退提交记录，同时重置暂存区和工作区，代码修改也会被丢弃，彻底回到目标提交的状态，不推荐随便用。</li>
+</ul>
+<h2 id="变基">变基</h2>
+<p>还不太懂这个，如果用到再学习</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> checkout B
+
+<span class="token function">git</span> rebase A<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>上述命令将 B 分支的修改移动到 A 分支</p>
+<div class="note danger flat"><p>注意其他人在远程分支二次开发时，慎用变基</p>
+</div>
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/markmap-toolbar@0.18.10/dist/style.css"><script src="https://fastly.jsdelivr.net/npm/d3@7"></script><script src="https://fastly.jsdelivr.net/npm/markmap-view@0.18.10"></script><script src="https://fastly.jsdelivr.net/npm/markmap-toolbar@0.18.10"></script>
+<link rel="stylesheet" href="/css/markmap.css">
+
+<script src="/js/markmap.js"></script>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io">寂寞的冰可乐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://asinglesinger.github.io/2026/07/03/Git%E5%AD%A6%E4%B9%A0/">https://asinglesinger.github.io/2026/07/03/Git%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://asinglesinger.github.io" target="_blank">一个人的升级日志</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a></div><div class="post-share"><div class="social-share" data-image="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704082542763.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/06/29/Dubbo%E5%AD%A6%E4%B9%A0/" title="Dubbo学习"><img class="cover" src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260701155754090.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Dubbo学习</div></div><div class="info-2"><div class="info-item-1">高性能的 Java RPC 微服务框架，用于实现服务之间的远程调用、服务注册发现、负载均衡、容错重试和服务治理。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/04/07/Gradle%E5%AD%A6%E4%B9%A0/" title="Gradle学习"><img class="cover" src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260622085702573.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-07</div><div class="info-item-2">Gradle学习</div></div><div class="info-2"><div class="info-item-1">一种和 Maven 一样的构建工具</div></div></div></a><a class="pagination-related" href="/2026/06/05/Docker%E5%AD%A6%E4%B9%A0/" title="Docker学习"><img class="cover" src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260620195652680.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-05</div><div class="info-item-2">Docker学习</div></div><div class="info-2"><div class="info-item-1">Docker，一种容器化部署方式，内涵 Docker 基本知识，并有数据库、Java程序、前端程序部署教程</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260422125836701.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">寂寞的冰可乐</div><div class="author-info-description">去码头搞点薯条</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/aSingleSinger"><i class="fab fa-github"></i><span>We need to talk</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">随便逛逛吧</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Git 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">基础配置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Git 命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%BB%93%E5%BA%93"><span class="toc-number">2.1.</span> <span class="toc-text">创建仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%8B%E9%9A%86%E4%BB%93%E5%BA%93"><span class="toc-number">2.2.</span> <span class="toc-text">克隆仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git-%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81%E5%92%8C%E6%8F%90%E4%BA%A4%E7%89%88%E6%9C%AC"><span class="toc-number">2.3.</span> <span class="toc-text">Git 文件状态和提交版本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9F%E8%B8%AA"><span class="toc-number">2.3.1.</span> <span class="toc-text">跟踪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%96%E6%B6%88%E8%B7%9F%E8%B8%AA"><span class="toc-number">2.3.2.</span> <span class="toc-text">取消跟踪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81%E4%BF%AE%E6%94%B9"><span class="toc-number">2.3.3.</span> <span class="toc-text">文件状态修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4-%E5%8F%96%E6%B6%88%E4%BF%AE%E6%94%B9"><span class="toc-number">2.3.4.</span> <span class="toc-text">提交&#x2F;取消修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="toc-number">2.3.5.</span> <span class="toc-text">查看文件状态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git-%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">2.4.</span> <span class="toc-text">Git 远程仓库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">2.4.1.</span> <span class="toc-text">链接远程仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E9%80%81"><span class="toc-number">2.4.2.</span> <span class="toc-text">推送</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">Git 分支</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%88%86%E6%94%AF"><span class="toc-number">3.1.</span> <span class="toc-text">使用分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6"><span class="toc-number">3.2.</span> <span class="toc-text">分支合并</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">推送、拉取、跟踪远程分支</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">贮藏功能</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">重置、变基</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E7%BD%AE"><span class="toc-number">6.1.</span> <span class="toc-text">重置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E5%9F%BA"><span class="toc-number">6.2.</span> <span class="toc-text">变基</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/07/03/Git%E5%AD%A6%E4%B9%A0/" title="Git学习"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260704082542763.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git学习"/></a><div class="content"><a class="title" href="/2026/07/03/Git%E5%AD%A6%E4%B9%A0/" title="Git学习">Git学习</a><time datetime="2026-07-03T05:53:36.000Z" title="发表于 2026-07-03 13:53:36">2026-07-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/Dubbo%E5%AD%A6%E4%B9%A0/" title="Dubbo学习"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260701155754090.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Dubbo学习"/></a><div class="content"><a class="title" href="/2026/06/29/Dubbo%E5%AD%A6%E4%B9%A0/" title="Dubbo学习">Dubbo学习</a><time datetime="2026-06-29T13:59:24.000Z" title="发表于 2026-06-29 21:59:24">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/29/Zookeeper%E5%AD%A6%E4%B9%A0/" title="Zookeeper 学习"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260702184730928.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Zookeeper 学习"/></a><div class="content"><a class="title" href="/2026/06/29/Zookeeper%E5%AD%A6%E4%B9%A0/" title="Zookeeper 学习">Zookeeper 学习</a><time datetime="2026-06-29T13:59:17.000Z" title="发表于 2026-06-29 21:59:17">2026-06-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/27/ShardingSphere5/" title="ShardingSphere5"><img src="/img/friend_404.gif" data-lazy-src="https://typora-picture-0.oss-cn-beijing.aliyuncs.com/20260629214337267.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ShardingSphere5"/></a><div class="content"><a class="title" href="/2026/06/27/ShardingSphere5/" title="ShardingSphere5">ShardingSphere5</a><time datetime="2026-06-27T11:42:17.000Z" title="发表于 2026-06-27 19:42:17">2026-06-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/21/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式">设计模式</a><time datetime="2026-06-21T10:21:17.000Z" title="发表于 2026-06-21 18:21:17">2026-06-21</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 寂寞的冰可乐</span></div><div class="footer_custom_text">只写不背，未完待续</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.outerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+    setTimeout(() => URL.revokeObjectURL(url), 30000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        if (typeof svg === 'string') {
+          openSvgInNewTab({ source: svg, initViewBox })
+          return
+        }
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+
+    // Avoid binding multiple times on themeChange/pjax
+    if (wrap.__mermaidGestureBound) return
+    wrap.__mermaidGestureBound = true
+
+    // Helper: map client (viewport) coordinate -> viewBox coordinate
+    const clientToViewBox = (clientX, clientY) => {
+      const rect = svg.getBoundingClientRect()
+      const vb = wrap.__mermaidCurViewBox || getSvgViewBox(svg)
+      const x = vb[0] + (clientX - rect.left) * (vb[2] / rect.width)
+      const y = vb[1] + (clientY - rect.top) * (vb[3] / rect.height)
+      return { x, y, rect, vb }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      startCenter: null
+    }
+
+    const clampVb = vb => {
+      const init = wrap.__mermaidInitViewBox || vb
+      const minW = init[2] * 0.1
+      const maxW = init[2] * 10
+      const minH = init[3] * 0.1
+      const maxH = init[3] * 10
+      vb[2] = clamp(vb[2], minW, maxW)
+      vb[3] = clamp(vb[3], minH, maxH)
+      return vb
+    }
+
+    const setCurVb = vb => {
+      vb = clampVb(vb)
+      wrap.__mermaidCurViewBox = vb
+      setSvgViewBox(svg, vb)
+    }
+
+    const onPointerDown = e => {
+      // Allow only primary button for mouse
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      if (state.pointers.size === 1) {
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        state.startCenter = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 }
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+
+      // Pan with 1 pointer
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = [...state.pointers.values()][0]
+        const prev = { x: e.clientX - e.movementX, y: e.clientY - e.movementY }
+        // movementX/Y unreliable on touch, compute from stored last position
+        const last = wrap.__mermaidLastSinglePointer || p
+        const dxClient = p.x - last.x
+        const dyClient = p.y - last.y
+        wrap.__mermaidLastSinglePointer = p
+
+        const { rect } = clientToViewBox(p.x, p.y)
+        const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+        const dx = dxClient * (vb[2] / rect.width)
+        const dy = dyClient * (vb[3] / rect.height)
+        setCurVb([vb[0] - dx, vb[1] - dy, vb[2], vb[3]])
+        return
+      }
+
+      // Pinch zoom with 2 pointers
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist // dist bigger => zoom in (viewBox smaller)
+
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const centerClient = { x: cx, y: cy }
+
+        const pxy = clientToViewBox(centerClient.x, centerClient.y)
+        const cpx = pxy.x
+        const cpy = pxy.y
+
+        const vb = zoomAtPoint(state.startVb, factor, cpx, cpy)
+        setCurVb(vb)
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+        state.startCenter = null
+        wrap.__mermaidLastSinglePointer = null
+      } else if (state.pointers.size === 1) {
+        // reset single pointer baseline to avoid jump
+        wrap.__mermaidLastSinglePointer = [...state.pointers.values()][0]
+      }
+    }
+
+    // Wheel zoom (mouse/trackpad)
+    const onWheel = e => {
+      // ctrlKey on mac trackpad pinch; we treat both as zoom
+      e.preventDefault()
+      const delta = e.deltaY
+      const zoomFactor = delta > 0 ? 1.1 : 0.9
+      const { x, y } = clientToViewBox(e.clientX, e.clientY)
+      const vb = (wrap.__mermaidCurViewBox || getSvgViewBox(svg)).slice()
+      setCurVb(zoomAtPoint(vb, zoomFactor, x, y))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (!init) return
+      wrap.__mermaidCurViewBox = init.slice()
+      setSvgViewBox(svg, init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown)
+    svg.addEventListener('pointermove', onPointerMove)
+    svg.addEventListener('pointerup', onPointerUpOrCancel)
+    svg.addEventListener('pointercancel', onPointerUpOrCancel)
+    svg.addEventListener('wheel', onWheel, { passive: false })
+    svg.addEventListener('dblclick', onDblClick)
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+
+      // Clear old render (themeChange/pjax will rerun)
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      item.__mermaidGestureBound = false
+
+      const config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.12.2/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script src="/js/click-word.js"></script><script src="/js/sakura.js"></script><script src="/js/go-bottom.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="想吃点什么～" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.4"></script></div></div></body></html>
